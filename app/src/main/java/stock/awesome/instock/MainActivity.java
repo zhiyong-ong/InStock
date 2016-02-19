@@ -3,10 +3,13 @@ package stock.awesome.instock;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.firebase.client.Firebase;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,9 +23,23 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Product test = new Product("1245", "Zhi yong's Marvellous Test Tube, 5ml");
-        test.setLocation("B4");
-        test.writeToFirebase(database);
+        DatabaseOps readWrite = new DatabaseOps(database);
+
+        Product test1 = new Product("1245", "Zhi yong's Marvellous Test Tube, 5ml");
+        test1.setLocation("B4");
+        readWrite.writeToFirebase(test1);
+
+        Product test2 = new Product("7676", "Inflatable lifeboat, blue");
+        readWrite.writeToFirebase(test2);
+
+        ArrayList<String> results = readWrite.readFromFirebase("1245");
+
+        if (results.size() != 0) {
+            Log.d("main: name is ", results.get(0));
+            Log.d("main: qty is ", results.get(1));
+        }
+
+
     }
 
     @Override
