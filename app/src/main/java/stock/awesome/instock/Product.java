@@ -1,18 +1,50 @@
 package stock.awesome.instock;
 
+import android.util.Log;
+
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Product {
 
-    private String id, name, desc, location;
-    private int quantity = 0;
+    private String id = null, name = null, desc = null, location = null;
+    private int quantity = -1;
     private GregorianCalendar expiry = null;
+    private boolean success = false;
 
-    public Product() {}
 
     public Product(String id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+
+    private String format(GregorianCalendar calendar){
+        SimpleDateFormat fmt = new SimpleDateFormat("dd/MMM/yyyy");
+        fmt.setCalendar(calendar);
+        String dateFormatted = fmt.format(calendar.getTime());
+        return dateFormatted;
+    }
+
+
+    public void writeToFirebase(Firebase database) {
+        Firebase ref = database.child("products").child(id);
+        Map<String, String> newProd = new HashMap<String, String>();
+
+        newProd.put("name", name);
+        newProd.put("desc", desc);
+        newProd.put("location", location);
+        newProd.put("quantity", Integer.toString(quantity));
+        newProd.put("location", location);
+        if (expiry != null)
+            newProd.put("expiry", format(expiry));
+
+        ref.setValue(newProd);
     }
 
 

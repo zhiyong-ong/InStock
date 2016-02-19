@@ -20,7 +20,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        testWrite(database);
+        Product test = new Product("1245", "Zhi yong's Marvellous Test Tube, 5ml");
+        test.setLocation("B4");
+        test.writeToFirebase(database);
     }
 
     @Override
@@ -43,10 +45,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void testWrite(Firebase database) {
-        Firebase prod3047 = database.child("products").child("3047");
-        prod3047.child("location").setValue("A2");
     }
 }
