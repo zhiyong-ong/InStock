@@ -13,7 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class BuildKit extends AppCompatActivity {
+    private ArrayAdapter<String> listAdapter;
+    private ArrayList<String> newProduct = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +25,6 @@ public class BuildKit extends AppCompatActivity {
         setContentView(R.layout.activity_build_kit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
     }
 
     @Override
@@ -55,7 +56,8 @@ public class BuildKit extends AppCompatActivity {
         //dialogBuilder.setMessage("Enter text below");
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                populateListView(productID.toString(), quantity.toString());
+                newProduct.add(productID.getText().toString() + " " + quantity.getText().toString());
+                populateListView();
                 //do something with edt.getText().toString();
             }
         });
@@ -68,11 +70,11 @@ public class BuildKit extends AppCompatActivity {
         b.show();
     }
 
-    public void populateListView(String productID, String quantity) {
+    public void populateListView() {
         ListView mainListView = (ListView) findViewById( R.id.listView );
-        ArrayAdapter<String> listAdapter;
-        listAdapter = new ArrayAdapter<String>(this, R.layout.listview_row);
-        listAdapter.add(productID + "\t" + quantity);
+
+        listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, newProduct);
+
         mainListView.setAdapter(listAdapter);
 
     }
