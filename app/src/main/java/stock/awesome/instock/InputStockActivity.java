@@ -55,7 +55,6 @@ public class InputStockActivity extends AppCompatActivity {
         EditText inputDesc = (EditText) findViewById(R.id.descriptionEdit);
         inputProd.setDesc(inputDesc.getText().toString());
 
-        // test
         EditText inputQty = (EditText) findViewById(R.id.quantityEdit);
         inputProd.setQuantity(Integer.valueOf(inputQty.getText().toString()));
 
