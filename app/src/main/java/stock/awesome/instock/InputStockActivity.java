@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 public class InputStockActivity extends AppCompatActivity {
@@ -15,7 +17,16 @@ public class InputStockActivity extends AppCompatActivity {
         setContentView(R.layout.activity_input_stock);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Button submitButton = (Button) findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Product inputProd = new Product();
+                onSubmitPress(inputProd);
+            }
+        });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -31,8 +42,7 @@ public class InputStockActivity extends AppCompatActivity {
     }
 
     // Call on press of the submit button for this activity
-    public void onSubmitPress() {
-        Product inputProd = new Product();
+    public void onSubmitPress(Product inputProd) {
 
         EditText inputId = (EditText) findViewById(R.id.productEdit);
         inputProd.setId(inputId.getText().toString());
