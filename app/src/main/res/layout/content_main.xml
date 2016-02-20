@@ -30,5 +30,16 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="View All Items"
+        android:textSize="16dip"
+        android:id="@+id/viewItemButton"
+        android:onClick="viewAllIntent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp" />
+
 
 </RelativeLayout>

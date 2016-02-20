@@ -34,6 +34,15 @@
             android:label="@string/title_activity_build_kit"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>
+        <activity
+            android:name=".ViewAllStocks"
+            android:label="@string/title_activity_view_all_stocks"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
+        </activity>
     </application>
 
 </manifest>
