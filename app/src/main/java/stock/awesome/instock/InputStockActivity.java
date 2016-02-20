@@ -3,6 +3,7 @@ package stock.awesome.instock;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ public class InputStockActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Product inputProd = new Product();
                 onSubmitPress(inputProd);
+                Log.w("Submit successful: ", inputProd.getName() + " " + inputProd.getQuantity());
             }
         });
     }
