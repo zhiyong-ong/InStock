@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.firebase.client.Firebase;
 
@@ -21,6 +22,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void sendNewItemIntent(View view) {
+        Intent intent = new Intent(this, InputStockActivity.class);
+        startActivity(intent);
+    }
+
+    public void sendNewKitIntent(View view) {
+        Intent intent = new Intent(this, BuildKit.class);
+        startActivity(intent);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -37,11 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, InputStockActivity.class);
-            startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 }
