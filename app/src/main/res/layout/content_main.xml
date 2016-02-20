@@ -9,37 +9,118 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main" tools:context=".MainActivity">
 
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Add New Item"
-        android:textSize="16dip"
-        android:onClick="sendNewItemIntent"
-        android:id="@+id/newItemButton"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="181dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:id="@+id/scrollView" >
 
-    <Button
-        android:layout_width="300dp"
-        android:textSize="16dip"
-        android:layout_height="wrap_content"
-        android:onClick="sendNewKitIntent"
-        android:text="Build New Kit"
-        android:id="@+id/buildKitButton"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="View All Items"
-        android:textSize="16dip"
-        android:id="@+id/viewItemButton"
-        android:onClick="viewAllIntent"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="75dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Stockers"
+                android:id="@+id/stockersText"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="27dp" />
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="Add New Item"
+                android:textSize="16dip"
+                android:onClick="sendNewItemIntent"
+                android:id="@+id/newItemButton"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/stockersText"
+                android:layout_alignLeft="@+id/buildKitButton"
+                android:layout_alignStart="@+id/buildKitButton" />
+
+            <Button
+                android:layout_width="300dp"
+                android:textSize="16dip"
+                android:layout_height="wrap_content"
+                android:onClick="sendNewKitIntent"
+                android:text="Build New Kit"
+                android:id="@+id/buildKitButton"
+                android:layout_below="@+id/newItemButton"
+                android:layout_alignLeft="@+id/ExistingKitButton"
+                android:layout_alignStart="@+id/ExistingKitButton" />
+            <View
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/black"
+                android:layout_below="@+id/buildKitButton"/>
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Pickers"
+                android:layout_below="@+id/line1"
+                android:layout_marginTop="45dp"
+                android:id="@+id/pickersText"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:textSize="16dip"
+                android:text="Use Existing Kit"
+                android:layout_marginTop="15dp"
+                android:onClick="sendExistingKitIntent"
+                android:id="@+id/ExistingKitButton"
+                android:layout_below="@+id/pickersText"
+                android:layout_alignLeft="@+id/viewItemButton"
+                android:layout_alignStart="@+id/viewItemButton" />
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/black"
+                android:layout_below="@+id/ExistingKitButton"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Administrators"
+                android:id="@+id/adminText"
+                android:layout_marginTop="45dp"
+                android:layout_below="@+id/line2"
+                android:layout_centerHorizontal="true" />
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="View All Items"
+                android:textSize="16dip"
+                android:id="@+id/viewItemButton"
+                android:onClick="viewAllIntent"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/adminText"
+                android:layout_centerHorizontal="true" />
+
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </RelativeLayout>

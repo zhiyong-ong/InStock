@@ -4,4 +4,5 @@
     <string name="title_activity_input_stock">InputStockActivity</string>
     <string name="title_activity_build_kit">BuildKit</string>
     <string name="title_activity_view_all_stocks">ViewAllStocks</string>
+    <string name="title_activity_existing_kit">ExistingKit</string>
 </resources>
