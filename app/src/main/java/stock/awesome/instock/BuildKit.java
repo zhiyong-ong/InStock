@@ -22,8 +22,6 @@ public class BuildKit extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
     }
 
     @Override
@@ -43,6 +41,7 @@ public class BuildKit extends AppCompatActivity {
         showChangeLangDialog();
     }
 
+
     public void showChangeLangDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -56,7 +55,7 @@ public class BuildKit extends AppCompatActivity {
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 populateListView(productID.toString(), quantity.toString());
-                //do something with edt.getText().toString();
+                //do something with edit.getText().toString();
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -15,7 +15,7 @@ import java.util.Map;
 public class DatabaseOps {
 
     private Firebase database = null;
-    private Product product;
+    private Product product = new Product();
 
 
     public DatabaseOps(Firebase database) {
@@ -30,7 +30,9 @@ public class DatabaseOps {
             return dateFormatted;
     }
 
-
+    // writes all the characteristic data of a product to database
+    // must have id, other values optional. if expiry date is null, that
+    // field is not created
     public void writeToFirebase(Product product) {
         Firebase ref = database.child("products").child(product.getId());
         Map<String, String> newProd = new HashMap<String, String>();
@@ -45,6 +47,7 @@ public class DatabaseOps {
         ref.setValue(newProd);
     }
 
+    // NOT WORKING
     // returns a product with the name, quantity and location associated with id passed in
     // by looking up the id's characteristics in the database
     public Product readFromFirebase(String id) {
@@ -68,7 +71,7 @@ public class DatabaseOps {
             }
         });
 
-        return info;
+        return product;
     }
 
 

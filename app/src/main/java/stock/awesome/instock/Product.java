@@ -8,7 +8,7 @@ public class Product {
     private int quantity = -1;
     private GregorianCalendar expiry = null;
 
-
+    // empty constructor
     public Product() {}
 
     public Product(String id, String name) {
@@ -24,7 +24,9 @@ public class Product {
         this.expiry = expiry;
     }
 
-
+    /*
+    getter and setter methods for state variables listed above
+     */
     public String getId() {
         return id;
     }
