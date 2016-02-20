@@ -9,12 +9,20 @@ public class Product {
     private GregorianCalendar expiry = null;
 
 
+    public Product() {}
+
     public Product(String id, String name) {
-        this.id = id;
-        this.name = name;
+        this(id, name, null, null, -1, null);
     }
 
-
+    public Product(String id, String name, String desc, String location, int quantity, GregorianCalendar expiry) {
+        this.id = id;
+        this.name = name;
+        this.desc = desc;
+        this.location = location;
+        this.quantity = quantity;
+        this.expiry = expiry;
+    }
 
 
     public String getId() {

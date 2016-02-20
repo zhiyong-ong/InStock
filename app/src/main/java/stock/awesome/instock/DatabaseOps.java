@@ -8,7 +8,6 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +15,7 @@ import java.util.Map;
 public class DatabaseOps {
 
     private Firebase database = null;
-    private ArrayList<String> info = new ArrayList<String>();
+    private Product product;
 
 
     public DatabaseOps(Firebase database) {
@@ -46,9 +45,9 @@ public class DatabaseOps {
         ref.setValue(newProd);
     }
 
-    // returns an ArrayList of data related to the id passed in.
-    // 0 index is name, 1 is quantity and 2 is location
-    public ArrayList<String> readFromFirebase(String id) {
+    // returns a product with the name, quantity and location associated with id passed in
+    // by looking up the id's characteristics in the database
+    public Product readFromFirebase(String id) {
         Firebase ref = database.child("products").child(id);
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -59,9 +58,9 @@ public class DatabaseOps {
                 String qty = (String) snapshot.child("quantity").getValue();
                 String location = (String) snapshot.child("location").getValue();
 
-                info.add(name);
-                info.add(qty);
-                info.add(location);
+                product.setName(name);
+                product.setQuantity(Integer.parseInt(qty));
+                product.setLocation(location);
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
