@@ -1,16 +1,7 @@
 package stock.awesome.instock;
 
-import android.util.Log;
-
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-
-import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class Product {
 
@@ -19,13 +10,13 @@ public class Product {
     private GregorianCalendar expiry = null;
 
 
+    public Product() {
+    }
+
     public Product(String id, String name) {
         this.id = id;
         this.name = name;
     }
-
-
-
 
     public String getId() {
         return id;

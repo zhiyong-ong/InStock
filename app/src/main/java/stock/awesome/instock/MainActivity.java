@@ -9,7 +9,6 @@ import android.view.MenuItem;
 
 import com.firebase.client.Firebase;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         Product test2 = new Product("7676", "Inflatable lifeboat, blue");
         readWrite.writeToFirebase(test2);
 
-        ArrayList<String> results = readWrite.readFromFirebase("1245");
+        Product test = readWrite.readFromFirebase("1245");
 
-        if (results.size() != 0) {
-            Log.d("main: name is ", results.get(0));
-            Log.d("main: qty is ", results.get(1));
+        if (test.getName() != null) {
+            Log.d("main: name is ", test.getName());
+            Log.d("main: qty is ", "" + test.getQuantity());
         }
 
 
