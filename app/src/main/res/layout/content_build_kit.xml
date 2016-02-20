@@ -7,28 +7,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_main" tools:context=".MainActivity">
+    tools:showIn="@layout/activity_build_kit" tools:context="stock.awesome.instock.BuildKit">
 
     <Button
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
         android:text="Add New Item"
-        android:textSize="16dip"
-        android:onClick="sendNewItemIntent"
-        android:id="@+id/newItemButton"
-        android:layout_alignParentTop="true"
+        android:textSize="20dip"
+        android:onClick="sendNewKitItem"
+        android:id="@+id/addKitItemButton"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="181dp" />
+        android:layout_marginBottom="20dp" />
 
-    <Button
-        android:layout_width="300dp"
-        android:textSize="16dip"
+    <ListView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="sendNewKitIntent"
-        android:text="Build New Kit"
-        android:id="@+id/buildKitButton"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
+        android:id="@+id/listView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/addKitItemButton" />
 
 </RelativeLayout>

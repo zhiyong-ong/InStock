@@ -1,16 +1,17 @@
 package stock.awesome.instock;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.firebase.client.Firebase;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         Firebase.setAndroidContext(this);
         Firebase database = new Firebase("https://scorching-inferno-2190.firebaseio.com/");
@@ -19,12 +20,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        Product test = new Product("1245", "Zhi yong's Marvellous Test Tube, 5ml");
-        test.setLocation("B4");
-        test.writeToFirebase(database);
     }
 
+    public void sendNewItemIntent(View view) {
+        Intent intent = new Intent(this, InputStockActivity.class);
+        startActivity(intent);
+    }
+
+    public void sendNewKitIntent(View view) {
+        Intent intent = new Intent(this, BuildKit.class);
+        startActivity(intent);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -46,4 +52,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
