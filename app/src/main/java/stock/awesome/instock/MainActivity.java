@@ -23,9 +23,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         DatabaseOps op = new DatabaseOps(database);
+        Product testProd = new Product();
 
-        Product testProd = op.readFromFirebase("3047");
-        Log.e("testProd values: ", "  id: " + testProd.getId() + " name: " + testProd.getName() + " qty: " + testProd.getQuantity());
+        op.readFromFirebase(testProd, "3047");
+        Log.d("testProd values", "id: " + testProd.getId() + "  name: " + testProd.getName() + "  qty: " + testProd.getQuantity());
     }
 
     public void sendNewItemIntent(View view) {
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void viewAllIntent (View view) {
+    public void viewAllIntent(View view) {
         Intent intent = new Intent(this, ViewAllStocks.class);
         startActivity(intent);
     }

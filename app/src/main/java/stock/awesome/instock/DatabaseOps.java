@@ -11,13 +11,16 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 
 public class DatabaseOps {
 
     private Firebase database = null;
-    private Product outProd = new Product();
+    //private Product outProd = new Product();
     // outProd variables
 //    String prodId = null, name = null, location = null;
 //    int qty = -1;
@@ -57,32 +60,44 @@ public class DatabaseOps {
     // NOT WORKING
     // returns a product with the name, quantity and location associated with id passed in
     // by looking up the id's characteristics in the database
-    public Product readFromFirebase(final String id) {
+    public void readFromFirebase(final Product outProd, final String id) {
         Firebase ref = database.child("products").child(id);
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                FutureTask<String> name = new FutureTask<String>("5");
-                (String) snapshot.child("name").getValue();
-                String location = (String) snapshot.child("location").getValue();
-                String strQty = (String) snapshot.child("quantity").getValue();
+                DbCallable nameCallable = new DbCallable(snapshot, "name");
+                FutureTask<String> futureName = new FutureTask<String>(nameCallable);
+
+                DbCallable locationCallable = new DbCallable(snapshot, "location");
+                FutureTask<String> futureLocation = new FutureTask<String>(locationCallable);
+
+                DbCallable qtyCallable = new DbCallable(snapshot, "quantity");
+                FutureTask<String> futureQty = new FutureTask<String>(qtyCallable);
+
+                ExecutorService executor = Executors.newFixedThreadPool(3);
+                executor.execute(futureName);
+                executor.execute(futureLocation);
+                executor.execute(futureQty);
 
                 outProd.setId(id);
-                outProd.setName(name);
-                outProd.setQuantity(Integer.parseInt(strQty));
-                outProd.setLocation(location);
 
+                try {
+                    outProd.setName(futureName.get());
+                    outProd.setQuantity(Integer.parseInt(futureQty.get()));
+                    outProd.setLocation(futureLocation.get());
+                }
+                catch (InterruptedException | ExecutionException e) {
+                    Log.e("Future error", "Interrupted/ExecutionException");
+                }
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Log.e("Database read", "The read failed: " + firebaseError.getMessage());
+                Log.e("Firebase read error", "The read failed: " + firebaseError.getMessage());
             }
         });
-
-        return outProd;
     }
 
 }
