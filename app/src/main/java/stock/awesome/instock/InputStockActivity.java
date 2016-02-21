@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class InputStockActivity extends AppCompatActivity {
@@ -30,6 +31,7 @@ public class InputStockActivity extends AppCompatActivity {
 
         myCalendar = Calendar.getInstance();
         expiryDate = (EditText) findViewById(R.id.expiryEdit);
+
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -49,8 +51,9 @@ public class InputStockActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                new DatePickerDialog(InputStockActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                new DatePickerDialog(InputStockActivity.this, date,
+                        myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
@@ -60,19 +63,18 @@ public class InputStockActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Product inputProd = new Product();
                 onSubmitPress(inputProd);
-                Log.w("Submit successful: ", inputProd.getName() + " " + inputProd.getQuantity());
+                Log.d("Submit successful", inputProd.getName() + " " + inputProd.getQuantity() + " "
+                        + formatCalendarAsString(inputProd.getExpiry()));
             }
         });
     }
 
-    private void updateLabel() {
 
-        String myFormat = "dd/MM/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-        expiryDate.setText(sdf.format(myCalendar.getTime()));
+    private String formatCalendarAsString(GregorianCalendar calendar) {
+        SimpleDateFormat fmt = new SimpleDateFormat("dd/MMM/yyyy", Locale.US);
+        fmt.setCalendar(calendar);
+        return fmt.format(calendar.getTime());
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,7 +91,13 @@ public class InputStockActivity extends AppCompatActivity {
     }
 
 
-    // Call on press of the submit button for this activity
+    private void updateLabel() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        expiryDate.setText(sdf.format(myCalendar.getTime()));
+    }
+
+
+    // Called when submit button is pressed
     public void onSubmitPress(Product inputProd) {
 
         EditText inputId = (EditText) findViewById(R.id.productEdit);
@@ -107,9 +115,12 @@ public class InputStockActivity extends AppCompatActivity {
         EditText inputLocation = (EditText) findViewById(R.id.locationEdit);
         inputProd.setLocation(inputLocation.getText().toString());
 
-        // expiry not implemented. easier to parse date input with a picker
-        // see http://developer.android.com/guide/topics/ui/controls/pickers.html
+        int inputExpiryYear = myCalendar.get(Calendar.YEAR);
+        int inputExpiryMonth = myCalendar.get(Calendar.MONTH);
+        int inputExpiryDate = myCalendar.get(Calendar.DATE);
+        inputProd.setExpiry(new GregorianCalendar(inputExpiryYear, inputExpiryMonth, inputExpiryDate));
 
+        // intent --> go to next activity or provide dialog box confirmation
     }
 
 }

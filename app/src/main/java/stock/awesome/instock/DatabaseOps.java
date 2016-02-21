@@ -10,6 +10,7 @@ import com.firebase.client.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -31,12 +32,12 @@ public class DatabaseOps {
     }
 
 
-    private String format(GregorianCalendar calendar) {
-        SimpleDateFormat fmt = new SimpleDateFormat("dd/MMM/yyyy");
+    private String formatCalendarAsString(GregorianCalendar calendar) {
+        SimpleDateFormat fmt = new SimpleDateFormat("dd/MMM/yyyy", Locale.US);
         fmt.setCalendar(calendar);
-        String dateFormatted = fmt.format(calendar.getTime());
-        return dateFormatted;
+        return fmt.format(calendar.getTime());
     }
+
 
     // writes all the characteristic data of a product to database.
     // must have id, other values optional. All string fields are initialised with null values
@@ -51,7 +52,7 @@ public class DatabaseOps {
         newProd.put("location", product.getLocation());
         newProd.put("quantity", Integer.toString(product.getQuantity()));
         if (product.getExpiry() != null)
-            newProd.put("expiry", format(product.getExpiry()));
+            newProd.put("expiry", formatCalendarAsString(product.getExpiry()));
 
         ref.setValue(newProd);
     }
