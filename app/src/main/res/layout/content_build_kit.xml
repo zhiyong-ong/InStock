@@ -19,13 +19,25 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/black"
+        android:layout_below="@+id/addKitItemButton"/>
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
-        android:layout_below="@+id/addKitItemButton" />
-
+        android:layout_below="@+id/line1" />
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/black"
+        android:layout_below="@+id/listView"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +45,7 @@
         android:textSize="20dip"
         android:onClick="sendSaveKit"
         android:id="@+id/saveButton"
-        android:layout_below="@+id/listView"
+        android:layout_below="@+id/line2"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

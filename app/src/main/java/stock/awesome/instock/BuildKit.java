@@ -49,8 +49,8 @@ public class BuildKit extends AppCompatActivity {
                 final EditText productIDText = (EditText) dialogView.findViewById(R.id.productID);
                 final EditText quantityText = (EditText) dialogView.findViewById(R.id.addQuantity);
 
-                productIDText.setText((String) newProduct.get(position).getProductID());
-                quantityText.setText((String) newProduct.get(position).getQuantity());
+                productIDText.setText(newProduct.get(position).getProductID());
+                quantityText.setText(newProduct.get(position).getQuantity());
 
                 dialogBuilder.setView(dialogView);
                 dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
@@ -123,10 +123,22 @@ public class BuildKit extends AppCompatActivity {
         b.show();
     }
 
-    public void populateListView() {
-        listAdapter = new ArrayAdapter<ProductTupleKit>(this, android.R.layout.simple_list_item_1, newProduct);
-
-        mainListView.setAdapter(listAdapter);
-
+    public void sendSaveKit(View view) {
+        //show the alert dialog
+        new AlertDialog.Builder(context)
+                .setTitle("Save New Kit")
+                .setMessage("Are you sure you want to save this kit?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }
