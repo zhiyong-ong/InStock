@@ -9,43 +9,49 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_build_kit" tools:context="stock.awesome.instock.BuildKit">
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:text="Add New Item"
-        android:textSize="20dip"
-        android:onClick="sendNewKitItem"
-        android:id="@+id/addKitItemButton"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-    <View
-        android:id="@+id/line1"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/black"
-        android:layout_below="@+id/addKitItemButton"/>
     <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/line1" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/linear"
+        android:id="@+id/listView" />
     <View
         android:id="@+id/line2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/black"
-        android:layout_below="@+id/listView"/>
-    <Button
-        android:layout_width="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/listView"
+        android:background="@android:color/black"/>
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Save Kit"
-        android:textSize="20dip"
-        android:onClick="sendSaveKit"
-        android:id="@+id/saveButton"
-        android:layout_below="@+id/line2"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Add New Item"
+            android:textSize="20dip"
+            android:onClick="sendNewKitItem"
+            android:id="@+id/addKitItemButton"
+            android:layout_toLeftOf="@+id/saveButton"
+            android:layout_below="@+id/line2"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Save Kit"
+            android:textSize="20dip"
+            android:onClick="sendSaveKit"
+            android:id="@+id/saveButton"
+            android:layout_below="@+id/line2"
+            android:layout_alignEnd="@+id/line2"
+            android:layout_alignRight="@+id/line2"     />
+
+    </LinearLayout>
 </RelativeLayout>
