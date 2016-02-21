@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,12 +20,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        DatabaseOps op = new DatabaseOps(database);
-        Product testProd = new Product();
-
-        op.readFromFirebase(testProd, "3047");
-        Log.d("testProd values", "id: " + testProd.getId() + "  name: " + testProd.getName() + "  qty: " + testProd.getQuantity());
     }
 
     public void sendNewItemIntent(View view) {
@@ -38,8 +31,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BuildKit.class);
         startActivity(intent);
     }
-
-    public void viewAllIntent(View view) {
+    public void sendExistingKitIntent(View view) {
+        Intent intent = new Intent(this, ExistingKit.class);
+        startActivity(intent);
+    }
+    public void viewAllIntent (View view) {
         Intent intent = new Intent(this, ViewAllStocks.class);
         startActivity(intent);
     }
