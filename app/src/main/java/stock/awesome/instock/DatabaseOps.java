@@ -31,8 +31,8 @@ public class DatabaseOps {
         this.database = database;
     }
 
-
-    private String formatCalendarAsString(GregorianCalendar calendar) {
+    // static because used in inputstockactivity
+    public static String formatCalendarAsString(GregorianCalendar calendar) {
         SimpleDateFormat fmt = new SimpleDateFormat("dd/MMM/yyyy", Locale.US);
         fmt.setCalendar(calendar);
         return fmt.format(calendar.getTime());
@@ -85,9 +85,14 @@ public class DatabaseOps {
                 outProd.setId(id);
 
                 try {
-                    outProd.setName(futureName.get());
-                    outProd.setQuantity(Integer.parseInt(futureQty.get()));
-                    outProd.setLocation(futureLocation.get());
+                    String name = futureName.get();
+                    outProd.setName(name);
+
+                    String strQty = futureQty.get();
+                    outProd.setQuantity(Integer.parseInt(strQty));
+
+                    String location = futureLocation.get();
+                    outProd.setLocation(location);
                 }
                 catch (InterruptedException | ExecutionException e) {
                     Log.e("Future error", "Interrupted/ExecutionException");

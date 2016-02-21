@@ -64,16 +64,9 @@ public class InputStockActivity extends AppCompatActivity {
                 Product inputProd = new Product();
                 onSubmitPress(inputProd);
                 Log.d("Submit successful", inputProd.getName() + " " + inputProd.getQuantity() + " "
-                        + formatCalendarAsString(inputProd.getExpiry()));
+                        + DatabaseOps.formatCalendarAsString(inputProd.getExpiry()));
             }
         });
-    }
-
-
-    private String formatCalendarAsString(GregorianCalendar calendar) {
-        SimpleDateFormat fmt = new SimpleDateFormat("dd/MMM/yyyy", Locale.US);
-        fmt.setCalendar(calendar);
-        return fmt.format(calendar.getTime());
     }
 
     @Override
@@ -120,7 +113,7 @@ public class InputStockActivity extends AppCompatActivity {
         int inputExpiryDate = myCalendar.get(Calendar.DATE);
         inputProd.setExpiry(new GregorianCalendar(inputExpiryYear, inputExpiryMonth, inputExpiryDate));
 
-        // intent --> go to next activity or provide dialog box confirmation
+        // intent --> go to next activity, provide dialog box confirmation
     }
 
 }
