@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Kabir on 22/02/2016.
+ * writeProduct writes a product and its associated information to the database.
+ * It can be accessed again through searching for its ID.
  */
 public class DatabaseWriteProduct {
 
@@ -20,7 +21,7 @@ public class DatabaseWriteProduct {
     // must have id, other values optional. All string fields are initialised with null values
     // and integer fields with -1 except expiry. If expiry date is null,
     // that field is not created
-    public void writeToFirebase(Product product) {
+    public void writeProduct(Product product) {
         Firebase ref = database.child("products").child(product.getId());
         Map<String, String> newProd = new HashMap<String, String>();
 

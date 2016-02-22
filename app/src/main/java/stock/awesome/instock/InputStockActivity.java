@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.firebase.client.Firebase;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -21,6 +23,7 @@ public class InputStockActivity extends AppCompatActivity {
 
     Calendar myCalendar;
     EditText expiryDate;
+    DatabaseWriteProduct writer = new DatabaseWriteProduct(new Firebase("https://scorching-inferno-2190.firebaseio.com/"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class InputStockActivity extends AppCompatActivity {
                 Product inputProd = new Product();
                 onSubmitPress(inputProd);
                 Log.d("Submit successful", inputProd.getName() + " " + inputProd.getQuantity() + " "
-                        + DatabaseReadProduct.formatCalendarAsString(inputProd.getExpiry()));
+                        + CalendarAsStr.format(inputProd.getExpiry()));
             }
         });
     }
@@ -111,6 +114,7 @@ public class InputStockActivity extends AppCompatActivity {
         int inputExpiryDate = myCalendar.get(Calendar.DATE);
         inputProd.setExpiry(new GregorianCalendar(inputExpiryYear, inputExpiryMonth, inputExpiryDate));
 
+        writer.writeProduct(inputProd);
         // intent --> go to next activity, provide dialog box confirmation
     }
 
