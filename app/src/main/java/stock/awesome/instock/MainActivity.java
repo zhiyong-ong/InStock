@@ -22,7 +22,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        
+        // read testing
+        DatabaseOps db = new DatabaseOps(database);
+        Product testProd = new Product();
+        db.readFromFirebase(testProd, "3047");
+        Log.w("db read", "id: " + testProd.getId() + " location: " + testProd.getLocation());
+
     }
 
     public void sendNewItemIntent(View view) {

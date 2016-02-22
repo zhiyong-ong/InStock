@@ -1,6 +1,8 @@
 package stock.awesome.instock;
 
 
+import android.util.Log;
+
 import com.firebase.client.DataSnapshot;
 
 
@@ -18,6 +20,8 @@ public class DbCallable implements Callable<String>{
 
     @Override
     public String call() throws Exception {
-        return (String) snapshot.child(var).getValue();
+        String retVal = (String) snapshot.child(var).getValue();
+        Log.w("return val from call", "call retval: " + retVal);
+        return retVal;
     }
 }

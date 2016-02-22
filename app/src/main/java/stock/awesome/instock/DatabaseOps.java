@@ -85,14 +85,22 @@ public class DatabaseOps {
                 outProd.setId(id);
 
                 try {
+
                     String name = futureName.get();
                     outProd.setName(name);
+
+                    Log.w("name", name);
 
                     String strQty = futureQty.get();
                     outProd.setQuantity(Integer.parseInt(strQty));
 
+                    Log.w("strQty", strQty);
+
                     String location = futureLocation.get();
                     outProd.setLocation(location);
+
+                    Log.w("location", location);
+
                 }
                 catch (InterruptedException | ExecutionException e) {
                     Log.e("Future error", "Interrupted/ExecutionException");
