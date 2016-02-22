@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // read testing
-        DatabaseOps db = new DatabaseOps(database);
+        DatabaseReadProduct db = new DatabaseReadProduct(database, "build_kit");
         Product testProd = new Product();
         db.execute("3047");
         //testProd = db.readFromFirebase("3047");
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendNewKitIntent(View view) {
-        Intent intent = new Intent(this, BuildKit.class);
+        Intent intent = new Intent(this, BuildKitActivity.class);
         startActivity(intent);
     }
     public void sendExistingKitIntent(View view) {

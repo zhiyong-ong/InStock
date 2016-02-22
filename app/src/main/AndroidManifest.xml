@@ -30,7 +30,7 @@
                 android:value="stock.awesome.instock.MainActivity" />
         </activity>
         <activity
-            android:name=".BuildKit"
+            android:name=".BuildKitActivity"
             android:label="@string/title_activity_build_kit"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>

@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class BuildKit extends AppCompatActivity {
+public class BuildKitActivity extends AppCompatActivity {
     private ArrayAdapter<ProductTupleKit> listAdapter;
     private ArrayList<ProductTupleKit> newProduct = new ArrayList<ProductTupleKit>();
     private ListView mainListView;

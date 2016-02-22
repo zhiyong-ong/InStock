@@ -12,6 +12,7 @@ public class Kit {
         kit = new HashMap<String, Product>();
     }
 
+
     // adds as key value pair of id:product
     public void addProduct(Product product) {
         kit.put(product.getId(), product);
@@ -23,7 +24,7 @@ public class Kit {
     }
 
     // removes product associate with id argument
-    public void removeProduct(String id) {
-        kit.remove(id);
+    public Product removeProduct(String id) {
+        return kit.remove(id);
     }
 }
