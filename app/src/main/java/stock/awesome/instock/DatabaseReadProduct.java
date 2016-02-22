@@ -20,7 +20,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.Semaphore;
 
 /**
- * execute(String id) reads from database and returns a Product.
+ * execute(String id) reads from database and returns a Product associated with that id.
  */
 public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
 
@@ -93,6 +93,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
         if (useCase.equals("build_kit")) {
             // display name, location in BuildKitActivity
         }
+
     }
 
 }

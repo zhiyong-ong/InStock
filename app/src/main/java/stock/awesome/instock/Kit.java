@@ -26,6 +26,10 @@ public class Kit {
         return kitName;
     }
 
+    public void setKitName(String name) {
+        kitName = name;
+    }
+
     // adds as key value pair of id:qty
     public void addProduct(Product product, int qty) {
         kit.put(product.getId(), qty);
