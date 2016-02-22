@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         db.execute("3047");
         //testProd = db.readFromFirebase("3047");
         //Log.w("db read", "id: " + testProd.getId() + " location: " + testProd.getLocation());
-
     }
 
     public void sendNewItemIntent(View view) {

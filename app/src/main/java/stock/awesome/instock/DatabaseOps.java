@@ -19,14 +19,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.Semaphore;
 
-
+/*
+    writeToFirebase(Product product) writes to database.
+    execute(String id) reads from database and returns a Product.
+ */
 public class DatabaseOps extends AsyncTask<String, Void, Product>{
 
     private Firebase database = null;
     private Product outProd = new Product();
-    // outProd variables
-//    String prodId = null, name = null, location = null;
-//    int qty = -1;
 
 
     public DatabaseOps(Firebase database) {
@@ -58,7 +58,6 @@ public class DatabaseOps extends AsyncTask<String, Void, Product>{
 
         ref.setValue(newProd);
     }
-
 
     // NOT WORKING
     // returns a product with the name, quantity and location associated with id passed in
