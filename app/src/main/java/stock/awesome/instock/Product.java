@@ -8,15 +8,25 @@ public class Product {
     private int quantity = -1;
     private GregorianCalendar expiry = null;
 
+    // empty constructor
+    public Product() {}
 
     public Product(String id, String name) {
-        this.id = id;
-        this.name = name;
+        this(id, name, null, null, -1, null);
     }
 
+    public Product(String id, String name, String desc, String location, int quantity, GregorianCalendar expiry) {
+        this.id = id;
+        this.name = name;
+        this.desc = desc;
+        this.location = location;
+        this.quantity = quantity;
+        this.expiry = expiry;
+    }
 
-
-
+    /*
+    getter and setter methods for state variables listed above
+     */
     public String getId() {
         return id;
     }
