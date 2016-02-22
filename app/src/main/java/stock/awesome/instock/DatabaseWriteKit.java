@@ -28,7 +28,6 @@ public class DatabaseWriteKit {
 
             newKit.put("id", id);
             newKit.put("quantity", Integer.toString(qty));
-
         }
 
         ref.setValue(newKit);

@@ -87,11 +87,12 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
         Log.w("After Asynctask", result.getName());
 
         if (useCase.equals("build_kit")) {
-            // display in editText
+            // display name, location in BuildKitActivity
         }
-        else if (useCase.equals("return_product")) {
-            // ???
-        }
+    }
+
+    private Product returnProduct(Product prod) {
+        return prod;
     }
 
 }

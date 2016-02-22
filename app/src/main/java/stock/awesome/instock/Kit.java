@@ -31,13 +31,12 @@ public class Kit {
         kit.put(id, qty);
     }
 
-    // returns product associated with id. if none, returns null
-    public int getProduct(String id) {
-        DatabaseReadProduct reader = new DatabaseReadProduct(database,"return_product");
+    // returns qty associated with id. if none, returns null
+    public int getQty(String id) {
         return kit.get(id);
     }
 
-    // removes id ad associated qty
+    // removes id and associated qty
     public void removeProduct(String id) {
         kit.remove(id);
     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,10 +22,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // read testing
-        DatabaseReadProduct db = new DatabaseReadProduct(database, "build_kit");
-        Product testProd = new Product();
-        db.execute("3047");
+        // write testing
+        DatabaseWriteKit db = new DatabaseWriteKit(database);
+        Kit testKit = new Kit("test_kit");
+        testKit.addProduct("102", 6);
+        testKit.addProduct("103", 44);
+        db.writeKit(testKit);
         //testProd = db.readFromFirebase("3047");
         //Log.w("db written", "id: " + testProd.getId() + " location: " + testProd.getLocation());
     }
