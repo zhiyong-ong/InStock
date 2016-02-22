@@ -25,8 +25,9 @@ public class MainActivity extends AppCompatActivity {
         // read testing
         DatabaseOps db = new DatabaseOps(database);
         Product testProd = new Product();
-        db.readFromFirebase(testProd, "3047");
-        Log.w("db read", "id: " + testProd.getId() + " location: " + testProd.getLocation());
+        db.execute("3047");
+        //testProd = db.readFromFirebase("3047");
+        //Log.w("db read", "id: " + testProd.getId() + " location: " + testProd.getLocation());
 
     }
 

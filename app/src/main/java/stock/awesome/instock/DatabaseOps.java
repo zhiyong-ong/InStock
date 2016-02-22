@@ -1,5 +1,6 @@
 package stock.awesome.instock;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
@@ -16,12 +17,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.Semaphore;
 
 
-public class DatabaseOps {
+public class DatabaseOps extends AsyncTask<String, Void, Product>{
 
     private Firebase database = null;
-    //private Product outProd = new Product();
+    private Product outProd = new Product();
     // outProd variables
 //    String prodId = null, name = null, location = null;
 //    int qty = -1;
@@ -61,57 +63,55 @@ public class DatabaseOps {
     // NOT WORKING
     // returns a product with the name, quantity and location associated with id passed in
     // by looking up the id's characteristics in the database
-    public void readFromFirebase(final Product outProd, final String id) {
+    @Override
+    protected Product doInBackground(String... params) {
+        final String id = params[0];
         Firebase ref = database.child("products").child(id);
 
+        final Semaphore semaphore = new Semaphore(0);
+        Log.w("adding listener ", "listener");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                DbCallable nameCallable = new DbCallable(snapshot, "name");
-                FutureTask<String> futureName = new FutureTask<String>(nameCallable);
+                Log.w("Stuff ", "hi" );
 
-                DbCallable locationCallable = new DbCallable(snapshot, "location");
-                FutureTask<String> futureLocation = new FutureTask<String>(locationCallable);
+                String name = (String) snapshot.child("name").getValue();
+                String location = (String) snapshot.child("location").getValue();
+                String strQty = (String) snapshot.child("quantity").getValue();
 
-                DbCallable qtyCallable = new DbCallable(snapshot, "quantity");
-                FutureTask<String> futureQty = new FutureTask<String>(qtyCallable);
-
-                ExecutorService executor = Executors.newFixedThreadPool(3);
-                executor.execute(futureName);
-                executor.execute(futureLocation);
-                executor.execute(futureQty);
+                Log.w("Stuff has come back", name + " " + strQty);
 
                 outProd.setId(id);
+                outProd.setName(name);
+                outProd.setQuantity(Integer.parseInt(strQty));
+                outProd.setLocation(location);
 
-                try {
-
-                    String name = futureName.get();
-                    outProd.setName(name);
-
-                    Log.w("name", name);
-
-                    String strQty = futureQty.get();
-                    outProd.setQuantity(Integer.parseInt(strQty));
-
-                    Log.w("strQty", strQty);
-
-                    String location = futureLocation.get();
-                    outProd.setLocation(location);
-
-                    Log.w("location", location);
-
-                }
-                catch (InterruptedException | ExecutionException e) {
-                    Log.e("Future error", "Interrupted/ExecutionException");
-                }
+                semaphore.release();
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Log.e("Firebase read error", "The read failed: " + firebaseError.getMessage());
+                semaphore.release();
             }
         });
+
+        try {
+            semaphore.acquire();
+        }
+        catch (InterruptedException e) {
+            Log.e("Semaphore acqn failed", e.getMessage());
+            semaphore.release();
+        }
+
+        return outProd;
+    }
+
+    @Override
+    protected void onPostExecute(Product result) {
+        Log.w("After Asynctask", result.getName());
+        // display text
     }
 
 }
