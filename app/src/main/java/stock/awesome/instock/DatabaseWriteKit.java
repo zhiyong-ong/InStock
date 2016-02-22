@@ -26,8 +26,7 @@ public class DatabaseWriteKit {
             id = entry.getKey();
             qty = entry.getValue();
 
-            newKit.put("id", id);
-            newKit.put("quantity", Integer.toString(qty));
+            newKit.put(id, Integer.toString(qty));
         }
 
         ref.setValue(newKit);

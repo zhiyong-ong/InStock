@@ -65,7 +65,7 @@ public class InputStockActivity extends AppCompatActivity {
                 Product inputProd = new Product();
                 onSubmitPress(inputProd);
                 Log.d("Submit successful", inputProd.getName() + " " + inputProd.getQuantity() + " "
-                        + CalendarAsStr.format(inputProd.getExpiry()));
+                        + StringCalendar.toString(inputProd.getExpiry()));
             }
         });
     }

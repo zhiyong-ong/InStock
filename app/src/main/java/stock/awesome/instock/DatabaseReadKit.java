@@ -1,5 +1,6 @@
 package stock.awesome.instock;
 
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -8,28 +9,15 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.Semaphore;
 
-/**
- * execute(String id) reads from database and returns a Product.
- */
-public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
-
+public class DatabaseReadKit extends AsyncTask<String, Void, Product> {
     private Firebase database = null;
-    private Product outProd = new Product();
+    private Kit outKit = new Kit();
     private String useCase = null;
 
 
-    public DatabaseReadProduct(Firebase database, String useCase) {
+    public DatabaseReadKit(Firebase database, String useCase) {
         this.database = database;
         this.useCase = useCase;
     }
@@ -48,7 +36,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                Log.w("Stuff ", "hi" );
+                Log.w("Stuff ", "hi");
 
                 String name = (String) snapshot.child("name").getValue();
                 String location = (String) snapshot.child("location").getValue();
@@ -77,8 +65,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
 
         try {
             semaphore.acquire();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             Log.e("Semaphore acqn failed", e.getMessage());
             semaphore.release();
         }
@@ -94,6 +81,5 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
             // display name, location in BuildKitActivity
         }
     }
-
 }
 

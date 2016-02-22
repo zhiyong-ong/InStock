@@ -30,7 +30,7 @@ public class DatabaseWriteProduct {
         newProd.put("location", product.getLocation());
         newProd.put("quantity", Integer.toString(product.getQuantity()));
         if (product.getExpiry() != null)
-            newProd.put("expiry", CalendarAsStr.format(product.getExpiry()));
+            newProd.put("expiry", StringCalendar.toString(product.getExpiry()));
 
         ref.setValue(newProd);
     }

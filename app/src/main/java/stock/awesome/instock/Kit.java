@@ -13,6 +13,10 @@ public class Kit {
     // IMPT:
     private Firebase database = new Firebase("https://scorching-inferno-2190.firebaseio.com/");
 
+    public Kit() {
+        this(null);
+    }
+
     public Kit(String kitName) {
         kit = new HashMap<String, Integer>();
         this.kitName = kitName;
