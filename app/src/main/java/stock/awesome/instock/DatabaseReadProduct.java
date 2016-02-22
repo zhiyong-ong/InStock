@@ -20,7 +20,6 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.Semaphore;
 
 /**
- * writeToFirebase(Product product) writes to database.
  * execute(String id) reads from database and returns a Product.
  */
 public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
@@ -89,6 +88,9 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
 
         if (useCase.equals("build_kit")) {
             // display in editText
+        }
+        else if (useCase.equals("return_product")) {
+            // ???
         }
     }
 
