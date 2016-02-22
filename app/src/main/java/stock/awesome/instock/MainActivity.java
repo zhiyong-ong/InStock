@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void sendExistingKitIntent(View view) {
-        Intent intent = new Intent(this, ExistingKit.class);
+        Intent intent = new Intent(this, ExistingKitActivity.class);
         startActivity(intent);
     }
     public void viewAllIntent (View view) {
-        Intent intent = new Intent(this, ViewAllStocks.class);
+        Intent intent = new Intent(this, ViewAllStocksActivity.class);
         startActivity(intent);
     }
 

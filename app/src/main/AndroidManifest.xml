@@ -35,7 +35,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>
         <activity
-            android:name=".ViewAllStocks"
+            android:name=".ViewAllStocksActivity"
             android:label="@string/title_activity_view_all_stocks"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
@@ -44,7 +44,7 @@
                 android:value="MainActivity" />
         </activity>
         <activity
-            android:name=".ExistingKit"
+            android:name=".ExistingKitActivity"
             android:label="@string/title_activity_existing_kit"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
