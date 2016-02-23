@@ -1,6 +1,7 @@
 package stock.awesome.instock;
 
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
@@ -20,18 +21,38 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.Semaphore;
 
 /**
+ * ** Always call execute with param id **
  * execute(String id) reads from database and returns a Product associated with that id.
  */
-public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
+public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
     private Firebase database = null;
-    private Product outProd = new Product();
-    private String useCase = null;
+    private Product outProd = new Product(), updatedProd = null;
+    private String READ_FAILED = "Database read failed";
+    private UseCase useCase = null;
+    private boolean readSuccess = true;
+    private int qtyChange = 0;
+    private DatabaseWriteProduct productWriter = null;
+
+    public enum UseCase {
+        BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY
+    }
 
 
-    public DatabaseReadProduct(Firebase database, String useCase) {
+    public DatabaseReadProduct(Firebase database, UseCase useCase) {
+        this(database, useCase, 0);
+    }
+
+    public DatabaseReadProduct(Firebase database, UseCase useCase, int qtyChange) {
         this.database = database;
         this.useCase = useCase;
+        this.qtyChange = qtyChange;
+    }
+
+    public DatabaseReadProduct(Firebase database, UseCase useCase, Product updatedProd) {
+        this.database = database;
+        this.useCase = useCase;
+        this.updatedProd = updatedProd;
     }
 
 
@@ -40,6 +61,12 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
     @Override
     protected Product doInBackground(String... params) {
         final String id = params[0];
+        if (id == null) {
+            Log.e(READ_FAILED, "No product ID given");
+            readSuccess = false;
+            return outProd;
+        }
+
         Firebase ref = database.child("products").child(id);
 
         final Semaphore semaphore = new Semaphore(0);
@@ -48,39 +75,46 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                Log.w("Stuff ", "hi" );
+                Log.w("Stuff ", "hi");
 
-                String name = (String) snapshot.child("name").getValue();
-                String location = (String) snapshot.child("location").getValue();
                 String strQty = (String) snapshot.child("quantity").getValue();
-                String desc = (String) snapshot.child("description").getValue();
-                String strExpiry = (String) snapshot.child("expiry").getValue();
+                // if qty is null, the product does not exist in the database
+                if (strQty == null) {
+                    Log.e(READ_FAILED, outProd.getId() + " not found");
+                    readSuccess = false;
+                } else {
+                    String name = (String) snapshot.child("name").getValue();
+                    String location = (String) snapshot.child("location").getValue();
+                    String desc = (String) snapshot.child("description").getValue();
+                    String strExpiry = (String) snapshot.child("expiry").getValue();
 
-                Log.w("Stuff has come back", name + " " + strQty);
+                    Log.w("Stuff has come back", name + " " + strQty);
 
-                outProd.setId(id);
-                outProd.setName(name);
-                outProd.setQuantity(Integer.parseInt(strQty));
-                outProd.setLocation(location);
-                outProd.setDesc(desc);
-                outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
+                    outProd.setId(id);
+                    outProd.setName(name);
+                    outProd.setQuantity(Integer.parseInt(strQty));
+                    outProd.setLocation(location);
+                    outProd.setDesc(desc);
+                    outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
+                }
 
                 semaphore.release();
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Log.e("Firebase read error", "The read failed: " + firebaseError.getMessage());
+                Log.e(READ_FAILED, "Firebase error: " + firebaseError.getMessage());
+                readSuccess = false;
                 semaphore.release();
             }
         });
 
         try {
             semaphore.acquire();
-        }
-        catch (InterruptedException e) {
-            Log.e("Semaphore acqn failed", e.getMessage());
+        } catch (InterruptedException e) {
+            Log.e(READ_FAILED, "Semaphore acqn failed: " + e.getMessage());
             semaphore.release();
+            readSuccess = false;
         }
 
         return outProd;
@@ -88,12 +122,28 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
 
     @Override
     protected void onPostExecute(Product result) {
-        // Log.w("After Asynctask", result.getName());
+        if (readSuccess == true) {
+            if (result.getName() == null) {
+                Log.w("After Asynctask", result.getName());
+            }
 
-        if (useCase.equals("build_kit")) {
-            // display name, location in BuildKitActivity
+            switch (useCase) {
+                case BUILD_KIT:
+                    // TODO
+                    // display name, location in BuildKitActivity
+                    break;
+
+                // rewrites all product info to database
+                case UPDATE_PRODUCT:
+                    productWriter = new DatabaseWriteProduct(database);
+                    productWriter.writeProduct(updatedProd);
+                    break;
+
+                // only updates qty
+                case UPDATE_QUANTITY_ONLY:
+
+            }
         }
-
     }
 
 }

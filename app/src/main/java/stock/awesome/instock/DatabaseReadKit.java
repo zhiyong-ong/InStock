@@ -27,7 +27,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
         this.useCase = useCase;
     }
 
-    
+
     // UNTESTED - change logging, insert more
     // returns a kit with the product associated with id passed in
     // by looking up the id's characteristics in the database

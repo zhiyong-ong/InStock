@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         testKit.addProduct("104", 6);
         testKit.addProduct("105", 44);
         db.writeKit(testKit);
-        //testProd = db.readFromFirebase("3047");
         //Log.w("db written", "id: " + testProd.getId() + " location: " + testProd.getLocation());
     }
 
