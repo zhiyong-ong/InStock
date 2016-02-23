@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="maroon">#AB483D</color>
+    <color name="tabMaroon">#BA6A61</color>
 </resources>

@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendNewItemIntent(View view) {
-        Intent intent = new Intent(this, InputStockActivity.class);
+        Intent intent = new Intent(this, InputItemActivity.class);
         startActivity(intent);
     }
 

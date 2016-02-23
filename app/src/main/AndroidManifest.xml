@@ -21,15 +21,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".InputStockActivity"
-            android:label="@string/title_activity_input_stock"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="stock.awesome.instock.MainActivity" />
-        </activity>
-        <activity
             android:name=".BuildKitActivity"
             android:label="@string/title_activity_build_kit"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
@@ -51,11 +42,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
-        </activity>
-        <activity
-            android:name=".UpdateItemActivity"
-            android:label="@string/title_activity_update_item"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>
         <activity
             android:name=".InputItemActivity"

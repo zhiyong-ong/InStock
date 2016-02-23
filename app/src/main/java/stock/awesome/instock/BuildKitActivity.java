@@ -156,20 +156,6 @@ public class BuildKitActivity extends AppCompatActivity {
             b.show();
             }
 
-            /*
-            AlertDialog b = dialogBuilder.create();
-            b.show();
-            new AlertDialog.Builder(context)
-                    .setTitle("Error in Saving")
-                    .setMessage("The kit is empty.")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-                    */
         else {
             //key in the name of the kit here
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
