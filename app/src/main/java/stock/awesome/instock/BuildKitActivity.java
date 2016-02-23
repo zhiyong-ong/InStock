@@ -97,24 +97,34 @@ public class BuildKitActivity extends AppCompatActivity {
     }
 
     public void showChangeLangDialog() {
+        //adding a new item to the kit
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.popup_add_item, null);
 
         dialogBuilder.setView(dialogView);
 
-        final EditText productID = (EditText) dialogView.findViewById(R.id.productID);
-        final EditText quantity = (EditText) dialogView.findViewById(R.id.addQuantity);
+        final EditText productIDText = (EditText) dialogView.findViewById(R.id.productID);
+        final EditText quantityText = (EditText) dialogView.findViewById(R.id.addQuantity);
+
         //dialogBuilder.setTitle("Input New Item");
         //dialogBuilder.setMessage("Enter text below");
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //Log.v(LOG_TAG, "-------------------TESTING on click: " + productID + "\t" + productID.getText().toString());
-
-                Product productTuple = new Product(productID.getText().toString(), Integer.parseInt(quantity.getText().toString()));
-                newProduct.add(productTuple);
-                listAdapter.notifyDataSetChanged();
-                //do something with edt.getText().toString();
+                //Error handling
+                if(productIDText.getText().toString().trim().length() == 0) {
+                    Toast.makeText(context, "You did not enter an ID", Toast.LENGTH_SHORT).show();
+                }
+                else if(quantityText.getText().toString().trim().length() == 0) {
+                    Toast.makeText(context, "You did not enter a quantity", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Product productTuple = new Product(productIDText.getText().toString(), Integer.parseInt(quantityText.getText().toString()));
+                    newProduct.add(productTuple);
+                    listAdapter.notifyDataSetChanged();
+                    //do something with edt.getText().toString();
+                }
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -127,7 +137,28 @@ public class BuildKitActivity extends AppCompatActivity {
     }
 
     public void sendSaveKit(View view) {
+
+        //display error message for empty kit
         if (newProduct.isEmpty()) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            final View dialogView = inflater.inflate(R.layout.error_no_item, null);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //do nothing, go back.
+                }
+            });
+
+            AlertDialog b = dialogBuilder.create();
+            b.setIcon(android.R.drawable.ic_dialog_alert);
+            b.show();
+            }
+
+            /*
+            AlertDialog b = dialogBuilder.create();
+            b.show();
             new AlertDialog.Builder(context)
                     .setTitle("Error in Saving")
                     .setMessage("The kit is empty.")
@@ -138,11 +169,14 @@ public class BuildKitActivity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        } else {
+                    */
+        else {
+            //key in the name of the kit here
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
             LayoutInflater inflater = LayoutInflater.from(context);
             final View dialogView = inflater.inflate(R.layout.save_kit_name, null);
 
+            //name of the kit!
             final EditText kitNameText = (EditText) dialogView.findViewById(R.id.kitName);
 
             dialogBuilder.setView(dialogView);
@@ -152,21 +186,24 @@ public class BuildKitActivity extends AppCompatActivity {
                     Toast.makeText(context, "Kit Name: " + kitName, Toast.LENGTH_LONG).show();
 
                     //show the dialog to confirm to save kit
-                    new AlertDialog.Builder(context)
-                            .setTitle("Save New Kit")
-                            .setMessage("Are you sure you want to save this kit?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //continue with saving the kit
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do nothing
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                    LayoutInflater inflater = LayoutInflater.from(context);
+                    final View dialogView = inflater.inflate(R.layout.save_kit, null);
+
+                    dialogBuilder.setView(dialogView);
+                    dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //do nothing, go back.
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //do nothing here.
+                        }
+                    });
+                    AlertDialog b = dialogBuilder.create();
+
+                    b.show();
                 }
             });
 

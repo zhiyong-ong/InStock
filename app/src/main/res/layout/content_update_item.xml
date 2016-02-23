@@ -1,34 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent" android:layout_width="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_build_kit" tools:context=".BuildKitActivity">
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/relativeLayout"
-        android:id="@+id/listView" />
-
+    tools:showIn="@layout/activity_update_item"
+    tools:context="stock.awesome.instock.UpdateItemActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/relativeLayout">
+        android:layout_alignParentTop="true"
+        android:id="@+id/relativeLayout2">
         <View
             android:layout_width="match_parent"
             android:layout_height="1dip"
             android:layout_marginLeft="4dip"
             android:layout_marginRight="4dip"
             android:background="?android:attr/dividerVertical"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentBottom="true"/>
         <View
             android:id="@+id/ViewColorPickerHelper"
             android:layout_width="1dip"
@@ -48,8 +38,8 @@
             android:background="?android:attr/selectableItemBackground"
             android:text="Add New Item"
             android:textSize="16dip"
-            android:onClick="sendNewKitItem"
-            android:id="@+id/addKitItemButton"
+            android:onClick="sendNewItem"
+            android:id="@+id/addNewItem"
             android:layout_alignParentBottom="true"/>
         <Button
             android:layout_width="wrap_content"
@@ -57,11 +47,41 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:background="?android:attr/selectableItemBackground"
-            android:text="Save Kit"
+            android:text="Update Item"
             android:textSize="16dip"
-            android:onClick="sendSaveKit"
-            android:id="@+id/saveButton"
+            android:onClick="sendUpdateItem"
+            android:id="@+id/updateItem"
             android:layout_alignParentBottom="true"
             android:layout_toRightOf="@id/ViewColorPickerHelper"/>
     </RelativeLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/table"
+        android:layout_below="@+id/relativeLayout2">
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp" >
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/TableText"
+            android:text="Search ID: " />
+
+        <EditText
+            android:id="@+id/productEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Enter Product ID"
+            android:ellipsize="start"/>
+        <requestFocus />
+
+    </TableRow>
+    </TableLayout>
 </RelativeLayout>

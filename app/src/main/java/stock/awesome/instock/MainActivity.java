@@ -22,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // read testing
-        DatabaseReadProduct db = new DatabaseReadProduct(database, "build_kit");
-        Product testProd = new Product();
-        db.execute("3047");
+        //DatabaseReadProduct db = new DatabaseReadProduct(database, "build_kit");
+        //Product testProd = new Product();
+        //db.execute("3047");
         //testProd = db.readFromFirebase("3047");
         //Log.w("db written", "id: " + testProd.getId() + " location: " + testProd.getLocation());
     }

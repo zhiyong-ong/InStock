@@ -16,4 +16,5 @@
         android:id="@+id/listView2"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

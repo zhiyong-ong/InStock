@@ -8,15 +8,6 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -48,6 +39,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
+
                 Log.w("Stuff ", "hi" );
 
                 String name = (String) snapshot.child("name").getValue();
@@ -58,10 +50,16 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product>{
 
                 outProd.setId(id);
                 outProd.setName(name);
-                outProd.setQuantity(Integer.parseInt(strQty));
+                if(strQty == null) {
+                    outProd.setQuantity(-1);
+                }
+                else {
+                    outProd.setQuantity(Integer.parseInt(strQty));
+                }
                 outProd.setLocation(location);
 
                 semaphore.release();
+
             }
 
             @Override

@@ -8,381 +8,216 @@
     tools:showIn="@layout/activity_input_stock" tools:context=".InputStockActivity">
 
     <!-- Header aligned to top -->
-
     <RelativeLayout
-        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_alignParentTop="true"
-        android:background="#994036"
-        android:gravity="center" >
-
-        <TextView
+        android:id="@+id/relativeLayout">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"
+            android:background="?android:attr/dividerVertical"
+            android:layout_alignParentBottom="true"/>
+        <View
+            android:id="@+id/ViewColorPickerHelper"
+            android:layout_width="1dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="4dip"
+            android:layout_marginTop="4dip"
+            android:background="?android:attr/dividerVertical"
+            android:layout_centerHorizontal="true"/>
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="Input New Stock"
-
-            android:textColor="#000000"
-            android:textSize="20sp" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/ViewColorPickerHelper"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="Add New Item"
+            android:textSize="16dip"
+            android:onClick="sendNewItem"
+            android:id="@+id/addNewItem"
+            android:layout_alignParentBottom="true"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="Update Item"
+            android:textSize="16dip"
+            android:onClick="sendUpdateItem"
+            android:id="@+id/updateItem"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/ViewColorPickerHelper"/>
     </RelativeLayout>
 
-    <ScrollView
-        android:scrollbars="none"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/header" >
-
-        <LinearLayout
+        <ScrollView
+            android:scrollbars="none"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:layout_below="@id/relativeLayout" >
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/table">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
 
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp" >
-
-            <TextView
-                android:id="@+id/textView1"
-                style="@style/TableText"
-                android:text="Product ID: " />
-
-            <EditText
-                android:id="@+id/productEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="text"
-                android:ellipsize="start"/>
-            <requestFocus />
-
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp" >
-
-            <TextView
-                android:id="@+id/textView2"
-                style="@style/TableText"
-                android:text="Name: " />
-
-            <EditText
-                android:id="@+id/nameEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="text" >
-
-
-            </EditText>
-
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp" >
-
-            <TextView
-                android:id="@+id/textView3"
-                style="@style/TableText"
-                android:text="Description: " />
-
-            <EditText
-                android:id="@+id/descriptionEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="text" >
-
-
-            </EditText>
-
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp" >
-
-            <TextView
-                android:id="@+id/textView4"
-                style="@style/TableText"
-                android:text="Quantity: " />
-
-            <EditText
-                android:id="@+id/quantityEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="number" />
-
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp" >
-
-            <TextView
-                android:id="@+id/textView5"
-                style="@style/TableText"
-                android:text="Location: " />
-
-            <EditText
-                android:id="@+id/locationEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="text" >
-
-
-            </EditText>
-
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp" >
-
-            <TextView
-                android:id="@+id/textView6"
-                style="@style/TableText"
-                android:text="Expiry Date: " />
-
-            <EditText
-                android:id="@+id/expiryEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:focusable="false" >
-
-
-            </EditText>
-
-        </TableRow>
-    </TableLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/table">
-        <Button
-            android:id="@+id/submitButton"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:layout_marginTop="15dp"
-            android:text="Submit" />
-
-
-    </LinearLayout>
-    <!--
-    <ScrollView
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="8dp"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/header" >
-
-        <RelativeLayout
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:id="@+id/table">
 
-
-            <TextView
+            <TableRow
+                android:id="@+id/tableRow1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Product ID: "
-                android:textColor="#21000f"
-                android:id="@+id/productIDView"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_margin="20dp" >
 
-            <EditText
-                android:layout_width="255dp"
-                android:layout_height="30dp"
-                android:id="@+id/productEdit"
-                android:layout_below="@+id/productIDView"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/TableText"
+                    android:text="Product ID: " />
 
-                android:layout_marginTop="15dp"
-                android:layout_centerVertical="true"
+                <EditText
+                    android:id="@+id/productEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:ellipsize="start"/>
+                <requestFocus />
 
-                android:ellipsize="start"
-                android:gravity="center_vertical"
-
-                android:inputType="text"
-                android:background="@drawable/edit_text_style"/>
-
-
-            <TextView
+            </TableRow>
+            <TableRow
+                android:id="@+id/tableRow2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Name:"
-                android:textColor="#21000f"
-                android:id="@+id/nameView"
-                android:layout_marginTop="30dp"
-                android:layout_below="@+id/productEdit"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_margin="20dp" >
 
-            <EditText
-                android:layout_width="255dp"
-                android:layout_height="30dp"
-                android:id="@+id/nameEdit"
-                android:layout_below="@+id/nameView"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/TableText"
+                    android:text="Name: " />
 
-                android:layout_marginTop="15dp"
-                android:layout_centerVertical="true"
+                <EditText
+                    android:id="@+id/nameEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text" >
 
-                android:gravity="center_vertical"
-                android:inputType="text"
-                android:background="@drawable/edit_text_style"/>
 
-            <TextView
+                </EditText>
+
+            </TableRow>
+            <TableRow
+                android:id="@+id/tableRow3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Description:"
-                android:textColor="#21000f"
-                android:id="@+id/descriptionView"
-                android:layout_below="@+id/nameEdit"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="30dp" />
+                android:layout_margin="20dp" >
 
-            <EditText
-                android:layout_width="255dp"
-                android:layout_height="30dp"
-                android:id="@+id/descriptionEdit"
-                android:layout_below="@+id/descriptionView"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                <TextView
+                    android:id="@+id/textView3"
+                    style="@style/TableText"
+                    android:text="Description: " />
 
-                android:layout_marginTop="15dp"
-                android:layout_centerVertical="true"
+                <EditText
+                    android:id="@+id/descriptionEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text" >
 
-                android:ellipsize="start"
-                android:gravity="center_vertical"
-                android:inputType="text"
-                android:background="@drawable/edit_text_style"/>
 
-            <TextView
+                </EditText>
+
+            </TableRow>
+            <TableRow
+                android:id="@+id/tableRow4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Quantity:"
-                android:textColor="#21000f"
-                android:id="@+id/quantityView"
-                android:layout_marginTop="30dp"
-                android:layout_below="@+id/descriptionEdit"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_margin="20dp" >
 
-            <EditText
-                android:layout_width="255dp"
-                android:layout_height="30dp"
-                android:id="@+id/quantityEdit"
-                android:layout_below="@+id/quantityView"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                <TextView
+                    android:id="@+id/textView4"
+                    style="@style/TableText"
+                    android:text="Quantity: " />
 
-                android:layout_marginTop="15dp"
-                android:layout_centerVertical="true"
+                <EditText
+                    android:id="@+id/quantityEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="number" />
 
-                android:gravity="center_vertical"
-                android:inputType="number"
-                android:background="@drawable/edit_text_style"/>
-
-            <TextView
+            </TableRow>
+            <TableRow
+                android:id="@+id/tableRow5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Location:"
-                android:textColor="#21000f"
-                android:id="@+id/locationView"
-                android:layout_below="@+id/quantityEdit"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="30dp" />
+                android:layout_margin="20dp" >
 
-            <EditText
-                android:layout_width="255dp"
-                android:layout_height="30dp"
-                android:id="@+id/locationEdit"
-                android:layout_below="@+id/locationView"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                <TextView
+                    android:id="@+id/textView5"
+                    style="@style/TableText"
+                    android:text="Location: " />
 
-                android:layout_marginTop="15dp"
-                android:layout_centerVertical="true"
+                <EditText
+                    android:id="@+id/locationEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text" >
 
-                android:ellipsize="start"
-                android:gravity="center_vertical"
-                android:inputType="text"
-                android:background="@drawable/edit_text_style"/>
 
-            <TextView
+                </EditText>
+
+            </TableRow>
+            <TableRow
+                android:id="@+id/tableRow6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Expiry Date:"
-                android:textColor="#21000f"
-                android:id="@+id/expiryView"
-                android:layout_below="@+id/locationEdit"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="30dp" />
+                android:layout_margin="20dp" >
 
-            <EditText
-                android:layout_width="255dp"
-                android:layout_height="30dp"
-                android:id="@+id/expiryEdit"
-                android:layout_below="@+id/expiryView"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                <TextView
+                    android:id="@+id/textView6"
+                    style="@style/TableText"
+                    android:text="Expiry Date: " />
 
-                android:layout_marginTop="15dp"
-                android:layout_centerVertical="true"
+                <EditText
+                    android:id="@+id/expiryEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:focusable="false" >
 
-                android:ellipsize="start"
-                android:gravity="center_vertical"
-                android:inputType="date"
-                android:background="@drawable/edit_text_style"
-                />
 
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="Submit"
-                android:textSize="16dip"
-                android:id="@+id/submitButton"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="80dp"
-                android:layout_below="@+id/expiryView" />
+                </EditText>
 
-        </RelativeLayout>
-    </ScrollView>
-    -->
-        </LinearLayout>
-    </ScrollView>
+            </TableRow>
+        </TableLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@+id/table">
+                    <Button
+                        android:id="@+id/submitButton"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:layout_marginTop="15dp"
+                        android:text="Submit" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
 </RelativeLayout>

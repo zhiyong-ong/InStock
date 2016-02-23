@@ -10,7 +10,7 @@
         android:background="#ab483d"
         android:text="INPUT NEW ITEM"
         android:gravity="center"
-        android:textSize="20dp"
+        android:textSize="23dp"
         android:textColor="#FFFFFF"
         android:contentDescription="@string/app_name"
         android:fontFamily="san-serif-condensed"
