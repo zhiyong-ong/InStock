@@ -1,6 +1,5 @@
 package stock.awesome.instock;
 
-
 import com.firebase.client.Firebase;
 
 import java.util.HashMap;

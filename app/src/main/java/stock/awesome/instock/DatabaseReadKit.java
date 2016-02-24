@@ -20,9 +20,11 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
     private Kit outKit = new Kit();
     private Product outProd = new Product();
     private KitUseCase useCase = null;
+    private String READ_FAILED = "Database read failed";
+    private boolean readSuccess = true;
 
     public enum KitUseCase {
-        SAVE_KIT
+        SAVE_KIT, UPDATE_KIT
     }
 
     public DatabaseReadKit(Firebase database, KitUseCase useCase) {
@@ -51,6 +53,13 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
 
                 // look at kits sub-database
                 DataSnapshot kitSnapshot = snapshot.child("kits").child(kitName);
+
+                // the product does not exist in the database
+                if (!kitSnapshot.exists()) {
+                    Log.e(READ_FAILED, outProd.getId() + " not found"); // TODO display error msg
+                    readSuccess = false;
+                    return;
+                }
 
                 String id = (String) kitSnapshot.child("name").getValue();
                 String strQty = (String) kitSnapshot.child("location").getValue();
@@ -100,9 +109,14 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
     @Override
     protected void onPostExecute(Kit result) {
         // Log.w("After Asynctask", result.getName());
+        if (readSuccess) {
+            switch (useCase) {
+                case SAVE_KIT:
+                    break;
 
-        if (useCase.equals(KitUseCase.SAVE_KIT)) {
-            // display name, location in BuildKitActivity
+                case UPDATE_KIT:
+                    break;
+            }
         }
     }
 }
