@@ -19,10 +19,13 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
     private Firebase database = null;
     private Kit outKit = new Kit();
     private Product outProd = new Product();
-    private String useCase = null, id = null;
+    private KitUseCase useCase = null;
 
+    public enum KitUseCase {
+        SAVE_KIT
+    }
 
-    public DatabaseReadKit(Firebase database, String useCase) {
+    public DatabaseReadKit(Firebase database, KitUseCase useCase) {
         this.database = database;
         this.useCase = useCase;
     }
@@ -36,56 +39,44 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
         final String kitName = params[0];
         outKit.setKitName(kitName);
 
-        Firebase ref = database.child("products").child(kitName);
-        Query queryRef = ref.orderByKey();
+        // order kits by id
+        Query queryRef = database.child("kits").child(kitName).orderByKey();
 
         final Semaphore semaphore = new Semaphore(0);
         Log.w("adding listener ", "listener");
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                Log.w("onDataChange started ", "success");
 
-                Log.w("Stuff ", "hi");
+                // look at kits sub-database
+                DataSnapshot kitSnapshot = snapshot.child("kits").child(kitName);
 
-                id = (String) snapshot.child("name").getValue();
-                String qty = (String) snapshot.child("location").getValue();
+                String id = (String) kitSnapshot.child("name").getValue();
+                String strQty = (String) kitSnapshot.child("location").getValue();
 
-                Log.w("Stuff has come back", id + " " + qty);
+                Log.w("Kit info received", id + " " + strQty);
 
-                Firebase prodRef = database.child("products").child(id);
-                prodRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
+                // look at products sub-database
+                DataSnapshot prodSnapshot = snapshot.child("products").child(id);
 
-                        Log.w("Stuff ", "hi");
+                String name = (String) prodSnapshot.child("name").getValue();
+                String location = (String) prodSnapshot.child("location").getValue();
+                String desc = (String) prodSnapshot.child("description").getValue();
+                String strExpiry = (String) prodSnapshot.child("expiry").getValue();
 
-                        String name = (String) snapshot.child("name").getValue();
-                        String location = (String) snapshot.child("location").getValue();
-                        String strQty = (String) snapshot.child("quantity").getValue();
-                        String desc = (String) snapshot.child("description").getValue();
-                        String strExpiry = (String) snapshot.child("expiry").getValue();
+                Log.w("Product info received", name + " " + strExpiry);
 
-                        Log.w("Stuff has come back", name + " " + strQty);
+                // variables from kit sub-db
+                outProd.setId(id);
+                outProd.setQuantity(Integer.parseInt(strQty));
+                // variables from products sub-db
+                outProd.setName(name);
+                outProd.setLocation(location);
+                outProd.setDesc(desc);
+                outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
 
-                        outProd.setId(id);
-                        outProd.setName(name);
-                        outProd.setQuantity(Integer.parseInt(strQty));
-                        outProd.setLocation(location);
-                        outProd.setDesc(desc);
-                        outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
-
-                        semaphore.release();
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-                        Log.e("Firebase read error", "The read failed: " + firebaseError.getMessage());
-                        semaphore.release();
-                    }
-                });
-
-                outKit.addProduct(outProd, Integer.parseInt(qty));
-
+                outKit.addProduct(outProd, Integer.parseInt(strQty));
                 semaphore.release();
             }
 
@@ -110,7 +101,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
     protected void onPostExecute(Kit result) {
         // Log.w("After Asynctask", result.getName());
 
-        if (useCase.equals("build_kit")) {
+        if (useCase.equals(KitUseCase.SAVE_KIT)) {
             // display name, location in BuildKitActivity
         }
     }

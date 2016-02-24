@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         testKit.addProduct("104", 6);
         testKit.addProduct("105", 44);
         db.writeKit(testKit);
+
         //Log.w("db written", "id: " + testProd.getId() + " location: " + testProd.getLocation());
     }
 

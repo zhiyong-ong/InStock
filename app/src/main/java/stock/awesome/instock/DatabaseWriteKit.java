@@ -19,11 +19,11 @@ public class DatabaseWriteKit {
     public void writeKit(Kit kit) {
         Firebase ref = database.child("kits").child(kit.getKitName());
 
-        HashMap<String, Integer> kitHashMap = kit.getHashMap();
+        HashMap<Product, Integer> kitHashMap = kit.getHashMap();
         Map<String, String> newKit = new HashMap<String, String>();
 
-        for (Map.Entry<String, Integer> entry : kitHashMap.entrySet())  {
-            id = entry.getKey();
+        for (Map.Entry<Product, Integer> entry : kitHashMap.entrySet())  {
+            id = entry.getKey().getId();
             qty = entry.getValue();
 
             newKit.put(id, Integer.toString(qty));

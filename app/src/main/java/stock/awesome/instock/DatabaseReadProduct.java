@@ -61,7 +61,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.w("Stuff ", "hi");
+                Log.w("onDataChange started ", "success");
                 
                 String strQty = (String) snapshot.child("quantity").getValue();
 
@@ -150,7 +150,6 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                     productWriter = new DatabaseWriteProduct(database);
                     productWriter.writeProduct(updatedProd, UseCase.UPDATE_QUANTITY_ONLY);
                     break;
-
             }
         }
     }
