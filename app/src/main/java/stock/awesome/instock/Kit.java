@@ -13,6 +13,10 @@ public class Kit {
     // IMPT:
     private Firebase database = new Firebase("https://scorching-inferno-2190.firebaseio.com/");
 
+    public Kit() {
+        this(null);
+    }
+
     public Kit(String kitName) {
         kit = new HashMap<String, Integer>();
         this.kitName = kitName;
@@ -20,6 +24,10 @@ public class Kit {
 
     public String getKitName() {
         return kitName;
+    }
+
+    public void setKitName(String name) {
+        kitName = name;
     }
 
     // adds as key value pair of id:qty
@@ -31,13 +39,12 @@ public class Kit {
         kit.put(id, qty);
     }
 
-    // returns product associated with id. if none, returns null
-    public int getProduct(String id) {
-        DatabaseReadProduct reader = new DatabaseReadProduct(database,"return_product");
+    // returns qty associated with id. if none, returns null
+    public int getQty(String id) {
         return kit.get(id);
     }
 
-    // removes id ad associated qty
+    // removes id and associated qty
     public void removeProduct(String id) {
         kit.remove(id);
     }
