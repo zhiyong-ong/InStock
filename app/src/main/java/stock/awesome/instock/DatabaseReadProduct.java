@@ -78,6 +78,12 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                     return;
                 }
 
+                // if use case is to update quantity only, set outProd's qty to already
+                // read strQty. Other operations performed in onPostExecute
+                else if (useCase.equals(UseCase.UPDATE_QUANTITY_ONLY)) {
+                    outProd.setQuantity(Integer.parseInt(strQty));
+                }
+
                 // default behaviour
                 else {
                     String name = (String) snapshot.child("name").getValue();
@@ -96,7 +102,6 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                 }
 
                 semaphore.release();
-
             }
 
             @Override
@@ -118,10 +123,11 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
         return outProd;
     }
 
+    // TODO check: use outProd or result?
     @Override
     protected void onPostExecute(Product result) {
         if (readSuccess) {
-            if (result.getName() == null) {
+            if (result.getName() != null) {
                 Log.w("After Asynctask", result.getName());
             }
 
