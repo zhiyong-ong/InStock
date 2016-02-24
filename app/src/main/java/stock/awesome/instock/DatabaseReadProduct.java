@@ -1,23 +1,11 @@
 package stock.awesome.instock;
 
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
-
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -37,7 +25,6 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
     public enum UseCase {
         BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY
     }
-
 
     public DatabaseReadProduct(Firebase database, UseCase useCase) {
         this(database, useCase, 0);
@@ -62,7 +49,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
     protected Product doInBackground(String... params) {
         final String id = params[0];
         if (id == null) {
-            Log.e(READ_FAILED, "No product ID given");
+            Log.e(READ_FAILED, "No product ID given"); // TODO display error msg
             readSuccess = false;
             return outProd;
         }
@@ -74,15 +61,25 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-
                 Log.w("Stuff ", "hi");
 
                 String strQty = (String) snapshot.child("quantity").getValue();
+
                 // if qty is null, the product does not exist in the database
                 if (strQty == null) {
-                    Log.e(READ_FAILED, outProd.getId() + " not found");
+                    Log.e(READ_FAILED, outProd.getId() + " not found"); // TODO display error msg
                     readSuccess = false;
-                } else {
+                    return;
+                }
+
+                // if use case is to update product, no reading required.
+                // only check needed is that item exists in database, which is handled above
+                if (useCase.equals(UseCase.UPDATE_PRODUCT)) {
+                    return;
+                }
+
+                // default behaviour
+                else {
                     String name = (String) snapshot.child("name").getValue();
                     String location = (String) snapshot.child("location").getValue();
                     String desc = (String) snapshot.child("description").getValue();
@@ -103,17 +100,17 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Log.e(READ_FAILED, "Firebase error: " + firebaseError.getMessage());
-                readSuccess = false;
                 semaphore.release();
+                Log.e(READ_FAILED, "Firebase read error: " + firebaseError.getMessage()); // TODO display error msg
+                readSuccess = false;
             }
         });
 
         try {
             semaphore.acquire();
         } catch (InterruptedException e) {
-            Log.e(READ_FAILED, "Semaphore acqn failed: " + e.getMessage());
             semaphore.release();
+            Log.e(READ_FAILED, "Semaphore acqn failed: " + e.getMessage()); // TODO display error msg
             readSuccess = false;
         }
 
@@ -122,25 +119,30 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
     @Override
     protected void onPostExecute(Product result) {
-        if (readSuccess == true) {
+        if (readSuccess) {
             if (result.getName() == null) {
                 Log.w("After Asynctask", result.getName());
             }
 
             switch (useCase) {
                 case BUILD_KIT:
-                    // TODO
-                    // display name, location in BuildKitActivity
+                    // TODO display name, location in BuildKitActivity
                     break;
 
                 // rewrites all product info to database
                 case UPDATE_PRODUCT:
                     productWriter = new DatabaseWriteProduct(database);
-                    productWriter.writeProduct(updatedProd);
+                    productWriter.writeProduct(updatedProd, UseCase.UPDATE_PRODUCT);
                     break;
 
                 // only updates qty
                 case UPDATE_QUANTITY_ONLY:
+                    int newQty = outProd.getQuantity() + qtyChange;
+                    updatedProd.setQuantity(newQty);
+
+                    productWriter = new DatabaseWriteProduct(database);
+                    productWriter.writeProduct(updatedProd, UseCase.UPDATE_QUANTITY_ONLY);
+                    break;
 
             }
         }

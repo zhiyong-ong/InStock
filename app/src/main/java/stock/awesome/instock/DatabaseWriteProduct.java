@@ -24,8 +24,7 @@ public class DatabaseWriteProduct {
 
     // writes all the characteristic data of a product to database.
     // must have id, other values optional. All string fields are initialised with null values
-    // and integer fields with -1 except expiry. If expiry date is null,
-    // that field is not created
+    // and integer fields with -1.
     public void writeProduct(Product product, DatabaseReadProduct.UseCase useCase) {
         Firebase ref = database.child("products").child(product.getId());
         Map<String, String> newProd = new HashMap<String, String>();
@@ -44,6 +43,9 @@ public class DatabaseWriteProduct {
                 newProd.put("quantity", Integer.toString(product.getQuantity()));
                 if (product.getExpiry() != null) {
                     newProd.put("expiry", StringCalendar.toString(product.getExpiry()));
+                }
+                else {
+                    newProd.put("expiry", null);
                 }
         }
 
