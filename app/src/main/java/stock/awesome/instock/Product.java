@@ -11,8 +11,8 @@ public class Product {
     // empty constructor
     public Product() {}
 
-    public Product(String id, String name) {
-        this(id, name, null, null, -1, null);
+    public Product(String id, int quantity) {
+        this(id, null, null, null, quantity, null);
     }
 
     public Product(String id, String name, String desc, String location, int quantity, GregorianCalendar expiry) {

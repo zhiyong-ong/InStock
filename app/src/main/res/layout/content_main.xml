@@ -37,7 +37,7 @@
             <Button
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:text="Add New Item"
+                android:text="Add / Update  Item"
                 android:textSize="16dip"
                 android:onClick="sendNewItemIntent"
                 android:id="@+id/newItemButton"

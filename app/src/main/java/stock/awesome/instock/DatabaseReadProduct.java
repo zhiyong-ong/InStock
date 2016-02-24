@@ -62,7 +62,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Log.w("Stuff ", "hi");
-
+                
                 String strQty = (String) snapshot.child("quantity").getValue();
 
                 // if qty is null, the product does not exist in the database

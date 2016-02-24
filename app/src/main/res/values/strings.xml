@@ -5,4 +5,11 @@
     <string name="title_activity_build_kit">BuildKit</string>
     <string name="title_activity_view_all_stocks">ViewAllStocks</string>
     <string name="title_activity_existing_kit">ExistingKit</string>
+    <string name="title_activity_update_item">UpdateItemActivity</string>
+    <string name="title_activity_input_item">InputItemActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_new_main">NewMainActivity</string>
 </resources>
