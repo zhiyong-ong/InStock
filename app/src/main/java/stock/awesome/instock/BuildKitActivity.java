@@ -19,13 +19,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class BuildKitActivity extends AppCompatActivity {
-    private ArrayAdapter<ProductTupleKit> listAdapter;
-    private ArrayList<ProductTupleKit> newProduct = new ArrayList<ProductTupleKit>();
+    private ArrayAdapter<Product> listAdapter;
+    private ArrayList<Product> newProduct = new ArrayList<Product>();
     private ListView mainListView;
     final Context context = this;
 
 
-    String LOG_TAG = ProductTupleKit.class.getSimpleName();
+    String LOG_TAG = Product.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +34,13 @@ public class BuildKitActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mainListView = (ListView) findViewById( R.id.listView );
-        listAdapter = new ArrayAdapter<ProductTupleKit>(this, android.R.layout.simple_list_item_1, newProduct);
+        mainListView = (ListView) findViewById(R.id.listView);
+        listAdapter = new ArrayAdapter<Product>(this, android.R.layout.simple_list_item_1, newProduct);
         mainListView.setAdapter(listAdapter);
 
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            //check when items in the listview are clicked
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
@@ -49,17 +51,17 @@ public class BuildKitActivity extends AppCompatActivity {
                 final EditText productIDText = (EditText) dialogView.findViewById(R.id.productID);
                 final EditText quantityText = (EditText) dialogView.findViewById(R.id.addQuantity);
 
-                productIDText.setText(newProduct.get(position).getProductID());
+                productIDText.setText(newProduct.get(position).getId());
                 quantityText.setText(newProduct.get(position).getQuantity());
 
                 dialogBuilder.setView(dialogView);
                 dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String productID = productIDText.getEditableText().toString();
-                        String quantity = quantityText.getEditableText().toString();
+                        int quantity = Integer.parseInt(quantityText.getEditableText().toString());
                         Toast.makeText(context, "ID: " + productID + ", QTY: " + quantity, Toast.LENGTH_LONG).show();
 
-                        newProduct.set(position, new ProductTupleKit(productID, quantity));
+                        newProduct.set(position, new Product(productID, quantity));
                         listAdapter.notifyDataSetChanged();
                     }
                 });
@@ -95,23 +97,34 @@ public class BuildKitActivity extends AppCompatActivity {
     }
 
     public void showChangeLangDialog() {
+        //adding a new item to the kit
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.popup_add_item, null);
 
         dialogBuilder.setView(dialogView);
 
-        final EditText productID = (EditText) dialogView.findViewById(R.id.productID);
-        final EditText quantity = (EditText) dialogView.findViewById(R.id.addQuantity);
+        final EditText productIDText = (EditText) dialogView.findViewById(R.id.productID);
+        final EditText quantityText = (EditText) dialogView.findViewById(R.id.addQuantity);
+
         //dialogBuilder.setTitle("Input New Item");
         //dialogBuilder.setMessage("Enter text below");
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //Log.v(LOG_TAG, "-------------------TESTING on click: " + productID + "\t" + productID.getText().toString());
-                ProductTupleKit productTuple = new ProductTupleKit(productID.getText().toString(), quantity.getText().toString());
-                newProduct.add(productTuple);
-                listAdapter.notifyDataSetChanged();
-                //do something with edt.getText().toString();
+                //Error handling
+                if(productIDText.getText().toString().trim().length() == 0) {
+                    Toast.makeText(context, "You did not enter an ID", Toast.LENGTH_SHORT).show();
+                }
+                else if(quantityText.getText().toString().trim().length() == 0) {
+                    Toast.makeText(context, "You did not enter a quantity", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Product productTuple = new Product(productIDText.getText().toString(), Integer.parseInt(quantityText.getText().toString()));
+                    newProduct.add(productTuple);
+                    listAdapter.notifyDataSetChanged();
+                    //do something with edt.getText().toString();
+                }
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -124,21 +137,73 @@ public class BuildKitActivity extends AppCompatActivity {
     }
 
     public void sendSaveKit(View view) {
-        //show the alert dialog
-        new AlertDialog.Builder(context)
-                .setTitle("Save New Kit")
-                .setMessage("Are you sure you want to save this kit?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+
+        //display error message for empty kit
+        if (newProduct.isEmpty()) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            final View dialogView = inflater.inflate(R.layout.error_no_item, null);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //do nothing, go back.
+                }
+            });
+
+            AlertDialog b = dialogBuilder.create();
+            b.setIcon(android.R.drawable.ic_dialog_alert);
+            b.show();
+            }
+
+        else {
+            //key in the name of the kit here
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            final View dialogView = inflater.inflate(R.layout.save_kit_name, null);
+
+            //name of the kit!
+            final EditText kitNameText = (EditText) dialogView.findViewById(R.id.kitName);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    String kitName = kitNameText.getEditableText().toString();
+                    Toast.makeText(context, "Kit Name: " + kitName, Toast.LENGTH_LONG).show();
+
+                    //show the dialog to confirm to save kit
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                    LayoutInflater inflater = LayoutInflater.from(context);
+                    final View dialogView = inflater.inflate(R.layout.save_kit, null);
+
+                    dialogBuilder.setView(dialogView);
+                    dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //do nothing, go back.
+                        }
+                    });
+                    dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //do nothing here.
+                        }
+                    });
+                    AlertDialog b = dialogBuilder.create();
+
+                    b.show();
+                }
+            });
+
+            dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //do nothing here.
+                }
+            });
+            AlertDialog b = dialogBuilder.create();
+            b.show();
+        }
     }
 }
+
+
+
+
