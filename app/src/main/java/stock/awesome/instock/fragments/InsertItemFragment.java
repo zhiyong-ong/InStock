@@ -21,10 +21,10 @@ import com.firebase.client.Firebase;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import stock.awesome.instock.CalendarAsStr;
 import stock.awesome.instock.DatabaseWriteProduct;
 import stock.awesome.instock.Product;
 import stock.awesome.instock.R;
+import stock.awesome.instock.StringCalendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -130,7 +130,7 @@ public class InsertItemFragment extends Fragment {
                     Product inputProd = new Product();
                     onSubmitPress(inputProd);
                     Log.d("Submit successful", inputProd.getName() + " " + inputProd.getQuantity() + " "
-                            + CalendarAsStr.format(inputProd.getExpiry()));
+                            + StringCalendar.toString(inputProd.getExpiry()));
                 }
             }
         });
