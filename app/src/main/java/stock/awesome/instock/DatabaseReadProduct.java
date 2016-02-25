@@ -2,10 +2,12 @@ package stock.awesome.instock;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
 import java.util.concurrent.Semaphore;
 
 /**
@@ -23,7 +25,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
     private DatabaseWriteProduct productWriter = null;
 
     public enum ProdUseCase {
-        BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY
+        BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, DEBUG
     }
 
     public DatabaseReadProduct(Firebase database, ProdUseCase useCase) {
@@ -58,6 +60,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
         final Semaphore semaphore = new Semaphore(0);
         Log.w("adding listener ", "listener");
+
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -79,8 +82,8 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                 // if use case is to update quantity only, set outProd's qty to strQty.
                 // Other operations performed in onPostExecute
                 else if (useCase.equals(ProdUseCase.UPDATE_QUANTITY_ONLY)) {
-                    String strQty = (String) snapshot.child("quantity").getValue();
-                    outProd.setQuantity(Integer.parseInt(strQty));
+                    int qty = (int) snapshot.child("quantity").getValue();
+                    outProd.setQuantity(qty);
                 }
 
                 // default behaviour
@@ -125,13 +128,11 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
         return outProd;
     }
 
-    // TODO check: use outProd or result?
+    // Both result and outProd can be used
     @Override
     protected void onPostExecute(Product result) {
         if (readSuccess) {
-            if (result.getName() != null) {
-                Log.w("After Asynctask", result.getName());
-            }
+            Log.w("onPostExecute", "success");
 
             switch (useCase) {
                 case BUILD_KIT:
@@ -152,6 +153,10 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                     productWriter = new DatabaseWriteProduct(database);
                     productWriter.writeProduct(updatedProd, ProdUseCase.UPDATE_QUANTITY_ONLY);
                     break;
+
+                case DEBUG:
+                    Log.w("result info:", result.getId() + " " + result.getName() + " " +
+                            result.getQuantity() + " " + StringCalendar.toString(result.getExpiry()));
             }
         }
     }
