@@ -2,14 +2,16 @@ package stock.awesome.instock;
 
 import com.firebase.client.Firebase;
 
-import  java.util.HashMap;
+import java.util.LinkedHashMap;
 
+// collection of products and associated quantities to be picked.
+// Order input == order output.
 // addProduct throws IllegalArgumentException if id is null
 // TODO should it?
 public class Kit {
 
     // key: product, value: qty of prod with that id
-    private HashMap<Product, Integer> kit;
+    private LinkedHashMap<Product, Integer> kit;
     private String kitName = null;
     // IMPT:
     private Firebase database = new Firebase("https://scorching-inferno-2190.firebaseio.com/");
@@ -19,7 +21,7 @@ public class Kit {
     }
 
     public Kit(String kitName) {
-        kit = new HashMap<Product, Integer>();
+        kit = new LinkedHashMap<Product, Integer>();
         this.kitName = kitName;
     }
 
@@ -57,7 +59,7 @@ public class Kit {
     }
 
     // get the HashMap that the kit is stored as. Useful for iterating over
-    public HashMap<Product, Integer> getHashMap() {
+    public LinkedHashMap<Product, Integer> getHashMap() {
         return kit;
     }
 }

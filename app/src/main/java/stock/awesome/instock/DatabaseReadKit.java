@@ -13,6 +13,7 @@ import java.util.concurrent.Semaphore;
 
 
 /**
+ * ** Always call execute with param kitName**
  * execute(String name) reads from database and returns a Kit associated with that name.
  */
 public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
@@ -24,7 +25,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
     private boolean readSuccess = true;
 
     public enum KitUseCase {
-        SAVE_KIT, UPDATE_KIT
+        SAVE_KIT, UPDATE_KIT, DEBUG
     }
 
     public DatabaseReadKit(Firebase database, KitUseCase useCase) {
@@ -49,7 +50,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
                 Log.w("onDataChange started ", "success");
 
                 if (!snapshot.child("kits").child(kitName).exists()) {
-                    Log.e(READ_FAILED, outProd.getId() + " not found"); // TODO display error msg
+                    Log.e(READ_FAILED, kitName + " not found"); // TODO display error msg
                     readSuccess = false;
                     return;
                 }
@@ -57,10 +58,16 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
                 // look at kits sub-database
                 for (DataSnapshot kitSnapshot: snapshot.child("kits").child(kitName).getChildren()) {
 
-                    String id = (String) kitSnapshot.child("name").getValue();
-                    String strQty = (String) kitSnapshot.child("location").getValue();
+                    String id = (String) kitSnapshot.getValue();
+                    int qty = (int) kitSnapshot.getValue();
 
-                    Log.w("Kit info received", id + " " + strQty);
+                    if (id == null) {
+                        Log.e(READ_FAILED, id + " not found"); // TODO display error msg
+                        readSuccess = false;
+                        return;
+                    }
+
+                    Log.w("Kit info received", id + " " + Integer.toString(qty));
 
                     // look at products sub-database
                     DataSnapshot prodSnapshot = snapshot.child("products").child(id);
@@ -76,7 +83,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
 //
                     // variables from kit sub-db
                     outProd.setId(id);
-                    outProd.setQuantity(Integer.parseInt(strQty));
+                    outProd.setQuantity(qty);
 
 //                    // variables from products sub-db
 //                    outProd.setName(name);
@@ -84,7 +91,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
 //                    outProd.setDesc(desc);
 //                    outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
 
-                    outKit.addProduct(outProd, Integer.parseInt(strQty));
+                    outKit.addProduct(outProd, qty);
                 }
 
                 semaphore.release();
@@ -119,6 +126,9 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
 
                 case UPDATE_KIT:
                     break;
+
+                case DEBUG:
+                    Log.w("Kit info:", result.getHashMap().toString());
             }
         }
     }

@@ -79,7 +79,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                     return;
                 }
 
-                // if use case is to update quantity only, set outProd's qty to strQty.
+                // if use case is to update quantity only, set outProd's qty to qty.
                 // Other operations performed in onPostExecute
                 else if (useCase.equals(ProdUseCase.UPDATE_QUANTITY_ONLY)) {
                     int qty = (int) snapshot.child("quantity").getValue();
@@ -88,21 +88,6 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
                 // default behaviour
                 else {
-//                    String name = (String) snapshot.child("name").getValue();
-//                    String location = (String) snapshot.child("location").getValue();
-//                    String desc = (String) snapshot.child("description").getValue();
-//                    String strQty = (String) snapshot.child("quantity").getValue();
-//                    String strExpiry = (String) snapshot.child("expiry").getValue();
-//
-//                    Log.w("Stuff has come back", name + " " + strQty);
-//
-//                    outProd.setId(id);
-//                    outProd.setName(name);
-//                    outProd.setQuantity(Integer.parseInt(strQty));
-//                    outProd.setLocation(location);
-//                    outProd.setDesc(desc);
-//                    outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
-
                     outProd = snapshot.getValue(Product.class);
                 }
 

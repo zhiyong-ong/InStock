@@ -24,12 +24,18 @@ public class MainActivity extends AppCompatActivity {
 
 
         // write testing
-        DatabaseReadProduct db = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.DEBUG);
-        db.execute("zzz");
-//        Kit testKit = new Kit("test_kit");
-//        testKit.addProduct("104", 6);
-//        testKit.addProduct("105", 44);
-//        db.writeKit(testKit);
+        Kit testKit = new Kit("test_kit_3");
+        Product testProd = new Product("4", 6);
+
+        testKit.addProduct(testProd, 3);
+        testKit.addProduct("555", 6);
+        testKit.addProduct("105", 44);
+
+        DatabaseWriteKit writer = new DatabaseWriteKit(database);
+        writer.writeKit(testKit);
+
+//        DatabaseReadKit db = new DatabaseReadKit(database, DatabaseReadKit.KitUseCase.DEBUG);
+//        db.execute("to_read");
 
         //Log.w("db written", "id: " + testProd.getId() + " location: " + testProd.getLocation());
     }
