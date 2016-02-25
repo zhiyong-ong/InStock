@@ -75,22 +75,11 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
 
                     Product outProd = prodSnapshot.getValue(Product.class);
 
-//                    String name = (String) prodSnapshot.child("name").getValue();
-//                    String location = (String) prodSnapshot.child("location").getValue();
-//                    String desc = (String) prodSnapshot.child("description").getValue();
-//                    String strExpiry = (String) prodSnapshot.child("expiry").getValue();
-//
-//                    Log.w("Product info received", name + " " + strExpiry);
+                    Log.w("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
 //
                     // variables from kit sub-db
                     outProd.setId(prodId);
                     outProd.setQuantity(prodQty);
-
-//                    // variables from products sub-db
-//                    outProd.setName(name);
-//                    outProd.setLocation(location);
-//                    outProd.setDesc(desc);
-//                    outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
 
                     outKit.addProduct(outProd, prodQty);
                 }
