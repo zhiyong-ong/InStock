@@ -24,7 +24,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
     private boolean readSuccess = true;
 
     public enum KitUseCase {
-        SAVE_KIT, UPDATE_KIT, DEBUG
+        UPDATE_KIT, DEBUG
     }
 
     public DatabaseReadKit(Firebase database, KitUseCase useCase) {
@@ -111,9 +111,6 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
         // Log.w("After Asynctask", result.getName());
         if (readSuccess) {
             switch (useCase) {
-                case SAVE_KIT:
-                    break;
-
                 case UPDATE_KIT:
                     break;
 
