@@ -16,7 +16,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
     private Firebase database = null;
     private Product outProd = new Product(), updatedProd = null;
-    private String READ_FAILED = "Database read failed";
+    private String READ_FAILED = "Product database read failed";
     private ProdUseCase useCase = null;
     private boolean readSuccess = true;
     private int qtyChange = 0;

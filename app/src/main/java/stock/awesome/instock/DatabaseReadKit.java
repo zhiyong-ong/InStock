@@ -20,7 +20,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
     private Kit outKit = new Kit();
     private Product outProd = new Product();
     private KitUseCase useCase = null;
-    private String READ_FAILED = "Database read failed";
+    private String READ_FAILED = "Kit database read failed";
     private boolean readSuccess = true;
 
     public enum KitUseCase {
@@ -41,66 +41,69 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
         final String kitName = params[0];
         outKit.setKitName(kitName);
 
-        // order kits by id
-        Query queryRef = database.child("kits").child(kitName).orderByKey();
-
         final Semaphore semaphore = new Semaphore(0);
-        Log.w("adding listener ", "listener");
-        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        Log.w("Adding listener ", "SingleValueEvent");
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Log.w("onDataChange started ", "success");
 
-                // look at kits sub-database
-                DataSnapshot kitSnapshot = snapshot.child("kits").child(kitName);
-
-                // the product does not exist in the database
-                if (!kitSnapshot.exists()) {
+                if (!snapshot.child("kits").child(kitName).exists()) {
                     Log.e(READ_FAILED, outProd.getId() + " not found"); // TODO display error msg
                     readSuccess = false;
                     return;
                 }
 
-                String id = (String) kitSnapshot.child("name").getValue();
-                String strQty = (String) kitSnapshot.child("location").getValue();
+                // look at kits sub-database
+                for (DataSnapshot kitSnapshot: snapshot.child("kits").child(kitName).getChildren()) {
 
-                Log.w("Kit info received", id + " " + strQty);
+                    String id = (String) kitSnapshot.child("name").getValue();
+                    String strQty = (String) kitSnapshot.child("location").getValue();
 
-                // look at products sub-database
-                DataSnapshot prodSnapshot = snapshot.child("products").child(id);
+                    Log.w("Kit info received", id + " " + strQty);
 
-                String name = (String) prodSnapshot.child("name").getValue();
-                String location = (String) prodSnapshot.child("location").getValue();
-                String desc = (String) prodSnapshot.child("description").getValue();
-                String strExpiry = (String) prodSnapshot.child("expiry").getValue();
+                    // look at products sub-database
+                    DataSnapshot prodSnapshot = snapshot.child("products").child(id);
 
-                Log.w("Product info received", name + " " + strExpiry);
+                    outProd = snapshot.getValue(Product.class);
 
-                // variables from kit sub-db
-                outProd.setId(id);
-                outProd.setQuantity(Integer.parseInt(strQty));
-                // variables from products sub-db
-                outProd.setName(name);
-                outProd.setLocation(location);
-                outProd.setDesc(desc);
-                outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
+//                    String name = (String) prodSnapshot.child("name").getValue();
+//                    String location = (String) prodSnapshot.child("location").getValue();
+//                    String desc = (String) prodSnapshot.child("description").getValue();
+//                    String strExpiry = (String) prodSnapshot.child("expiry").getValue();
+//
+//                    Log.w("Product info received", name + " " + strExpiry);
+//
+                    // variables from kit sub-db
+                    outProd.setId(id);
+                    outProd.setQuantity(Integer.parseInt(strQty));
 
-                outKit.addProduct(outProd, Integer.parseInt(strQty));
+//                    // variables from products sub-db
+//                    outProd.setName(name);
+//                    outProd.setLocation(location);
+//                    outProd.setDesc(desc);
+//                    outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
+
+                    outKit.addProduct(outProd, Integer.parseInt(strQty));
+                }
+
                 semaphore.release();
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Log.e("Firebase read error", "The read failed: " + firebaseError.getMessage());
                 semaphore.release();
+                Log.e(READ_FAILED, "Firebase read error: " + firebaseError.getMessage()); // TODO display error msg
+                readSuccess = false;
             }
         });
 
         try {
             semaphore.acquire();
         } catch (InterruptedException e) {
-            Log.e("Semaphore acqn failed", e.getMessage());
             semaphore.release();
+            Log.e(READ_FAILED, "Semaphore acqn failed: " + e.getMessage()); // TODO display error msg
+            readSuccess = false;
         }
 
         return outKit;
