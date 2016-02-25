@@ -10,7 +10,7 @@ public class DatabaseWriteKit {
 
     Firebase database = null;
     String id = null;
-    int qty = -1, count = 0;
+    int qty = -1;
 
     public DatabaseWriteKit(Firebase database) {
         this.database = database;
@@ -21,13 +21,9 @@ public class DatabaseWriteKit {
 
         LinkedHashMap<Product, Integer> kitHashMap = kit.getHashMap();
 
-
         for (Map.Entry<Product, Integer> entry : kitHashMap.entrySet())  {
 
             Map<String, Object> newKit = new LinkedHashMap<String, Object>();
-
-            String productKey = "product_" + Integer.toString(count);
-            Firebase productRef = ref.child(productKey);
 
             id = entry.getKey().getId();
             qty = entry.getValue();
@@ -35,9 +31,7 @@ public class DatabaseWriteKit {
             newKit.put("/id", id);
             newKit.put("/quantity", qty);
 
-            productRef.updateChildren(newKit);
-
-            count++;
+            ref.push().updateChildren(newKit);
         }
     }
 

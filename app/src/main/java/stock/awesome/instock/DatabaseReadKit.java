@@ -19,7 +19,6 @@ import java.util.concurrent.Semaphore;
 public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
     private Firebase database = null;
     private Kit outKit = new Kit();
-    private Product outProd = new Product();
     private KitUseCase useCase = null;
     private String READ_FAILED = "Kit database read failed";
     private boolean readSuccess = true;
@@ -58,21 +57,23 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
                 // look at kits sub-database
                 for (DataSnapshot kitSnapshot: snapshot.child("kits").child(kitName).getChildren()) {
 
-                    String id = (String) kitSnapshot.getValue();
-                    int qty = (int) kitSnapshot.getValue();
+                    ProductInKit pink = kitSnapshot.getValue(ProductInKit.class);
 
-                    if (id == null) {
-                        Log.e(READ_FAILED, id + " not found"); // TODO display error msg
+                    String prodId = pink.getId();
+                    int prodQty = pink.getQuantity();
+
+                    Log.w("Kit info received", prodId + " " + Integer.toString(prodQty));
+
+                    // look at products sub-database
+                    DataSnapshot prodSnapshot = snapshot.child("products").child(prodId);
+
+                    if (!prodSnapshot.exists()) {
+                        Log.e(READ_FAILED, prodId + " not found in products database"); // TODO display error msg
                         readSuccess = false;
                         return;
                     }
 
-                    Log.w("Kit info received", id + " " + Integer.toString(qty));
-
-                    // look at products sub-database
-                    DataSnapshot prodSnapshot = snapshot.child("products").child(id);
-
-                    outProd = snapshot.getValue(Product.class);
+                    Product outProd = prodSnapshot.getValue(Product.class);
 
 //                    String name = (String) prodSnapshot.child("name").getValue();
 //                    String location = (String) prodSnapshot.child("location").getValue();
@@ -82,8 +83,8 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
 //                    Log.w("Product info received", name + " " + strExpiry);
 //
                     // variables from kit sub-db
-                    outProd.setId(id);
-                    outProd.setQuantity(qty);
+                    outProd.setId(prodId);
+                    outProd.setQuantity(prodQty);
 
 //                    // variables from products sub-db
 //                    outProd.setName(name);
@@ -91,7 +92,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
 //                    outProd.setDesc(desc);
 //                    outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
 
-                    outKit.addProduct(outProd, qty);
+                    outKit.addProduct(outProd, prodQty);
                 }
 
                 semaphore.release();

@@ -8,7 +8,6 @@ public class ProductInKit {
     private int quantity = -1;
 
     public ProductInKit() {
-
     }
 
     public ProductInKit(String id, int quantity) {
