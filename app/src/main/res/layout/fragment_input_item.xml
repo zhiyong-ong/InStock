@@ -155,7 +155,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="100dp"
+                android:layout_marginBottom="10dp"
                 android:layout_gravity="center"
                 android:id="@+id/submitButton"
                 android:textSize="18dp"

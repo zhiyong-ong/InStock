@@ -166,7 +166,6 @@ public class BuildKitActivity extends AppCompatActivity {
             });
 
             AlertDialog b = dialogBuilder.create();
-            b.setIcon(android.R.drawable.ic_dialog_alert);
             b.show();
             }
 

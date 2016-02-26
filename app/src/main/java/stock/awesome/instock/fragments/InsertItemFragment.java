@@ -131,10 +131,11 @@ public class InsertItemFragment extends Fragment {
                     onSubmitPress(inputProd);
                     Log.d("Submit successful", inputProd.getName() + " " + inputProd.getQuantity() + " "
                             + StringCalendar.toString(inputProd.getExpiry()));
+                    Toast.makeText(getActivity(), "   New Item Added!   ", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-            Log.w("Check for error","-------------------TESTING--------------------");
+        Log.w("Check for error","-------------------TESTING--------------------");
         // Inflate the layout for this fragment
         return aView;
     }
@@ -177,6 +178,7 @@ public class InsertItemFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

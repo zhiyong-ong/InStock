@@ -13,7 +13,7 @@ public class StringCalendar {
 
     // only this format is parseable by firebase
     private static SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-    private static GregorianCalendar gregCal = null;
+    private static GregorianCalendar gregCal = new GregorianCalendar();
     private static SimpleDateFormat displayFmt = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 
     public static String toProperDateString(GregorianCalendar calendar) {
@@ -29,13 +29,24 @@ public class StringCalendar {
     public static GregorianCalendar toCalendar(String calendarStr) {
         try {
             Date date = fmt.parse(calendarStr);
+            Log.e("TESTING", "\t" + date.toString());
             gregCal.setTime(date);
 
         } catch (ParseException e) {
             Log.e("str to cal failed", e.getMessage());
-        } finally {
-            return gregCal;
         }
+        return gregCal;
+    }
+
+    public static GregorianCalendar toCalendarProper(String calendarStr) {
+        try {
+            Date date = displayFmt.parse(calendarStr);
+            gregCal.setTime(date);
+
+        } catch (ParseException e) {
+            Log.e("str to cal failed", e.getMessage());
+        }
+        return gregCal;
     }
 
 }
