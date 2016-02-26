@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp"
+    android:paddingTop="10dp"
+    >
+
+    <TextView
+        android:id="@+id/idView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:paddingLeft="5dp"
+        android:text="ID: "
+        android:textColor="@color/lightGrey">
+    </TextView>
+
+    <TextView
+        android:id="@+id/idText"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/idView"
+        android:textSize="18dp"
+        android:paddingLeft="5dp"
+        android:textColor="@color/darkGrey"
+        android:textStyle="bold"
+        android:ellipsize="end"
+        android:maxLines="1">
+    </TextView>
+
+    <TextView
+        android:id="@+id/qtyView"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/idText"
+        android:textSize="18dp"
+        android:paddingLeft="5dp"
+        android:text="QTY: "
+        android:textColor="@color/lightGrey">
+    </TextView>
+
+    <TextView
+        android:id="@+id/qtyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/qtyView"
+        android:textSize="18dp"
+        android:paddingLeft="5dp"
+        android:textStyle="bold"
+        android:textColor="@color/darkGrey"
+        android:ellipsize="end"
+        android:maxLines="1">
+    </TextView>
+
+    <TextView
+        android:id="@+id/nameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/idView"
+        android:textSize="18dp"
+        android:paddingLeft="5dp"
+        android:text="NAME: "
+        android:textColor="@color/lightGrey">
+    </TextView>
+    <TextView
+        android:id="@+id/nameText"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/idText"
+        android:layout_toRightOf="@+id/nameView"
+        android:textSize="18dp"
+        android:paddingLeft="5dp"
+        android:maxLength="18"
+        android:textStyle="bold"
+        android:textColor="@color/darkGrey"
+        android:ellipsize="end"
+        android:maxLines="1">
+    </TextView>
+
+    <TextView
+        android:id="@+id/locView"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/qtyView"
+        android:layout_toRightOf="@id/nameText"
+        android:textSize="18dp"
+        android:paddingLeft="5dp"
+        android:text="LOC: "
+        android:textColor="@color/lightGrey">
+    </TextView>
+    <TextView
+        android:id="@+id/locText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/qtyView"
+        android:layout_toRightOf="@id/locView"
+        android:textSize="18dp"
+        android:maxLength="18"
+        android:paddingLeft="5dp"
+        android:textStyle="bold"
+        android:textColor="@color/darkGrey"
+        android:ellipsize="end"
+        android:maxLines="1">
+    </TextView>
+
+    <TextView
+        android:id="@+id/expView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nameView"
+        android:textSize="18dp"
+        android:paddingLeft="5dp"
+        android:text="EXP: "
+        android:textColor="@color/lightGrey">
+    </TextView>
+    <TextView
+        android:id="@+id/expdateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nameText"
+        android:layout_toRightOf="@id/expView"
+        android:textSize="18dp"
+        android:paddingLeft="5dp"
+        android:textStyle="bold"
+        android:textColor="@color/darkGrey"
+        android:ellipsize="end"
+        android:maxLines="1">
+    </TextView>
+
+
+    <!--
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Textasdfasdfadsf"
+            android:id="@+id/textView"
+            android:layout_above="@+id/expdateText"
+            android:layout_toRightOf="@+id/locText"
+            android:layout_toEndOf="@+id/locText"
+            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
+            android:maxLength="18"
+            />
+            -->
+</RelativeLayout>

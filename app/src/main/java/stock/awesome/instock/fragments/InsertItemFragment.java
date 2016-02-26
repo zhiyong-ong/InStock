@@ -22,8 +22,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import stock.awesome.instock.DatabaseReadProduct;
-import stock.awesome.instock.StringCalendar;
-
 import stock.awesome.instock.DatabaseWriteProduct;
 import stock.awesome.instock.Product;
 import stock.awesome.instock.R;
@@ -104,7 +102,6 @@ public class InsertItemFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                Log.e("Check for error", "-------------------TESTING for click--------------------");
                 DialogFragment newFragment = new SelectDateFragment();
                 newFragment.show(getFragmentManager(), "DatePicker");
             }

@@ -1,19 +1,26 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="stock.awesome.instock.InputItemActivity$PlaceholderFragment">
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp" >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:scaleType="center"
+        android:background="#ab483d"
+        android:text="EDIT ITEM"
+        android:gravity="center"
+        android:textSize="23dp"
+        android:textColor="#FFFFFF"
+        android:contentDescription="@string/app_name"
+        android:fontFamily="san-serif-condensed"
+        android:textStyle="bold"/>
     <ScrollView
         android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:padding="5dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -151,18 +158,6 @@
 
             </TableLayout>
 
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="100dp"
-                android:layout_gravity="center"
-                android:id="@+id/submitButton"
-                android:textSize="18dp"
-                android:text="Submit"
-                android:layout_below="@+id/table"/>
-
-        </LinearLayout>
-
     </ScrollView>
-</RelativeLayout>
+
+</LinearLayout>
