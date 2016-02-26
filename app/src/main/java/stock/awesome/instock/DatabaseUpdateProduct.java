@@ -39,7 +39,7 @@ public class DatabaseUpdateProduct {
         // rewrite all product information
         // IMPT: existing qty will not be increased/decreased but overwritten with product's quantity
         else {
-            reader = new DatabaseReadProduct(database, "update_product", product);
+            reader = new DatabaseReadProduct(database, DatabaseReadProduct.UseCase.UPDATE_PRODUCT, product);
             reader.execute(product.getId());
         }
     }
