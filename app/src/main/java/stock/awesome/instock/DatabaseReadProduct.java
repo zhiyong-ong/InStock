@@ -2,10 +2,12 @@ package stock.awesome.instock;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
 import java.util.concurrent.Semaphore;
 
 /**
@@ -16,27 +18,27 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
     private Firebase database = null;
     private Product outProd = new Product(), updatedProd = null;
-    private String READ_FAILED = "Database read failed";
-    private UseCase useCase = null;
+    private String READ_FAILED = "Product database read failed";
+    private ProdUseCase useCase = null;
     private boolean readSuccess = true;
     private int qtyChange = 0;
     private DatabaseWriteProduct productWriter = null;
 
-    public enum UseCase {
-        BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY
+    public enum ProdUseCase {
+        BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, DEBUG
     }
 
-    public DatabaseReadProduct(Firebase database, UseCase useCase) {
+    public DatabaseReadProduct(Firebase database, ProdUseCase useCase) {
         this(database, useCase, 0);
     }
 
-    public DatabaseReadProduct(Firebase database, UseCase useCase, int qtyChange) {
+    public DatabaseReadProduct(Firebase database, ProdUseCase useCase, int qtyChange) {
         this.database = database;
         this.useCase = useCase;
         this.qtyChange = qtyChange;
     }
 
-    public DatabaseReadProduct(Firebase database, UseCase useCase, Product updatedProd) {
+    public DatabaseReadProduct(Firebase database, ProdUseCase useCase, Product updatedProd) {
         this.database = database;
         this.useCase = useCase;
         this.updatedProd = updatedProd;
@@ -58,15 +60,14 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
         final Semaphore semaphore = new Semaphore(0);
         Log.w("adding listener ", "listener");
+
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.w("Stuff ", "hi");
-                
-                String strQty = (String) snapshot.child("quantity").getValue();
+                Log.w("onDataChange started ", "success");
 
-                // if qty is null, the product does not exist in the database
-                if (strQty == null) {
+                // the product does not exist in the database
+                if (!snapshot.exists()) {
                     Log.e(READ_FAILED, outProd.getId() + " not found"); // TODO display error msg
                     readSuccess = false;
                     return;
@@ -74,29 +75,23 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
                 // if use case is to update product, no reading required.
                 // only check needed is that item exists in database, which is handled above
-                if (useCase.equals(UseCase.UPDATE_PRODUCT)) {
+                if (useCase.equals(ProdUseCase.UPDATE_PRODUCT)) {
                     return;
+                }
+
+                // if use case is to update quantity only, set outProd's qty to qty.
+                // Other operations performed in onPostExecute
+                else if (useCase.equals(ProdUseCase.UPDATE_QUANTITY_ONLY)) {
+                    int qty = (int) snapshot.child("quantity").getValue();
+                    outProd.setQuantity(qty);
                 }
 
                 // default behaviour
                 else {
-                    String name = (String) snapshot.child("name").getValue();
-                    String location = (String) snapshot.child("location").getValue();
-                    String desc = (String) snapshot.child("description").getValue();
-                    String strExpiry = (String) snapshot.child("expiry").getValue();
-
-                    Log.w("Stuff has come back", name + " " + strQty);
-
-                    outProd.setId(id);
-                    outProd.setName(name);
-                    outProd.setQuantity(Integer.parseInt(strQty));
-                    outProd.setLocation(location);
-                    outProd.setDesc(desc);
-                    outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
+                    outProd = snapshot.getValue(Product.class);
                 }
 
                 semaphore.release();
-
             }
 
             @Override
@@ -118,12 +113,11 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
         return outProd;
     }
 
+    // Both result and outProd can be used
     @Override
     protected void onPostExecute(Product result) {
         if (readSuccess) {
-            if (result.getName() == null) {
-                Log.w("After Asynctask", result.getName());
-            }
+            Log.w("onPostExecute", "success");
 
             switch (useCase) {
                 case BUILD_KIT:
@@ -133,7 +127,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                 // rewrites all product info to database
                 case UPDATE_PRODUCT:
                     productWriter = new DatabaseWriteProduct(database);
-                    productWriter.writeProduct(updatedProd, UseCase.UPDATE_PRODUCT);
+                    productWriter.writeProduct(updatedProd, ProdUseCase.UPDATE_PRODUCT);
                     break;
 
                 // only updates qty
@@ -142,9 +136,12 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                     updatedProd.setQuantity(newQty);
 
                     productWriter = new DatabaseWriteProduct(database);
-                    productWriter.writeProduct(updatedProd, UseCase.UPDATE_QUANTITY_ONLY);
+                    productWriter.writeProduct(updatedProd, ProdUseCase.UPDATE_QUANTITY_ONLY);
                     break;
 
+                case DEBUG:
+                    Log.w("result info:", result.getId() + " " + result.getName() + " " +
+                            result.getQuantity() + " " + StringCalendar.toString(result.getExpiry()));
             }
         }
     }

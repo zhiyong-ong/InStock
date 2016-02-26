@@ -1,9 +1,8 @@
 package stock.awesome.instock;
 
-
 import com.firebase.client.Firebase;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DatabaseWriteKit {
@@ -19,17 +18,20 @@ public class DatabaseWriteKit {
     public void writeKit(Kit kit) {
         Firebase ref = database.child("kits").child(kit.getKitName());
 
-        HashMap<String, Integer> kitHashMap = kit.getHashMap();
-        Map<String, String> newKit = new HashMap<String, String>();
+        LinkedHashMap<Product, Integer> kitHashMap = kit.getHashMap();
 
-        for (Map.Entry<String, Integer> entry : kitHashMap.entrySet())  {
-            id = entry.getKey();
+        for (Map.Entry<Product, Integer> entry : kitHashMap.entrySet())  {
+
+            Map<String, Object> newKit = new LinkedHashMap<String, Object>();
+
+            id = entry.getKey().getId();
             qty = entry.getValue();
 
-            newKit.put(id, Integer.toString(qty));
-        }
+            newKit.put("/id", id);
+            newKit.put("/quantity", qty);
 
-        ref.setValue(newKit);
+            ref.push().updateChildren(newKit);
+        }
     }
 
 }

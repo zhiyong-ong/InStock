@@ -2,7 +2,7 @@ package stock.awesome.instock;
 
 import java.util.GregorianCalendar;
 
-public class Product {
+public class Product extends ProductInKit{
 
     private String id = null, name = null, desc = null, location = null;
     private int quantity = -1;

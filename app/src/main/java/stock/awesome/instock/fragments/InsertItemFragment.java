@@ -21,6 +21,9 @@ import com.firebase.client.Firebase;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import stock.awesome.instock.DatabaseReadProduct;
+import stock.awesome.instock.StringCalendar;
+
 import stock.awesome.instock.DatabaseWriteProduct;
 import stock.awesome.instock.Product;
 import stock.awesome.instock.R;
@@ -157,7 +160,7 @@ public class InsertItemFragment extends Fragment {
         int inputExpiryDate = myCalendar.get(Calendar.DATE);
         inputProd.setExpiry(new GregorianCalendar(inputExpiryYear, inputExpiryMonth, inputExpiryDate));
 
-        writer.writeProduct(inputProd);
+        writer.writeProduct(inputProd, DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT);
         // intent --> go to next activity, provide dialog box confirmation
     }
     // TODO: Rename method, update argument and hook method into UI event

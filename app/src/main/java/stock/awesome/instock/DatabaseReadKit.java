@@ -6,23 +6,27 @@ import android.util.Log;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.util.concurrent.Semaphore;
 
 
 /**
+ * ** Always call execute with param kitName**
  * execute(String name) reads from database and returns a Kit associated with that name.
  */
 public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
     private Firebase database = null;
     private Kit outKit = new Kit();
-    private Product outProd = new Product();
-    private String useCase = null, id = null;
+    private KitUseCase useCase = null;
+    private String READ_FAILED = "Kit database read failed";
+    private boolean readSuccess = true;
 
+    public enum KitUseCase {
+        UPDATE_KIT, DEBUG
+    }
 
-    public DatabaseReadKit(Firebase database, String useCase) {
+    public DatabaseReadKit(Firebase database, KitUseCase useCase) {
         this.database = database;
         this.useCase = useCase;
     }
@@ -36,71 +40,66 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
         final String kitName = params[0];
         outKit.setKitName(kitName);
 
-        Firebase ref = database.child("products").child(kitName);
-        Query queryRef = ref.orderByKey();
-
         final Semaphore semaphore = new Semaphore(0);
-        Log.w("adding listener ", "listener");
-        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        Log.w("Adding listener ", "SingleValueEvent");
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                Log.w("onDataChange started ", "success");
 
-                Log.w("Stuff ", "hi");
+                if (!snapshot.child("kits").child(kitName).exists()) {
+                    Log.e(READ_FAILED, kitName + " not found"); // TODO display error msg
+                    readSuccess = false;
+                    return;
+                }
 
-                id = (String) snapshot.child("name").getValue();
-                String qty = (String) snapshot.child("location").getValue();
+                // look at kits sub-database
+                for (DataSnapshot kitSnapshot: snapshot.child("kits").child(kitName).getChildren()) {
 
-                Log.w("Stuff has come back", id + " " + qty);
+                    ProductInKit pink = kitSnapshot.getValue(ProductInKit.class);
 
-                Firebase prodRef = database.child("products").child(id);
-                prodRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
+                    String prodId = pink.getId();
+                    int prodQty = pink.getQuantity();
 
-                        Log.w("Stuff ", "hi");
+                    Log.w("Kit info received", prodId + " " + Integer.toString(prodQty));
 
-                        String name = (String) snapshot.child("name").getValue();
-                        String location = (String) snapshot.child("location").getValue();
-                        String strQty = (String) snapshot.child("quantity").getValue();
-                        String desc = (String) snapshot.child("description").getValue();
-                        String strExpiry = (String) snapshot.child("expiry").getValue();
+                    // look at products sub-database
+                    DataSnapshot prodSnapshot = snapshot.child("products").child(prodId);
 
-                        Log.w("Stuff has come back", name + " " + strQty);
-
-                        outProd.setId(id);
-                        outProd.setName(name);
-                        outProd.setQuantity(Integer.parseInt(strQty));
-                        outProd.setLocation(location);
-                        outProd.setDesc(desc);
-                        outProd.setExpiry(StringCalendar.toCalendar(strExpiry));
-
-                        semaphore.release();
+                    if (!prodSnapshot.exists()) {
+                        Log.e(READ_FAILED, prodId + " not found in products database"); // TODO display error msg
+                        readSuccess = false;
+                        return;
                     }
 
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-                        Log.e("Firebase read error", "The read failed: " + firebaseError.getMessage());
-                        semaphore.release();
-                    }
-                });
+                    Product outProd = prodSnapshot.getValue(Product.class);
 
-                outKit.addProduct(outProd, Integer.parseInt(qty));
+                    Log.w("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
+//
+                    // variables from kit sub-db
+                    outProd.setId(prodId);
+                    outProd.setQuantity(prodQty);
+
+                    outKit.addProduct(outProd, prodQty);
+                }
 
                 semaphore.release();
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Log.e("Firebase read error", "The read failed: " + firebaseError.getMessage());
                 semaphore.release();
+                Log.e(READ_FAILED, "Firebase read error: " + firebaseError.getMessage()); // TODO display error msg
+                readSuccess = false;
             }
         });
 
         try {
             semaphore.acquire();
         } catch (InterruptedException e) {
-            Log.e("Semaphore acqn failed", e.getMessage());
             semaphore.release();
+            Log.e(READ_FAILED, "Semaphore acqn failed: " + e.getMessage()); // TODO display error msg
+            readSuccess = false;
         }
 
         return outKit;
@@ -109,9 +108,14 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
     @Override
     protected void onPostExecute(Kit result) {
         // Log.w("After Asynctask", result.getName());
+        if (readSuccess) {
+            switch (useCase) {
+                case UPDATE_KIT:
+                    break;
 
-        if (useCase.equals("build_kit")) {
-            // display name, location in BuildKitActivity
+                case DEBUG:
+                    Log.w("Kit info:", result.getHashMap().toString());
+            }
         }
     }
 }

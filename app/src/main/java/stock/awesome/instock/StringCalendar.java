@@ -11,7 +11,8 @@ import java.util.Locale;
 
 public class StringCalendar {
 
-    private static SimpleDateFormat fmt = new SimpleDateFormat("dd/MMM/yyyy", Locale.US);
+    // only this format is parseable by firebase
+    private static SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
     private static GregorianCalendar gregCal = null;
 
     public static String toString(GregorianCalendar calendar) {
