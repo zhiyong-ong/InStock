@@ -121,7 +121,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
             switch (useCase) {
                 case BUILD_KIT:
-                    // TODO display name, location in BuildKitActivity
+                    BuildKitActivity.displayProduct(result);
                     break;
 
                 // rewrites all product info to database

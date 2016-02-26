@@ -7,7 +7,7 @@ public class Product extends ProductInKit{
     private String id = null, name = null, desc = null, location = null;
     private int quantity = -1;
     private GregorianCalendar expiry = null;
-
+    long stackId;
     // empty constructor
     public Product() {}
 
@@ -79,4 +79,9 @@ public class Product extends ProductInKit{
     public void setExpiry(GregorianCalendar expiry) {
         this.expiry = expiry;
     }
+
+    public long getStackId() { return stackId; }
+
+    @Override
+    public String toString() { return "User: "+ name + ", Quantity: " + quantity +", stackId: " + stackId;}
 }

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
 //        testKit.addProduct("555", 6);
 //        testKit.addProduct("105", 44);
 
-        DatabaseReadKit reader = new DatabaseReadKit(database, DatabaseReadKit.KitUseCase.DEBUG);
-        reader.execute("test_kit_3");
+//        DatabaseReadProduct reader = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.BUILD_KIT);
+//        reader.execute("zzz");
 
 //        DatabaseReadKit db = new DatabaseReadKit(database, DatabaseReadKit.KitUseCase.DEBUG);
 //        db.execute("to_read");
