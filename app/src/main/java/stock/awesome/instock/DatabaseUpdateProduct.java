@@ -15,7 +15,7 @@ public class DatabaseUpdateProduct {
     public DatabaseUpdateProduct(Firebase database) {
         this.database = database;
     }
-
+    
 
     // To update quantity of a product, pass in id and change in qty (pos/neg)
     public void updateQuantity(String id, int qtyChange) {
