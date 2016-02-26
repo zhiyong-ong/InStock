@@ -35,7 +35,6 @@ public class ViewAllStocksActivity extends AppCompatActivity {
                 ((TextView)view.findViewById(android.R.id.text2)).setText(Integer.toString(product.getQuantity()));
             }
         };
-
         itemView.setAdapter(mAdapter);
 
     }

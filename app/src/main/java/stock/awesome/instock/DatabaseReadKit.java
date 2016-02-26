@@ -47,6 +47,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
             public void onDataChange(DataSnapshot snapshot) {
                 Log.w("onDataChange started ", "success");
 
+                // kitName entered not in the database
                 if (!snapshot.child("kits").child(kitName).exists()) {
                     Log.e(READ_FAILED, kitName + " not found"); // TODO display error msg
                     readSuccess = false;
@@ -66,6 +67,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
                     // look at products sub-database
                     DataSnapshot prodSnapshot = snapshot.child("products").child(prodId);
 
+                    // product in kit not in database
                     if (!prodSnapshot.exists()) {
                         Log.e(READ_FAILED, prodId + " not found in products database"); // TODO display error msg
                         readSuccess = false;
@@ -75,7 +77,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
                     Product outProd = prodSnapshot.getValue(Product.class);
 
                     Log.w("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
-//
+
                     // variables from kit sub-db
                     outProd.setId(prodId);
                     outProd.setQuantity(prodQty);
