@@ -25,7 +25,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
     private DatabaseWriteProduct productWriter = null;
 
     public enum ProdUseCase {
-        BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, DEBUG
+        BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, VIEW_ALL_STOCKS, DEBUG
     }
 
     public DatabaseReadProduct(Firebase database, ProdUseCase useCase) {
@@ -56,15 +56,17 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
             return outProd;
         }
 
-        Firebase ref = database.child("products").child(id);
+        Firebase ref = database.child("products");
 
         final Semaphore semaphore = new Semaphore(0);
         Log.w("adding listener ", "listener");
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
+            public void onDataChange(DataSnapshot bigSnapshot) {
                 Log.w("onDataChange started ", "success");
+
+                DataSnapshot snapshot = bigSnapshot.child(id);
 
                 // the product does not exist in the database
                 if (!snapshot.exists()) {
@@ -73,9 +75,14 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                     return;
                 }
 
+                // TODO
+                if (useCase.equals(ProdUseCase.VIEW_ALL_STOCKS)) {
+//                    for (DataSnapshot kitSnapshot: snapshot.getChildren()) {}
+                }
+
                 // if use case is to update product, no reading required.
                 // only check needed is that item exists in database, which is handled above
-                if (useCase.equals(ProdUseCase.UPDATE_PRODUCT)) {
+                else if (useCase.equals(ProdUseCase.UPDATE_PRODUCT)) {
                     return;
                 }
 
@@ -140,7 +147,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                     break;
 
                 case DEBUG:
-                    Log.w("result info:", result.getId() + " " + result.getName() + " " +
+                    Log.w("result info", result.getId() + " " + result.getName() + " " +
                             result.getQuantity() + " " + StringCalendar.toString(result.getExpiry()));
             }
         }

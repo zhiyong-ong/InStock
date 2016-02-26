@@ -13,9 +13,11 @@ import com.firebase.client.Firebase;
 
 public class MainActivity extends AppCompatActivity {
 
+    public int var;
+
     protected void onCreate(Bundle savedInstanceState) {
         Firebase.setAndroidContext(this);
-        Firebase database = new Firebase("https://scorching-inferno-2190.firebaseio.com/");
+        Firebase database = DatabaseLauncher.launch();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -30,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
 //        testKit.addProduct(testProd, 3);
 //        testKit.addProduct("555", 6);
 //        testKit.addProduct("105", 44);
-
-        DatabaseReadKit reader = new DatabaseReadKit(database, DatabaseReadKit.KitUseCase.DEBUG);
-        reader.execute("test_kit_3");
 
 //        DatabaseReadKit db = new DatabaseReadKit(database, DatabaseReadKit.KitUseCase.DEBUG);
 //        db.execute("to_read");

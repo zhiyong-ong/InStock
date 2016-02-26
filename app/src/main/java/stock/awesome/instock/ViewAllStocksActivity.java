@@ -14,7 +14,6 @@ public class ViewAllStocksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_all_stocks);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
     }
 
     @Override
