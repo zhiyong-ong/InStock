@@ -30,9 +30,9 @@ public class ViewAllStocksActivity extends AppCompatActivity {
         database = new Firebase("https://scorching-inferno-2190.firebaseio.com/products");
         mAdapter = new FirebaseListAdapter<Product>(this, Product.class, android.R.layout.two_line_list_item, database) {
             @Override
-            protected void populateView(View view, Product pik, int position) {
-                ((TextView)view.findViewById(android.R.id.text1)).setText(pik.getId());
-                ((TextView)view.findViewById(android.R.id.text2)).setText(Integer.toString(pik.getQuantity()));
+            protected void populateView(View view, Product product, int position) {
+                ((TextView)view.findViewById(android.R.id.text1)).setText(product.getId());
+                ((TextView)view.findViewById(android.R.id.text2)).setText(Integer.toString(product.getQuantity()));
             }
         };
 
