@@ -1,160 +1,139 @@
 package stock.awesome.instock;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.FirebaseException;
 import com.firebase.client.ValueEventListener;
 
-import java.util.concurrent.Semaphore;
+import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 import stock.awesome.instock.Misc_classes.Product;
 import stock.awesome.instock.Misc_classes.StringCalendar;
 
 /**
- * ** Always call execute with param id **
- * execute(String id) reads from database and returns a Product associated with that id.
+ * read(final String id, final ProdUseCase useCase, final Product updatedProd, final int qtyChange)
+ * reads from database and performs operations on a product associated with that id, depending
+ * on the useCase passed in.
+ * WARNING: no error checking is done to determine if the appropriate useCase has been passed in.
  */
-public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
+public class DatabaseReadProduct {
 
-    private Firebase database = null;
-    private Product outProd = new Product(), updatedProd = null;
-    private String READ_FAILED = "Product database read failed";
-    private ProdUseCase useCase = null;
-    private boolean readSuccess = true;
-    private int qtyChange = 0;
-    private DatabaseWriteProduct productWriter = null;
+    private static final Firebase database = DatabaseLauncher.database;
+    private static Product outProd = new Product();
+    private static ProductNotFoundException e = null;
 
     public enum ProdUseCase {
-        BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, VIEW_ALL_STOCKS, DEBUG
+        BUILD_KIT, DISPLAY, UPDATE_PRODUCT, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG
     }
 
-    public DatabaseReadProduct(Firebase database, ProdUseCase useCase) {
-        this(database, useCase, 0);
+
+    // useCase DEBUG, DELETE_PRODUCT
+    public static void read(final String id,  final ProdUseCase useCase)
+            throws ProductNotFoundException, FirebaseException {
+        read(id, useCase, null, 0);
     }
 
-    public DatabaseReadProduct(Firebase database, ProdUseCase useCase, int qtyChange) {
-        this.database = database;
-        this.useCase = useCase;
-        this.qtyChange = qtyChange;
-    }
-
-    public DatabaseReadProduct(Firebase database, ProdUseCase useCase, Product updatedProd) {
-        this.database = database;
-        this.useCase = useCase;
-        this.updatedProd = updatedProd;
+    // useCase UPDATE_PRODUCT, BUILD_KIT
+    public static void read(final String id,  final ProdUseCase useCase, final Product updatedProd)
+            throws ProductNotFoundException, FirebaseException {
+        read(id, useCase, updatedProd, 0);
     }
 
 
     // returns a product with the name, quantity and location associated with id passed in
     // by looking up the id's characteristics in the database
-    @Override
-    protected Product doInBackground(String... params) {
-        final String id = params[0];
+    public static void read(final String id, final ProdUseCase useCase,
+                                      final Product updatedProd, final int qtyChange)
+            throws ProductNotFoundException, FirebaseException {
+
         if (id == null) {
-            Log.e(READ_FAILED, "No product ID given"); // TODO display error msg
-            readSuccess = false;
-            return outProd;
+            throw new ProductNotFoundException("No product ID given");
         }
 
         Firebase ref = database.child("products");
 
-        final Semaphore semaphore = new Semaphore(0);
-        Log.w("adding listener ", "listener");
-
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot bigSnapshot) {
-                Log.w("onDataChange started ", "success");
+                Log.d("onDataChange started ", "success");
 
                 DataSnapshot snapshot = bigSnapshot.child(id);
 
                 // the product does not exist in the database
                 if (!snapshot.exists()) {
-                    Log.e(READ_FAILED, outProd.getId() + " not found"); // TODO display error msg
-                    readSuccess = false;
-                    return;
+                    e = new ProductNotFoundException("Product name: " + id + " not found in database");
                 }
-
-                // TODO
-                if (useCase.equals(ProdUseCase.VIEW_ALL_STOCKS)) {
-//                    for (DataSnapshot kitSnapshot: snapshot.getChildren()) {}
-                }
-
-                // if use case is to update product, no reading required.
-                // only check needed is that item exists in database, which is handled above
-                else if (useCase.equals(ProdUseCase.UPDATE_PRODUCT)) {
-                }
-
-                // if use case is to update quantity only, set outProd's qty to qty.
-                // Other operations performed in onPostExecute
-                else if (useCase.equals(ProdUseCase.UPDATE_QUANTITY_ONLY)) {
-                    int qty = (int) snapshot.child("quantity").getValue();
-                    outProd.setQuantity(qty);
-                }
-
-                // default behaviour
                 else {
                     outProd = snapshot.getValue(Product.class);
-                }
 
-                semaphore.release();
+                    switch (useCase) {
+                        case DISPLAY:
+                            //TODO
+                            break;
+
+                        case BUILD_KIT:
+//                            BuildKitActivity.displayProduct(result);
+                            break;
+
+                        // if use case is to update quantity only, set outProd's qty to qty
+                        // and write new qty to database
+                        case UPDATE_QUANTITY_EXPIRY:
+                            int qty = (int) (long) snapshot.child("quantity").getValue();
+                            outProd.setQuantity(qty + qtyChange);
+
+                            outProd.setExpiry(updatedProd.getExpiry());
+
+                            try {
+                                DatabaseWriteProduct.write(outProd, e);
+                            }
+                            catch (ProductNotFoundException exc) {
+                                e = exc;
+                            }
+                            break;
+
+                        // if use case is to update product, no reading required.
+                        // only check needed is that item exists in database, which is handled above
+                        // after check, product is written to database
+                        case UPDATE_PRODUCT:
+                            try {
+                                DatabaseWriteProduct.write(updatedProd, e);
+                            }
+                            catch (ProductNotFoundException exc) {
+                                e = exc;
+                            }
+                            break;
+
+                        case DELETE_PRODUCT:
+                            Product emptyProd = new Product();
+                            emptyProd.setId(id);
+                            emptyProd.setName("set_as_null");
+
+                            try {
+                                DatabaseWriteProduct.write(emptyProd, e);
+                            }
+                            catch (ProductNotFoundException exc) {
+                                e = exc;
+                            }
+                            break;
+
+                        // log product's characteristics
+                        case DEBUG:
+                            Log.w("result info", outProd.getId() + " " + outProd.getName() + " " +
+                                    outProd.getQuantity() + " " + StringCalendar.toString(outProd.getExpiry()));
+                            break;
+                    }
+                }
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                semaphore.release();
-                Log.e(READ_FAILED, "Firebase read error: " + firebaseError.getMessage()); // TODO display error msg
-                readSuccess = false;
+                throw new FirebaseException(firebaseError.getMessage());
             }
         });
 
-        try {
-            semaphore.acquire();
-        } catch (InterruptedException e) {
-            semaphore.release();
-            Log.e(READ_FAILED, "Semaphore acqn failed: " + e.getMessage()); // TODO display error msg
-            readSuccess = false;
-        }
-
-        return outProd;
     }
-
-    // Both result and outProd can be used
-    @Override
-    protected void onPostExecute(Product result) {
-        if (readSuccess) {
-            Log.w("onPostExecute", "success");
-
-            switch (useCase) {
-                case BUILD_KIT:
-                    //BuildKitActivity.displayProduct(result);
-                    break;
-
-                // rewrites all product info to database
-                case UPDATE_PRODUCT:
-                    productWriter = new DatabaseWriteProduct(database);
-                    productWriter.writeProduct(updatedProd, ProdUseCase.UPDATE_PRODUCT);
-                    break;
-
-                // only updates qty
-                case UPDATE_QUANTITY_ONLY:
-                    int newQty = outProd.getQuantity() + qtyChange;
-                    updatedProd.setQuantity(newQty);
-
-                    productWriter = new DatabaseWriteProduct(database);
-                    productWriter.writeProduct(updatedProd, ProdUseCase.UPDATE_QUANTITY_ONLY);
-                    break;
-
-                case DEBUG:
-                    Log.w("result info", result.getId() + " " + result.getName() + " " +
-                            result.getQuantity() + " " + StringCalendar.toString(result.getExpiry()));
-                    break;
-            }
-        }
-    }
-
 }
 

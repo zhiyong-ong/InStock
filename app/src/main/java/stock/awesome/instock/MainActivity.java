@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,41 +15,64 @@ import android.view.View;
 import com.firebase.client.Firebase;
 
 import stock.awesome.instock.Misc_classes.Product;
+import java.util.GregorianCalendar;
+
+import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 public class MainActivity extends AppCompatActivity {
 
-    public int var;
-
     protected void onCreate(Bundle savedInstanceState) {
+
         Firebase.setAndroidContext(this);
-        Firebase database = DatabaseLauncher.launch();
+        DatabaseLauncher.launch();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        Product testProd = new Product("282in", "name", "desc", "location", 15, new GregorianCalendar(2018, 11, 18));
+        // TESTING
+        Product testProd = new Product("AAAAAAAA", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
+
+        //product write testing
+        try {
+//            DatabaseWriteProduct.write(testProd);
+//            testProd.setQuantity(80);
+//            DatabaseWriteProduct.updateProduct(testProd);
+//            DatabaseWriteProduct.updateQuantity(testProd.getId(), -120);
+            DatabaseWriteProduct.deleteProduct("refactor");
+        }
+        catch (ProductNotFoundException e) {
+            Log.e("", e.getMessage());
+        }
+
+        // product read testing
+
+//        try {
+//            DatabaseReadProduct.read("282in", DatabaseReadProduct.ProdUseCase.DEBUG);
+//        }
+//        catch (ProductNotFoundException e){
+//            Log.e("", e.getMessage());
+//        }
+//
+//        // product update testing
+//        testProd.setLocation("changed location");
 //        DatabaseUpdateProduct updater = new DatabaseUpdateProduct(database);
 //        updater.updateProduct(testProd);
 //
-//        // write testing
-//        Kit testKit = new Kit("test_kit_3");
-        Product testProd = new Product("zzz", 10000);
-//
+//        // kit write testing
+//        Kit testKit = new Kit("test_kit_ching");
 //        testKit.addProduct(testProd, 3);
-//        testKit.addProduct("555", 6);
-//        testKit.addProduct("105", 44);
+//        testKit.addProduct("71ue", 6);
+//        testKit.addProduct("ab", 44);
+//        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
+//        kitWriter.writeKit(testKit);
+//
+//        // kit read testing
+//        DatabaseReadKit kitReader = new DatabaseReadKit(DatabaseReadKit.KitUseCase.DEBUG);
+//        kitReader.execute("test_kit_ching");
 
 
-        DatabaseUpdateProduct updater = new DatabaseUpdateProduct(database);
-        updater.updateProduct(testProd);
-
-
-//        DatabaseReadKit db = new DatabaseReadKit(database, DatabaseReadKit.KitUseCase.DEBUG);
-//        db.execute("to_read");
-
-        //Log.w("db written", "id: " + testProd.getId() + " location: " + testProd.getLocation());
     }
 
     public void sendNewItemIntent(View view) {
@@ -60,11 +84,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BuildKitActivity.class);
         startActivity(intent);
     }
+
     public void sendExistingKitIntent(View view) {
         Intent intent = new Intent(this, ExistingKitActivity.class);
         startActivity(intent);
     }
-    public void viewAllIntent (View view) {
+
+    public void viewAllIntent(View view) {
         Intent intent = new Intent(this, ViewAllStocksActivity.class);
         startActivity(intent);
     }

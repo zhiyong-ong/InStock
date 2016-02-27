@@ -26,6 +26,8 @@ import stock.awesome.instock.DatabaseWriteProduct;
 import stock.awesome.instock.Misc_classes.Product;
 import stock.awesome.instock.R;
 import stock.awesome.instock.Misc_classes.StringCalendar;
+import stock.awesome.instock.StringCalendar;
+import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +47,6 @@ public class InsertItemFragment extends Fragment {
     EditText inputQty;
     EditText inputLocation;
 
-    DatabaseWriteProduct writer = new DatabaseWriteProduct(new Firebase("https://scorching-inferno-2190.firebaseio.com/"));
     View aView;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -158,8 +159,12 @@ public class InsertItemFragment extends Fragment {
         int inputExpiryDate = myCalendar.get(Calendar.DATE);
         inputProd.setExpiry(new GregorianCalendar(inputExpiryYear, inputExpiryMonth, inputExpiryDate));
 
-        writer.writeProduct(inputProd, DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT);
-        // intent --> go to next activity, provide dialog box confirmation
+        try {
+            DatabaseWriteProduct.updateProduct(inputProd);
+        }
+        catch (ProductNotFoundException e) {
+            //TODO display error msg
+        }
     }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

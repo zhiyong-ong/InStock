@@ -17,6 +17,8 @@ import stock.awesome.instock.fragments.UpdateItemFragment;
 
 public class InputItemActivity extends AppCompatActivity {
 
+    DatabaseWriteProduct writer = new DatabaseWriteProduct();
+
     Firebase database;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -76,5 +78,7 @@ public class InputItemActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    
+
 
 }
