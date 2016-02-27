@@ -61,9 +61,9 @@ public class DatabaseWriteProduct {
 
 
     // To update quantity of a product, pass in id and change in qty (pos/neg)
-    public static void updateQuantity(String id, int qtyChange) throws ProductNotFoundException {
+    public static void updateQuantityExpiry(Product product) throws ProductNotFoundException {
         try {
-            DatabaseReadProduct.read(id, DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_ONLY, qtyChange);
+            DatabaseReadProduct.read(product.getId(), DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_EXPIRY, product);
         } catch (ProductNotFoundException e) {
             throw new ProductNotFoundException(e.getMessage());
         }

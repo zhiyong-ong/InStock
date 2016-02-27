@@ -23,7 +23,7 @@ public class DatabaseReadProduct {
     private static ProductNotFoundException e = null;
 
     public enum ProdUseCase {
-        BUILD_KIT, DISPLAY, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, DELETE_PRODUCT, DEBUG
+        BUILD_KIT, DISPLAY, UPDATE_PRODUCT, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG
     }
 
 
@@ -37,12 +37,6 @@ public class DatabaseReadProduct {
     public static void read(final String id,  final ProdUseCase useCase, final Product updatedProd)
             throws ProductNotFoundException, FirebaseException {
         read(id, useCase, updatedProd, 0);
-    }
-
-    // useCase UPDATE_QUANTITY_ONLY
-    public static void read(final String id,  final ProdUseCase useCase, final int qtyChange)
-            throws ProductNotFoundException, FirebaseException {
-        read(id, useCase, null, qtyChange);
     }
 
 
@@ -83,9 +77,12 @@ public class DatabaseReadProduct {
 
                         // if use case is to update quantity only, set outProd's qty to qty
                         // and write new qty to database
-                        case UPDATE_QUANTITY_ONLY:
+                        case UPDATE_QUANTITY_EXPIRY:
                             int qty = (int) (long) snapshot.child("quantity").getValue();
                             outProd.setQuantity(qty + qtyChange);
+
+                            outProd.setExpiry(updatedProd.getExpiry());
+
                             try {
                                 DatabaseWriteProduct.write(outProd, e);
                             }
