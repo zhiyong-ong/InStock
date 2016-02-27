@@ -14,6 +14,10 @@ public class DatabaseWriteProduct {
     public DatabaseWriteProduct() {
     }
 
+    public void writeProduct(Product product) {
+        writeProduct(product, DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT);
+    }
+
     // writes all the characteristic data of a product to database.
     // must have id, other values optional. All string fields are initialised with null values
     // and integer fields with -1.
@@ -27,7 +31,7 @@ public class DatabaseWriteProduct {
                 ref.child("quantity").setValue(product.getQuantity());
                 break;
 
-            // default behaviour. eg. if useCase UPDATE_PRODUCT
+            // default behaviour. eg. if useCase UPDATE_PRODUCT or null
             default:
                 ref.setValue(product);
                 if (product.getExpiry() != null) {

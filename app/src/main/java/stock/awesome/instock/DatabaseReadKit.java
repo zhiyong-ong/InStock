@@ -41,11 +41,11 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
         outKit.setKitName(kitName);
 
         final Semaphore semaphore = new Semaphore(0);
-        Log.w("Adding listener ", "SingleValueEvent");
+        Log.d("Adding listener ", "SingleValueEvent");
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.w("onDataChange started ", "success");
+                Log.d("onDataChange started ", "success");
 
                 // kitName entered not in the database
                 if (!snapshot.child("kits").child(kitName).exists()) {
@@ -116,7 +116,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
                     break;
 
                 case DEBUG:
-                    Log.w("Kit info:", result.getHashMap().toString());
+                    Log.w("Kit info", result.getHashMap().toString());
             }
         }
     }

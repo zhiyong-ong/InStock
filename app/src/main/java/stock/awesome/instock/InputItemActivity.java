@@ -18,7 +18,7 @@ import stock.awesome.instock.fragments.UpdateItemFragment;
 
 public class InputItemActivity extends AppCompatActivity {
 
-    DatabaseWriteProduct writer = new DatabaseWriteProduct(new Firebase("https://scorching-inferno-2190.firebaseio.com/"));
+    DatabaseWriteProduct writer = new DatabaseWriteProduct();
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide

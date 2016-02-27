@@ -1,5 +1,7 @@
 package stock.awesome.instock;
 
+import android.util.Log;
+
 import com.firebase.client.Firebase;
 
 import java.util.LinkedHashMap;
@@ -11,10 +13,14 @@ public class DatabaseWriteKit {
     private String id = null;
     private int qty = -1;
 
-    public DatabaseWriteKit(Firebase database) {
+    public DatabaseWriteKit() {
     }
 
     public void writeKit(Kit kit) {
+        if (kit.getKitName() == null) {
+            Log.e("Kit write failed", "kit has no name");
+        }
+
         Firebase ref = database.child("kits").child(kit.getKitName());
 
         LinkedHashMap<Product, Integer> kitHashMap = kit.getHashMap();

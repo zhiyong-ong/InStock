@@ -46,7 +46,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
     // returns a product with the name, quantity and location associated with id passed in
     // by looking up the id's characteristics in the database
     @Override
-    protected Product doInBackground(String... params) {
+    protected Product doInBackground(String... params) throws IllegalArgumentException {
         final String id = params[0];
         if (id == null) {
             Log.e(READ_FAILED, "No product ID given"); // TODO display error msg
@@ -57,12 +57,12 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
         Firebase ref = database.child("products");
 
         final Semaphore semaphore = new Semaphore(0);
-        Log.w("adding listener ", "listener");
+        Log.d("adding listener ", "listener");
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot bigSnapshot) {
-                Log.w("onDataChange started ", "success");
+                Log.d("onDataChange started ", "success");
 
                 DataSnapshot snapshot = bigSnapshot.child(id);
 
@@ -73,26 +73,28 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                     return;
                 }
 
-                // TODO
-                if (useCase.equals(ProdUseCase.VIEW_ALL_STOCKS)) {
-//                    for (DataSnapshot kitSnapshot: snapshot.getChildren()) {}
-                }
+                switch (useCase) {
+                    // TODO
+                    case VIEW_ALL_STOCKS:
+//                        for (DataSnapshot kitSnapshot: snapshot.getChildren()) {}
+                        break;
 
-                // if use case is to update product, no reading required.
-                // only check needed is that item exists in database, which is handled above
-                else if (useCase.equals(ProdUseCase.UPDATE_PRODUCT)) {
-                }
+                    // if use case is to update quantity only, set outProd's qty to qty.
+                    // Other operations performed in onPostExecute
+                    case UPDATE_QUANTITY_ONLY:
+                        int qty = (int) snapshot.child("quantity").getValue();
+                        outProd.setQuantity(qty);
+                        break;
 
-                // if use case is to update quantity only, set outProd's qty to qty.
-                // Other operations performed in onPostExecute
-                else if (useCase.equals(ProdUseCase.UPDATE_QUANTITY_ONLY)) {
-                    int qty = (int) snapshot.child("quantity").getValue();
-                    outProd.setQuantity(qty);
-                }
+                    // if use case is to update product, no reading required.
+                    // only check needed is that item exists in database, which is handled above
+                    case UPDATE_PRODUCT:
+                        break;
 
-                // default behaviour
-                else {
-                    outProd = snapshot.getValue(Product.class);
+                    // default behaviour
+                    default:
+                        outProd = snapshot.getValue(Product.class);
+                        break;
                 }
 
                 semaphore.release();
@@ -121,7 +123,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
     @Override
     protected void onPostExecute(Product result) {
         if (readSuccess) {
-            Log.w("onPostExecute", "success");
+            Log.d("onPostExecute", "success");
 
             switch (useCase) {
                 case BUILD_KIT:

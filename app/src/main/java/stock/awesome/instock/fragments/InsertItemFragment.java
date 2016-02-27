@@ -45,7 +45,7 @@ public class InsertItemFragment extends Fragment {
     EditText inputQty;
     EditText inputLocation;
 
-    DatabaseWriteProduct writer = new DatabaseWriteProduct(new Firebase("https://scorching-inferno-2190.firebaseio.com/"));
+    DatabaseWriteProduct writer = new DatabaseWriteProduct();
     View aView;
 
     // TODO: Rename parameter arguments, choose names that match

@@ -13,9 +13,9 @@ import android.view.View;
 
 import com.firebase.client.Firebase;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.GregorianCalendar;
 
-    public int var;
+public class MainActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         Firebase.setAndroidContext(this);
@@ -26,27 +26,30 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        Product testProd = new Product("282in", "name", "desc", "location", 15, new GregorianCalendar(2018, 11, 18));
-//        DatabaseUpdateProduct updater = new DatabaseUpdateProduct(database);
-//        updater.updateProduct(testProd);
-//
-//        // write testing
-//        Kit testKit = new Kit("test_kit_3");
-        Product testProd = new Product("zzz", 10000);
-//
-//        testKit.addProduct(testProd, 3);
-//        testKit.addProduct("555", 6);
-//        testKit.addProduct("105", 44);
+        // TESTING
+        Product testProd = new Product("282in", "name", "desc", "location", 15, new GregorianCalendar(2018, 11, 18));
 
+        //product write testing
+        DatabaseWriteProduct writer = new DatabaseWriteProduct();
+        writer.writeProduct(testProd);
 
+        // product update testing
+        testProd.setLocation("changed location");
         DatabaseUpdateProduct updater = new DatabaseUpdateProduct(database);
         updater.updateProduct(testProd);
 
+        // kit write testing
+        Kit testKit = new Kit("test_kit_ching");
+        testKit.addProduct(testProd, 3);
+        testKit.addProduct("71ue", 6);
+        testKit.addProduct("ab", 44);
+        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
+        kitWriter.writeKit(testKit);
 
-//        DatabaseReadKit db = new DatabaseReadKit(database, DatabaseReadKit.KitUseCase.DEBUG);
-//        db.execute("to_read");
+        // kit read testing
+        DatabaseReadKit kitReader = new DatabaseReadKit(DatabaseReadKit.KitUseCase.DEBUG);
+        kitReader.execute("test_kit_ching");
 
-        //Log.w("db written", "id: " + testProd.getId() + " location: " + testProd.getLocation());
     }
 
     public void sendNewItemIntent(View view) {
@@ -58,11 +61,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BuildKitActivity.class);
         startActivity(intent);
     }
+
     public void sendExistingKitIntent(View view) {
         Intent intent = new Intent(this, ExistingKitActivity.class);
         startActivity(intent);
     }
-    public void viewAllIntent (View view) {
+
+    public void viewAllIntent(View view) {
         Intent intent = new Intent(this, ViewAllStocksActivity.class);
         startActivity(intent);
     }
