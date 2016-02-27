@@ -16,7 +16,7 @@ import java.util.concurrent.Semaphore;
  */
 public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
-    private Firebase database = null;
+    private final static Firebase database = DatabaseLauncher.database;
     private Product outProd = new Product(), updatedProd = null;
     private String READ_FAILED = "Product database read failed";
     private ProdUseCase useCase = null;
@@ -28,18 +28,16 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
         BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, VIEW_ALL_STOCKS, DEBUG
     }
 
-    public DatabaseReadProduct(Firebase database, ProdUseCase useCase) {
-        this(database, useCase, 0);
+    public DatabaseReadProduct(ProdUseCase useCase) {
+        this(useCase, 0);
     }
 
-    public DatabaseReadProduct(Firebase database, ProdUseCase useCase, int qtyChange) {
-        this.database = database;
+    public DatabaseReadProduct(ProdUseCase useCase, int qtyChange) {
         this.useCase = useCase;
         this.qtyChange = qtyChange;
     }
 
-    public DatabaseReadProduct(Firebase database, ProdUseCase useCase, Product updatedProd) {
-        this.database = database;
+    public DatabaseReadProduct(ProdUseCase useCase, Product updatedProd) {
         this.useCase = useCase;
         this.updatedProd = updatedProd;
     }
@@ -132,7 +130,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
 
                 // rewrites all product info to database
                 case UPDATE_PRODUCT:
-                    productWriter = new DatabaseWriteProduct(database);
+                    productWriter = new DatabaseWriteProduct();
                     productWriter.writeProduct(updatedProd, ProdUseCase.UPDATE_PRODUCT);
                     break;
 
@@ -141,7 +139,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                     int newQty = outProd.getQuantity() + qtyChange;
                     updatedProd.setQuantity(newQty);
 
-                    productWriter = new DatabaseWriteProduct(database);
+                    productWriter = new DatabaseWriteProduct();
                     productWriter.writeProduct(updatedProd, ProdUseCase.UPDATE_QUANTITY_ONLY);
                     break;
 

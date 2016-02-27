@@ -9,16 +9,10 @@ import com.firebase.client.Firebase;
  */
 public class DatabaseWriteProduct {
 
-    private Firebase database = null;
+    private final static Firebase database = DatabaseLauncher.database;
 
-    public DatabaseWriteProduct(Firebase database) {
-        this.database = database;
+    public DatabaseWriteProduct() {
     }
-
-
-//    public void writeProduct(Product product) {
-//        writeProduct(product, null);
-//    }
 
     // writes all the characteristic data of a product to database.
     // must have id, other values optional. All string fields are initialised with null values
@@ -34,7 +28,7 @@ public class DatabaseWriteProduct {
                 break;
 
             // default behaviour. eg. if useCase UPDATE_PRODUCT
-            case UPDATE_PRODUCT:
+            default:
                 ref.setValue(product);
                 if (product.getExpiry() != null) {
                     ref.child("expiry").setValue(StringCalendar.toString(product.getExpiry()));

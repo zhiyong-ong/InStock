@@ -1,6 +1,7 @@
 package stock.awesome.instock;
 
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
@@ -16,7 +17,7 @@ import java.util.concurrent.Semaphore;
  * execute(String name) reads from database and returns a Kit associated with that name.
  */
 public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
-    private Firebase database = null;
+    private static final Firebase database = DatabaseLauncher.database;
     private Kit outKit = new Kit();
     private KitUseCase useCase = null;
     private String READ_FAILED = "Kit database read failed";
@@ -26,8 +27,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
         UPDATE_KIT, DEBUG
     }
 
-    public DatabaseReadKit(Firebase database, KitUseCase useCase) {
-        this.database = database;
+    public DatabaseReadKit(KitUseCase useCase) {
         this.useCase = useCase;
     }
 

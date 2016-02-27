@@ -7,12 +7,11 @@ import java.util.Map;
 
 public class DatabaseWriteKit {
 
-    Firebase database = null;
-    String id = null;
-    int qty = -1;
+    private static final Firebase database = DatabaseLauncher.database;
+    private String id = null;
+    private int qty = -1;
 
     public DatabaseWriteKit(Firebase database) {
-        this.database = database;
     }
 
     public void writeKit(Kit kit) {

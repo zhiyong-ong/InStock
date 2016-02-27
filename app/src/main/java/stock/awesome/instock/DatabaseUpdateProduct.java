@@ -32,7 +32,7 @@ public class DatabaseUpdateProduct {
 
         // only quantity should be increased/decreased
         if (product == null) {
-            reader = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_ONLY, qtyChange);
+            reader = new DatabaseReadProduct(DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_ONLY, qtyChange);
             reader.execute(id);
         }
 
@@ -40,7 +40,7 @@ public class DatabaseUpdateProduct {
         // IMPT: existing qty will not be increased/decreased but overwritten with product's quantity
         else {
 
-            reader = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT, product);
+            reader = new DatabaseReadProduct(DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT, product);
 
             reader.execute(product.getId());
         }
