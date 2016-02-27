@@ -30,21 +30,21 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 //        // TESTING
-        Product testProd = new Product("282in", "name", "desc", "location", 9234, new GregorianCalendar(2018, 11, 18));
+//        Product testProd = new Product("282in", "name", "desc", "location", 9234, new GregorianCalendar(2018, 11, 18));
 //
 //        //product write testing
 //        DatabaseWriteProduct writer = new DatabaseWriteProduct();
 //        writer.writeProduct(testProd);
 //
-        // product read testing
-        TestProdRead testReader = new TestProdRead(DatabaseReadProduct.ProdUseCase.DEBUG);
-        try {
-            testReader.readProduct("282in");
-        }
-        catch (ProductNotFoundException e){
-            Log.e(e.getMessage(), "");
-        }
-
+//        // product read testing
+//        DatabaseReadProduct testReader = new DatabaseReadProduct(DatabaseReadProduct.ProdUseCase.DEBUG);
+//        try {
+//            testReader.readProduct("282in");
+//        }
+//        catch (ProductNotFoundException e){
+//            Log.e(e.getMessage(), "");
+//        }
+//
 //        // product update testing
 //        testProd.setLocation("changed location");
 //        DatabaseUpdateProduct updater = new DatabaseUpdateProduct(database);

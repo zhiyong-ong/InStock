@@ -11,10 +11,7 @@ public class DatabaseWriteKit {
 
     private static final Firebase database = DatabaseLauncher.database;
 
-    public DatabaseWriteKit() {
-    }
-
-    public void writeKit(Kit kit) {
+    public static void write(Kit kit) {
         if (kit.getKitName() == null) {
             Log.e("Kit write failed", "kit has no name");
         }
