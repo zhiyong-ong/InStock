@@ -10,8 +10,6 @@ import java.util.Map;
 public class DatabaseWriteKit {
 
     private static final Firebase database = DatabaseLauncher.database;
-    private String id = null;
-    private int qty = -1;
 
     public DatabaseWriteKit() {
     }
@@ -29,8 +27,8 @@ public class DatabaseWriteKit {
 
             Map<String, Object> newKit = new LinkedHashMap<String, Object>();
 
-            id = entry.getKey().getId();
-            qty = entry.getValue();
+            String id = entry.getKey().getId();
+            int qty = entry.getValue();
 
             newKit.put("/id", id);
             newKit.put("/quantity", qty);

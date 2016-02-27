@@ -145,7 +145,8 @@ public class BuildKitActivity extends AppCompatActivity {
         b.show();
     }
     /*
-    public static Product displayProduct(Product result) {
+    // Handle exceptions thrown by DatabaseReadProduct here
+    public static Product displayProduct(Product result, Exception e) {
         Log.w("result info:", result.getId() + " " + result.getName() + " " +
                 result.getQuantity() + " " + StringCalendar.toString(result.getExpiry()));
         return result;

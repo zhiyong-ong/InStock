@@ -1,7 +1,6 @@
 package stock.awesome.instock;
 
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
@@ -10,6 +9,9 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.concurrent.Semaphore;
+
+import stock.awesome.instock.exceptions.KitNotFoundException;
+import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 
 /**
@@ -22,6 +24,7 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
     private KitUseCase useCase = null;
     private String READ_FAILED = "Kit database read failed";
     private boolean readSuccess = true;
+    private Exception e = null;
 
     public enum KitUseCase {
         UPDATE_KIT, DEBUG
@@ -49,40 +52,50 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
 
                 // kitName entered not in the database
                 if (!snapshot.child("kits").child(kitName).exists()) {
-                    Log.e(READ_FAILED, kitName + " not found"); // TODO display error msg
+
+//                    Log.e(READ_FAILED, "Kit name: " + kitName + " not found in database");
+
+                    // TODO display error msg
+                    e = new KitNotFoundException("Kit name: " + kitName + " not found in database");
                     readSuccess = false;
-                    return;
                 }
 
                 // look at kits sub-database
-                for (DataSnapshot kitSnapshot: snapshot.child("kits").child(kitName).getChildren()) {
+                else {
+                    for (DataSnapshot kitSnapshot : snapshot.child("kits").child(kitName).getChildren()) {
 
-                    ProductInKit pink = kitSnapshot.getValue(ProductInKit.class);
+                        ProductInKit pink = kitSnapshot.getValue(ProductInKit.class);
 
-                    String prodId = pink.getId();
-                    int prodQty = pink.getQuantity();
+                        String prodId = pink.getId();
+                        int prodQty = pink.getQuantity();
 
-                    Log.w("Kit info received", prodId + " " + Integer.toString(prodQty));
+                        Log.w("Kit info received", prodId + " " + Integer.toString(prodQty));
 
-                    // look at products sub-database
-                    DataSnapshot prodSnapshot = snapshot.child("products").child(prodId);
+                        // look at products sub-database
+                        DataSnapshot prodSnapshot = snapshot.child("products").child(prodId);
 
-                    // product in kit not in database
-                    if (!prodSnapshot.exists()) {
-                        Log.e(READ_FAILED, prodId + " not found in products database"); // TODO display error msg
-                        readSuccess = false;
-                        return;
+                        // product in kit not in database
+                        if (!prodSnapshot.exists()) {
+
+//                            Log.e(READ_FAILED, "Product id: " + prodId + " not found in products database");
+
+                            // TODO display error msg
+                            e = new ProductNotFoundException("Product id: " + prodId + " not found in products database");
+                            readSuccess = false;
+                        }
+
+                        else {
+                            Product outProd = prodSnapshot.getValue(Product.class);
+
+                            Log.w("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
+
+                            // variables from kit sub-db
+                            outProd.setId(prodId);
+                            outProd.setQuantity(prodQty);
+
+                            outKit.addProduct(outProd, prodQty);
+                        }
                     }
-
-                    Product outProd = prodSnapshot.getValue(Product.class);
-
-                    Log.w("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
-
-                    // variables from kit sub-db
-                    outProd.setId(prodId);
-                    outProd.setQuantity(prodQty);
-
-                    outKit.addProduct(outProd, prodQty);
                 }
 
                 semaphore.release();
@@ -91,7 +104,9 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 semaphore.release();
-                Log.e(READ_FAILED, "Firebase read error: " + firebaseError.getMessage()); // TODO display error msg
+//                Log.e(READ_FAILED, "Firebase read error: " + firebaseError.getMessage()); // TODO display error msg
+
+                e = firebaseError.toException();
                 readSuccess = false;
             }
         });
@@ -100,7 +115,10 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
             semaphore.acquire();
         } catch (InterruptedException e) {
             semaphore.release();
-            Log.e(READ_FAILED, "Semaphore acqn failed: " + e.getMessage()); // TODO display error msg
+
+//            Log.e(READ_FAILED, "Semaphore acqn failed: " + e.getMessage()); // TODO display error msg
+
+            this.e = e;
             readSuccess = false;
         }
 
@@ -109,8 +127,9 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
 
     @Override
     protected void onPostExecute(Kit result) {
-        // Log.w("After Asynctask", result.getName());
         if (readSuccess) {
+            // Log.d("After Asynctask", result.getName());
+
             switch (useCase) {
                 case UPDATE_KIT:
                     break;
@@ -118,6 +137,10 @@ public class DatabaseReadKit extends AsyncTask<String, Void, Kit> {
                 case DEBUG:
                     Log.w("Kit info", result.getHashMap().toString());
             }
+        }
+
+        else {
+            //TODO
         }
     }
 }

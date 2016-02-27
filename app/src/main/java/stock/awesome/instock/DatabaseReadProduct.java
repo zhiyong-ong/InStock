@@ -10,6 +10,9 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.concurrent.Semaphore;
 
+import stock.awesome.instock.exceptions.KitNotFoundException;
+import stock.awesome.instock.exceptions.ProductNotFoundException;
+
 /**
  * ** Always call execute with param id **
  * execute(String id) reads from database and returns a Product associated with that id.
@@ -22,10 +25,11 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
     private ProdUseCase useCase = null;
     private boolean readSuccess = true;
     private int qtyChange = 0;
-    private DatabaseWriteProduct productWriter = null;
+    private DatabaseWriteProduct productWriter = new DatabaseWriteProduct();
+    private Exception e = null;
 
     public enum ProdUseCase {
-        BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, VIEW_ALL_STOCKS, DEBUG
+        BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, DELETE_PRODUCT, DEBUG
     }
 
     public DatabaseReadProduct(ProdUseCase useCase) {
@@ -46,74 +50,79 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
     // returns a product with the name, quantity and location associated with id passed in
     // by looking up the id's characteristics in the database
     @Override
-    protected Product doInBackground(String... params) throws IllegalArgumentException {
+    protected Product doInBackground(String... params) {
         final String id = params[0];
         if (id == null) {
-            Log.e(READ_FAILED, "No product ID given"); // TODO display error msg
+//            Log.e(READ_FAILED, "No product ID given"); // TODO display error msg
+
+            e = new ProductNotFoundException("No product ID given");
             readSuccess = false;
-            return outProd;
-        }
+        } else {
+            Firebase ref = database.child("products");
 
-        Firebase ref = database.child("products");
+            final Semaphore semaphore = new Semaphore(0);
+            Log.d("adding listener ", "listener");
 
-        final Semaphore semaphore = new Semaphore(0);
-        Log.d("adding listener ", "listener");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot bigSnapshot) {
+                    Log.d("onDataChange started ", "success");
 
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot bigSnapshot) {
-                Log.d("onDataChange started ", "success");
+                    DataSnapshot snapshot = bigSnapshot.child(id);
 
-                DataSnapshot snapshot = bigSnapshot.child(id);
+                    // the product does not exist in the database
+                    if (!snapshot.exists()) {
+//                        Log.e(READ_FAILED, outProd.getId() + " not found"); // TODO display error msg
 
-                // the product does not exist in the database
-                if (!snapshot.exists()) {
-                    Log.e(READ_FAILED, outProd.getId() + " not found"); // TODO display error msg
+                        e = new ProductNotFoundException("Product name: " + id + " not found in database");
+                        readSuccess = false;
+                    } else {
+                        switch (useCase) {
+
+                            // if use case is to update quantity only, set outProd's qty to qty.
+                            // Other operations performed in onPostExecute
+                            case UPDATE_QUANTITY_ONLY:
+                                int qty = (int) snapshot.child("quantity").getValue();
+                                outProd.setQuantity(qty);
+                                break;
+
+                            // if use case is to update/delete product, no reading required.
+                            // only check needed is that item exists in database, which is handled above
+                            case UPDATE_PRODUCT:
+                            case DELETE_PRODUCT:
+                                break;
+
+                            // default behaviour
+                            default:
+                                outProd = snapshot.getValue(Product.class);
+                                break;
+                        }
+                    }
+
+                    semaphore.release();
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    semaphore.release();
+
+//                Log.e(READ_FAILED, "Firebase read error: " + firebaseError.getMessage()); // TODO display error msg
+
+                    e = firebaseError.toException();
                     readSuccess = false;
-                    return;
                 }
+            });
 
-                switch (useCase) {
-                    // TODO
-                    case VIEW_ALL_STOCKS:
-//                        for (DataSnapshot kitSnapshot: snapshot.getChildren()) {}
-                        break;
-
-                    // if use case is to update quantity only, set outProd's qty to qty.
-                    // Other operations performed in onPostExecute
-                    case UPDATE_QUANTITY_ONLY:
-                        int qty = (int) snapshot.child("quantity").getValue();
-                        outProd.setQuantity(qty);
-                        break;
-
-                    // if use case is to update product, no reading required.
-                    // only check needed is that item exists in database, which is handled above
-                    case UPDATE_PRODUCT:
-                        break;
-
-                    // default behaviour
-                    default:
-                        outProd = snapshot.getValue(Product.class);
-                        break;
-                }
-
+            try {
+                semaphore.acquire();
+            } catch (InterruptedException e) {
                 semaphore.release();
-            }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                semaphore.release();
-                Log.e(READ_FAILED, "Firebase read error: " + firebaseError.getMessage()); // TODO display error msg
+//            Log.e(READ_FAILED, "Semaphore acqn failed: " + e.getMessage()); // TODO display error msg
+
+                this.e = e;
                 readSuccess = false;
             }
-        });
-
-        try {
-            semaphore.acquire();
-        } catch (InterruptedException e) {
-            semaphore.release();
-            Log.e(READ_FAILED, "Semaphore acqn failed: " + e.getMessage()); // TODO display error msg
-            readSuccess = false;
         }
 
         return outProd;
@@ -122,36 +131,50 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
     // Both result and outProd can be used
     @Override
     protected void onPostExecute(Product result) {
-        if (readSuccess) {
-            Log.d("onPostExecute", "success");
 
-            switch (useCase) {
-                case BUILD_KIT:
+//        Log.d("onPostExecute", "success");
+
+        switch (useCase) {
+            case BUILD_KIT:
+                if (readSuccess) {
                     //BuildKitActivity.displayProduct(result);
-                    break;
+                } else {
 
-                // rewrites all product info to database
-                case UPDATE_PRODUCT:
-                    productWriter = new DatabaseWriteProduct();
+                }
+                break;
+
+            // rewrites all product info to database
+            case UPDATE_PRODUCT:
+                if (readSuccess) {
                     productWriter.writeProduct(updatedProd, ProdUseCase.UPDATE_PRODUCT);
-                    break;
+                } else {
 
-                // only updates qty
-                case UPDATE_QUANTITY_ONLY:
+                }
+                break;
+
+            // only updates qty
+            case UPDATE_QUANTITY_ONLY:
+                if (readSuccess) {
                     int newQty = outProd.getQuantity() + qtyChange;
                     updatedProd.setQuantity(newQty);
-
-                    productWriter = new DatabaseWriteProduct();
                     productWriter.writeProduct(updatedProd, ProdUseCase.UPDATE_QUANTITY_ONLY);
-                    break;
+                } else {
 
-                case DEBUG:
+                }
+                break;
+
+            case DEBUG:
+                if (readSuccess) {
                     Log.w("result info", result.getId() + " " + result.getName() + " " +
                             result.getQuantity() + " " + StringCalendar.toString(result.getExpiry()));
-                    break;
-            }
+                } else {
+
+                }
+                break;
         }
+
     }
+
 
 }
 

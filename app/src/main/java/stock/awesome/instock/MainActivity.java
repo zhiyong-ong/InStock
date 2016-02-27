@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,8 @@ import android.view.View;
 import com.firebase.client.Firebase;
 
 import java.util.GregorianCalendar;
+
+import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,29 +29,39 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // TESTING
-        Product testProd = new Product("282in", "name", "desc", "location", 15, new GregorianCalendar(2018, 11, 18));
+//        // TESTING
+        Product testProd = new Product("282in", "name", "desc", "location", 9234, new GregorianCalendar(2018, 11, 18));
+//
+//        //product write testing
+//        DatabaseWriteProduct writer = new DatabaseWriteProduct();
+//        writer.writeProduct(testProd);
+//
+        // product read testing
+        TestProdRead testReader = new TestProdRead(DatabaseReadProduct.ProdUseCase.DEBUG);
+        try {
+            testReader.readProduct("282in");
+        }
+        catch (ProductNotFoundException e){
+            Log.e(e.getMessage(), "");
+        }
 
-        //product write testing
-        DatabaseWriteProduct writer = new DatabaseWriteProduct();
-        writer.writeProduct(testProd);
+//        // product update testing
+//        testProd.setLocation("changed location");
+//        DatabaseUpdateProduct updater = new DatabaseUpdateProduct(database);
+//        updater.updateProduct(testProd);
+//
+//        // kit write testing
+//        Kit testKit = new Kit("test_kit_ching");
+//        testKit.addProduct(testProd, 3);
+//        testKit.addProduct("71ue", 6);
+//        testKit.addProduct("ab", 44);
+//        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
+//        kitWriter.writeKit(testKit);
+//
+//        // kit read testing
+//        DatabaseReadKit kitReader = new DatabaseReadKit(DatabaseReadKit.KitUseCase.DEBUG);
+//        kitReader.execute("test_kit_ching");
 
-        // product update testing
-        testProd.setLocation("changed location");
-        DatabaseUpdateProduct updater = new DatabaseUpdateProduct(database);
-        updater.updateProduct(testProd);
-
-        // kit write testing
-        Kit testKit = new Kit("test_kit_ching");
-        testKit.addProduct(testProd, 3);
-        testKit.addProduct("71ue", 6);
-        testKit.addProduct("ab", 44);
-        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
-        kitWriter.writeKit(testKit);
-
-        // kit read testing
-        DatabaseReadKit kitReader = new DatabaseReadKit(DatabaseReadKit.KitUseCase.DEBUG);
-        kitReader.execute("test_kit_ching");
 
     }
 
