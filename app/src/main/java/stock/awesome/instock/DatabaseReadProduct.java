@@ -23,7 +23,7 @@ public class DatabaseReadProduct {
     private static ProductNotFoundException e = null;
 
     public enum ProdUseCase {
-        BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, DELETE_PRODUCT, DEBUG
+        BUILD_KIT, DISPLAY, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, DELETE_PRODUCT, DEBUG
     }
 
 
@@ -73,6 +73,10 @@ public class DatabaseReadProduct {
                     outProd = snapshot.getValue(Product.class);
 
                     switch (useCase) {
+                        case DISPLAY:
+                            //TODO
+                            break;
+
                         case BUILD_KIT:
 //                            BuildKitActivity.displayProduct(result);
                             break;
