@@ -1,4 +1,4 @@
-package stock.awesome.instock.Database;
+package stock.awesome.instock;
 
 import android.os.AsyncTask;
 import android.util.Log;

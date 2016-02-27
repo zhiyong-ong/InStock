@@ -13,7 +13,6 @@ import android.view.View;
 
 import com.firebase.client.Firebase;
 
-import stock.awesome.instock.Database.DatabaseUpdateProduct;
 import stock.awesome.instock.Misc_classes.Product;
 
 public class MainActivity extends AppCompatActivity {

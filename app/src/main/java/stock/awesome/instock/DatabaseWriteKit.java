@@ -1,4 +1,4 @@
-package stock.awesome.instock.Database;
+package stock.awesome.instock;
 
 import com.firebase.client.Firebase;
 

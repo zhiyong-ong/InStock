@@ -21,8 +21,8 @@ import com.firebase.client.Firebase;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import stock.awesome.instock.Database.DatabaseReadProduct;
-import stock.awesome.instock.Database.DatabaseWriteProduct;
+import stock.awesome.instock.DatabaseReadProduct;
+import stock.awesome.instock.DatabaseWriteProduct;
 import stock.awesome.instock.Misc_classes.Product;
 import stock.awesome.instock.R;
 import stock.awesome.instock.Misc_classes.StringCalendar;
