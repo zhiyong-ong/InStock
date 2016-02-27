@@ -1,9 +1,12 @@
-package stock.awesome.instock;
+package stock.awesome.instock.Database;
 
 import com.firebase.client.Firebase;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import stock.awesome.instock.Misc_classes.Kit;
+import stock.awesome.instock.Misc_classes.Product;
 
 public class DatabaseWriteKit {
 

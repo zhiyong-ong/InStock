@@ -1,4 +1,4 @@
-package stock.awesome.instock;
+package stock.awesome.instock.Misc_classes;
 
 import android.util.Log;
 

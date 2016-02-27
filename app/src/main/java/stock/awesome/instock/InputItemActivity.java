@@ -1,25 +1,23 @@
 package stock.awesome.instock;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.firebase.client.Firebase;
 
+import stock.awesome.instock.Misc_classes.PagerAdapter;
 import stock.awesome.instock.fragments.InsertItemFragment;
 import stock.awesome.instock.fragments.UpdateItemFragment;
 
 public class InputItemActivity extends AppCompatActivity {
 
-    DatabaseWriteProduct writer = new DatabaseWriteProduct(new Firebase("https://scorching-inferno-2190.firebaseio.com/"));
-
+    Firebase database;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -41,6 +39,7 @@ public class InputItemActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        database = DatabaseLauncher.database.child("products");
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -77,14 +76,5 @@ public class InputItemActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onBackPressed() {
-        Log.e("BUTTON PRESSED", "Button pressed");
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
-
 
 }

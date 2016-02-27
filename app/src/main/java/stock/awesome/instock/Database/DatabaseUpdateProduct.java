@@ -1,7 +1,9 @@
-package stock.awesome.instock;
+package stock.awesome.instock.Database;
 
 
 import com.firebase.client.Firebase;
+
+import stock.awesome.instock.Misc_classes.Product;
 
 /**
  * Constructor takes in either String id of product to be updated, or

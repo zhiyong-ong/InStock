@@ -27,6 +27,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import stock.awesome.instock.Database.DatabaseUpdateProduct;
+import stock.awesome.instock.Misc_classes.Product;
+import stock.awesome.instock.Misc_classes.StringCalendar;
+
 public class ViewAllStocksActivity extends AppCompatActivity {
 
     Firebase database;

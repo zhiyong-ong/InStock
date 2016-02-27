@@ -1,12 +1,16 @@
 package stock.awesome.instock.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import stock.awesome.instock.R;
 
@@ -19,6 +23,9 @@ import stock.awesome.instock.R;
  * create an instance of this fragment.
  */
 public class UpdateItemFragment extends Fragment {
+
+    View aView;
+    Context context = getActivity();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,8 +71,38 @@ public class UpdateItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        aView = inflater.inflate(R.layout.fragment_update_item, container, false);
+
+        Button searchButton = (Button) aView.findViewById(R.id.searchButton);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = LayoutInflater.from(getActivity());
+                final View dialogView = inflater.inflate(R.layout.search_box, null);
+
+                final TextView productIDText = (TextView) dialogView.findViewById(R.id.productView);
+                final TextView quantityText = (TextView) dialogView.findViewById(R.id.qtyView);
+                final TextView expiryText = (TextView) dialogView.findViewById(R.id.expiryView);
+
+                dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+                dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //newProduct.remove(position);
+                        //listAdapter.notifyDataSetChanged();
+                    }
+                });
+                dialogBuilder.setView(dialogView);
+                AlertDialog b = dialogBuilder.create();
+                b.show();
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_update_item, container, false);
+        return aView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -100,5 +137,44 @@ public class UpdateItemFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+/*
+    public static class searchDialogFragment extends DialogFragment {
+        Context mContext;
 
+        public searchDialogFragment() {
+            mContext = getActivity();
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            //View view = getActivity().getLayoutInflater().inflate(R.layout.search_box, new LinearLayout(getActivity()), false);
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mContext);
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            final View dialogView = inflater.inflate(R.layout.search_box, null);
+            // Retrieve layout elements
+            final TextView productIDText = (TextView) dialogView.findViewById(R.id.productView);
+            final TextView quantityText = (TextView) dialogView.findViewById(R.id.qtyView);
+            final TextView expiryText = (TextView) dialogView.findViewById(R.id.expiryView);
+
+            dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dismiss();
+                    // on success
+                }
+            });
+
+            dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialogBuilder.setView(dialogView);
+            // Build dialog
+            return dialogBuilder.create();
+
+        }
+    }
+    */
 }

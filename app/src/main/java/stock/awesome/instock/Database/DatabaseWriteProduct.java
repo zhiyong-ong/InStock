@@ -1,6 +1,9 @@
-package stock.awesome.instock;
+package stock.awesome.instock.Database;
 
 import com.firebase.client.Firebase;
+
+import stock.awesome.instock.Misc_classes.Product;
+import stock.awesome.instock.Misc_classes.StringCalendar;
 
 /**
  * writeProduct writes a product and its associated information to the database.
