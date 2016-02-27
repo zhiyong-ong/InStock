@@ -26,15 +26,15 @@ public class MainActivity extends AppCompatActivity {
 
         // write testing
 //        Kit testKit = new Kit("test_kit_3");
-//        Product testProd = new Product("4", 6);
+        Product testProd = new Product("zzz", 10000);
 //
 //        testKit.addProduct(testProd, 3);
 //        testKit.addProduct("555", 6);
 //        testKit.addProduct("105", 44);
 
 
-//        DatabaseReadProduct reader = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.BUILD_KIT);
-//        reader.execute("zzz");
+        DatabaseUpdateProduct updater = new DatabaseUpdateProduct(database);
+        updater.updateProduct(testProd);
 
 
 //        DatabaseReadKit db = new DatabaseReadKit(database, DatabaseReadKit.KitUseCase.DEBUG);

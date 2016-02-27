@@ -83,7 +83,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                 // if use case is to update product, no reading required.
                 // only check needed is that item exists in database, which is handled above
                 else if (useCase.equals(ProdUseCase.UPDATE_PRODUCT)) {
-                    return;
+//                    return;
                 }
 
                 // if use case is to update quantity only, set outProd's qty to qty.
@@ -149,6 +149,7 @@ public class DatabaseReadProduct extends AsyncTask<String, Void, Product> {
                 case DEBUG:
                     Log.w("result info", result.getId() + " " + result.getName() + " " +
                             result.getQuantity() + " " + StringCalendar.toString(result.getExpiry()));
+                    break;
             }
         }
     }
