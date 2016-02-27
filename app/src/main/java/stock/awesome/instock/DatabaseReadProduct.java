@@ -70,20 +70,18 @@ public class DatabaseReadProduct {
                     e = new ProductNotFoundException("Product name: " + id + " not found in database");
                 }
                 else {
+                    outProd = snapshot.getValue(Product.class);
+
                     switch (useCase) {
                         case BUILD_KIT:
-                            outProd = snapshot.getValue(Product.class);
 //                            BuildKitActivity.displayProduct(result);
                             break;
 
                         // if use case is to update quantity only, set outProd's qty to qty
                         // and write new qty to database
                         case UPDATE_QUANTITY_ONLY:
-                            int qty = (int) snapshot.child("quantity").getValue();
-                            int newQty = outProd.getQuantity() + qtyChange;
-
-                            outProd.setQuantity(qty + newQty);
-
+                            int qty = (int) (long) snapshot.child("quantity").getValue();
+                            outProd.setQuantity(qty + qtyChange);
                             try {
                                 DatabaseWriteProduct.write(outProd);
                             }
@@ -106,7 +104,8 @@ public class DatabaseReadProduct {
 
                         case DELETE_PRODUCT:
                             Product emptyProd = new Product();
-                            emptyProd.setId("set_as_null");
+                            emptyProd.setId(id);
+                            emptyProd.setName("set_as_null");
 
                             try {
                                 DatabaseWriteProduct.write(emptyProd);
@@ -118,7 +117,6 @@ public class DatabaseReadProduct {
 
                         // log product's characteristics
                         case DEBUG:
-                            outProd = snapshot.getValue(Product.class);
                             Log.w("result info", outProd.getId() + " " + outProd.getName() + " " +
                                     outProd.getQuantity() + " " + StringCalendar.toString(outProd.getExpiry()));
                             break;

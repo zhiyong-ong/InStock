@@ -31,18 +31,15 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // TESTING
-        Product testProd = new Product("refactor", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
+        Product testProd = new Product("AAAAAAAA", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
 
         //product write testing
         try {
-            DatabaseWriteProduct.write(testProd);
-
-            testProd.setQuantity(80);
-            DatabaseWriteProduct.updateProduct(testProd);
-
-//            DatabaseWriteProduct.updateQuantity(testProd.getId(), 120);
-
-//            DatabaseWriteProduct.deleteProduct("refactor");
+//            DatabaseWriteProduct.write(testProd);
+//            testProd.setQuantity(80);
+//            DatabaseWriteProduct.updateProduct(testProd);
+//            DatabaseWriteProduct.updateQuantity(testProd.getId(), -120);
+            DatabaseWriteProduct.deleteProduct("refactor");
         }
         catch (ProductNotFoundException e) {
             Log.e("", e.getMessage());
@@ -50,12 +47,12 @@ public class MainActivity extends AppCompatActivity {
 
         // product read testing
 
-        try {
-            DatabaseReadProduct.read("282in", DatabaseReadProduct.ProdUseCase.DEBUG);
-        }
-        catch (ProductNotFoundException e){
-            Log.e("", e.getMessage());
-        }
+//        try {
+//            DatabaseReadProduct.read("282in", DatabaseReadProduct.ProdUseCase.DEBUG);
+//        }
+//        catch (ProductNotFoundException e){
+//            Log.e("", e.getMessage());
+//        }
 //
 //        // product update testing
 //        testProd.setLocation("changed location");

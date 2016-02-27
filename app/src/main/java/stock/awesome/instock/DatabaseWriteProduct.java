@@ -13,34 +13,27 @@ import stock.awesome.instock.exceptions.ProductNotFoundException;
  */
 public class DatabaseWriteProduct {
 
-    private static final Firebase database = DatabaseLauncher.launch();
+    private static final Firebase database = DatabaseLauncher.database;
 
 
     // writes all the characteristic data of a product to database.
     // must have id, other values optional. All string fields are initialised with null values
     // and integer fields with -1.
     public static void write(Product product) throws ProductNotFoundException {
-
-        Log.w("write started", "success");
-
         Firebase ref = database.child("products").child(product.getId());
 
         if (product.getId() == null) {
             throw new ProductNotFoundException("No product ID given");
         }
 
-        else if (product.getId().equals("set_as_null")) {
+        else if (product.getName().equals("set_as_null")) {
             ref.removeValue();
         }
 
         else {
-            Log.w("product id", product.getId());
-
-            ref.child("name").setValue(product.getName());
-
             ref.setValue(product);
 
-            Log.w("written", "success");
+            // expiry must be converted to string before being written
             if (product.getExpiry() != null) {
                 ref.child("expiry").setValue(StringCalendar.toString(product.getExpiry()));
             } else {
