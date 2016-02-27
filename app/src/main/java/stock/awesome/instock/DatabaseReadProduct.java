@@ -20,7 +20,7 @@ public class DatabaseReadProduct {
 
     private static final Firebase database = DatabaseLauncher.database;
     private static Product outProd = new Product();
-    private static Exception e = null;
+    private static ProductNotFoundException e = null;
 
     public enum ProdUseCase {
         BUILD_KIT, UPDATE_PRODUCT, UPDATE_QUANTITY_ONLY, DELETE_PRODUCT, DEBUG
@@ -83,7 +83,7 @@ public class DatabaseReadProduct {
                             int qty = (int) (long) snapshot.child("quantity").getValue();
                             outProd.setQuantity(qty + qtyChange);
                             try {
-                                DatabaseWriteProduct.write(outProd);
+                                DatabaseWriteProduct.write(outProd, e);
                             }
                             catch (ProductNotFoundException exc) {
                                 e = exc;
@@ -95,7 +95,7 @@ public class DatabaseReadProduct {
                         // after check, product is written to database
                         case UPDATE_PRODUCT:
                             try {
-                                DatabaseWriteProduct.write(updatedProd);
+                                DatabaseWriteProduct.write(updatedProd, e);
                             }
                             catch (ProductNotFoundException exc) {
                                 e = exc;
@@ -108,7 +108,7 @@ public class DatabaseReadProduct {
                             emptyProd.setName("set_as_null");
 
                             try {
-                                DatabaseWriteProduct.write(emptyProd);
+                                DatabaseWriteProduct.write(emptyProd, e);
                             }
                             catch (ProductNotFoundException exc) {
                                 e = exc;
@@ -130,10 +130,6 @@ public class DatabaseReadProduct {
             }
         });
 
-        // stored ProductNotFoundException
-        if (e != null) {
-            throw new ProductNotFoundException(e.getMessage());
-        }
     }
 }
 

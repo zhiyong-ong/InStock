@@ -9,7 +9,7 @@ import stock.awesome.instock.exceptions.ProductNotFoundException;
 /**
  * writeProduct writes a product and its associated information to the database.
  * It can be accessed again through searching for its ID.
- * Product data is stored as strings except for quantity (stored as an integer).
+ * Product data is stored on the database as strings except for quantity (stored as long).
  */
 public class DatabaseWriteProduct {
 
@@ -19,7 +19,13 @@ public class DatabaseWriteProduct {
     // writes all the characteristic data of a product to database.
     // must have id, other values optional. All string fields are initialised with null values
     // and integer fields with -1.
-    public static void write(Product product) throws ProductNotFoundException {
+    public static void write(Product product, ProductNotFoundException e) throws ProductNotFoundException {
+
+        if (e != null) {
+            Log.e("writeProduct file", e.getMessage());
+            throw new ProductNotFoundException(e.getMessage());
+        }
+
         Firebase ref = database.child("products").child(product.getId());
 
         if (product.getId() == null) {
@@ -69,6 +75,7 @@ public class DatabaseWriteProduct {
         try {
             DatabaseReadProduct.read(id, DatabaseReadProduct.ProdUseCase.DELETE_PRODUCT);
         } catch (ProductNotFoundException e) {
+            Log.e("writeProduct file", e.getMessage());
             throw new ProductNotFoundException(e.getMessage());
         }
 
