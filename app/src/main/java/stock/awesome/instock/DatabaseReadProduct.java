@@ -20,7 +20,6 @@ public class DatabaseReadProduct {
 
     private static final Firebase database = DatabaseLauncher.database;
     private static Product outProd = new Product();
-    private static DatabaseWriteProduct productWriter = new DatabaseWriteProduct();
     private static Exception e = null;
 
     public enum ProdUseCase {
@@ -99,6 +98,18 @@ public class DatabaseReadProduct {
                         case UPDATE_PRODUCT:
                             try {
                                 DatabaseWriteProduct.write(updatedProd);
+                            }
+                            catch (ProductNotFoundException exc) {
+                                e = exc;
+                            }
+                            break;
+
+                        case DELETE_PRODUCT:
+                            Product emptyProd = new Product();
+                            emptyProd.setId("set_as_null");
+
+                            try {
+                                DatabaseWriteProduct.write(emptyProd);
                             }
                             catch (ProductNotFoundException exc) {
                                 e = exc;

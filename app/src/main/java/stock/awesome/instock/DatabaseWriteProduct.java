@@ -1,5 +1,7 @@
 package stock.awesome.instock;
 
+import android.util.Log;
+
 import com.firebase.client.Firebase;
 
 import stock.awesome.instock.exceptions.ProductNotFoundException;
@@ -11,7 +13,7 @@ import stock.awesome.instock.exceptions.ProductNotFoundException;
  */
 public class DatabaseWriteProduct {
 
-    private static final Firebase database = DatabaseLauncher.database;
+    private static final Firebase database = DatabaseLauncher.launch();
 
 
     // writes all the characteristic data of a product to database.
@@ -19,18 +21,32 @@ public class DatabaseWriteProduct {
     // and integer fields with -1.
     public static void write(Product product) throws ProductNotFoundException {
 
+        Log.w("write started", "success");
+
+        Firebase ref = database.child("products").child(product.getId());
+
         if (product.getId() == null) {
             throw new ProductNotFoundException("No product ID given");
         }
 
-        Firebase ref = database.child("products").child(product.getId());
+        else if (product.getId().equals("set_as_null")) {
+            ref.removeValue();
+        }
 
-        ref.setValue(product);
-//        if (product.getExpiry() != null) {
-//            ref.child("expiry").setValue(StringCalendar.toString(product.getExpiry()));
-//        } else {
-//            ref.child("expiry").setValue(null);
-//        }
+        else {
+            Log.w("product id", product.getId());
+
+            ref.child("name").setValue(product.getName());
+
+            ref.setValue(product);
+
+            Log.w("written", "success");
+            if (product.getExpiry() != null) {
+                ref.child("expiry").setValue(StringCalendar.toString(product.getExpiry()));
+            } else {
+                ref.child("expiry").setValue(null);
+            }
+        }
     }
 
 
@@ -52,6 +68,17 @@ public class DatabaseWriteProduct {
         } catch (ProductNotFoundException e) {
             throw new ProductNotFoundException(e.getMessage());
         }
+    }
+
+
+    // To delete, pass in id of product to delete
+    public static void deleteProduct(String id) throws ProductNotFoundException {
+        try {
+            DatabaseReadProduct.read(id, DatabaseReadProduct.ProdUseCase.DELETE_PRODUCT);
+        } catch (ProductNotFoundException e) {
+            throw new ProductNotFoundException(e.getMessage());
+        }
+
     }
 
 }

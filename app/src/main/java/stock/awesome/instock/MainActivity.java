@@ -21,29 +21,41 @@ import stock.awesome.instock.exceptions.ProductNotFoundException;
 public class MainActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
+
         Firebase.setAndroidContext(this);
-        Firebase database = DatabaseLauncher.launch();
+        DatabaseLauncher.launch();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        // TESTING
-//        Product testProd = new Product("282in", "name", "desc", "location", 9234, new GregorianCalendar(2018, 11, 18));
-//
-//        //product write testing
-//        DatabaseWriteProduct writer = new DatabaseWriteProduct();
-//        writer.writeProduct(testProd);
-//
-//        // product read testing
-//        DatabaseReadProduct testReader = new DatabaseReadProduct(DatabaseReadProduct.ProdUseCase.DEBUG);
-//        try {
-//            testReader.readProduct("282in");
-//        }
-//        catch (ProductNotFoundException e){
-//            Log.e(e.getMessage(), "");
-//        }
+        // TESTING
+        Product testProd = new Product("refactor", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
+
+        //product write testing
+        try {
+            DatabaseWriteProduct.write(testProd);
+
+            testProd.setQuantity(80);
+            DatabaseWriteProduct.updateProduct(testProd);
+
+//            DatabaseWriteProduct.updateQuantity(testProd.getId(), 120);
+
+//            DatabaseWriteProduct.deleteProduct("refactor");
+        }
+        catch (ProductNotFoundException e) {
+            Log.e("", e.getMessage());
+        }
+
+        // product read testing
+
+        try {
+            DatabaseReadProduct.read("282in", DatabaseReadProduct.ProdUseCase.DEBUG);
+        }
+        catch (ProductNotFoundException e){
+            Log.e("", e.getMessage());
+        }
 //
 //        // product update testing
 //        testProd.setLocation("changed location");

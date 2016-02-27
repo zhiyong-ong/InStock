@@ -27,13 +27,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import stock.awesome.instock.exceptions.ProductNotFoundException;
+
 public class ViewAllStocksActivity extends AppCompatActivity {
 
     Firebase database;
     FirebaseListAdapter<Product> mAdapter;
     Context context = this;
     Calendar myCalendar;
-    DatabaseUpdateProduct update;
     static EditText expiryText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,6 @@ public class ViewAllStocksActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        update = new DatabaseUpdateProduct(DatabaseLauncher.database);
         ListView itemView = (ListView) findViewById(R.id.viewAllListView);
         //set up connection with the firebase database.
         Firebase.setAndroidContext(this);
@@ -139,7 +139,12 @@ public class ViewAllStocksActivity extends AppCompatActivity {
                         //TODO: check for change in listView after editing. Not sure why it doesn't change as of now
                         Log.e("Some thing", updateProd.getId() + "\t" + Integer.toString(updateProd.getQuantity()) +
                                 "\t" + StringCalendar.toProperDateString(updateProd.getExpiry()));
-                        update.updateProduct(updateProd);
+                        try {
+                            DatabaseWriteProduct.updateProduct(updateProd);
+                        }
+                        catch (ProductNotFoundException e) {
+                            // TODO display error msg
+                        }
                         //newProduct.set(position, new Product(productID, quantity));
                         Toast.makeText(context, "ID: " + productID + ", QTY: " + quantity, Toast.LENGTH_LONG).show();
                         mAdapter.notifyDataSetChanged();
