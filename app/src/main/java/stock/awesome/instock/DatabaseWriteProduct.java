@@ -34,7 +34,7 @@ public class DatabaseWriteProduct {
                 break;
 
             // default behaviour. eg. if useCase UPDATE_PRODUCT
-            default:
+            case UPDATE_PRODUCT:
                 ref.setValue(product);
                 if (product.getExpiry() != null) {
                     ref.child("expiry").setValue(StringCalendar.toString(product.getExpiry()));

@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -128,8 +127,8 @@ public class BuildKitActivity extends AppCompatActivity {
                 else {
                     //add to the list.
                     //communicate with the database here
-                    DatabaseReadProduct reader = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.BUILD_KIT);
-                    reader.execute(productIDText.getText().toString());
+                    //DatabaseReadProduct reader = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.BUILD_KIT);
+                    //reader.execute(productIDText.getText().toString());
 
                     Product productTuple = new Product(productIDText.getText().toString(), Integer.parseInt(quantityText.getText().toString()));
                     newProduct.add(productTuple);
@@ -145,11 +144,12 @@ public class BuildKitActivity extends AppCompatActivity {
         AlertDialog b = dialogBuilder.create();
         b.show();
     }
+    /*
     public static Product displayProduct(Product result) {
         Log.w("result info:", result.getId() + " " + result.getName() + " " +
                 result.getQuantity() + " " + StringCalendar.toString(result.getExpiry()));
         return result;
-    }
+    }*/
     public void sendSaveKit(View view) {
 
         //display error message for empty kit
@@ -166,7 +166,6 @@ public class BuildKitActivity extends AppCompatActivity {
             });
 
             AlertDialog b = dialogBuilder.create();
-            b.setIcon(android.R.drawable.ic_dialog_alert);
             b.show();
             }
 

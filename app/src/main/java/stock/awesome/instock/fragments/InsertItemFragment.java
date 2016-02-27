@@ -22,8 +22,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import stock.awesome.instock.DatabaseReadProduct;
-import stock.awesome.instock.StringCalendar;
-
 import stock.awesome.instock.DatabaseWriteProduct;
 import stock.awesome.instock.Product;
 import stock.awesome.instock.R;
@@ -104,7 +102,6 @@ public class InsertItemFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                Log.e("Check for error", "-------------------TESTING for click--------------------");
                 DialogFragment newFragment = new SelectDateFragment();
                 newFragment.show(getFragmentManager(), "DatePicker");
             }
@@ -134,10 +131,11 @@ public class InsertItemFragment extends Fragment {
                     onSubmitPress(inputProd);
                     Log.d("Submit successful", inputProd.getName() + " " + inputProd.getQuantity() + " "
                             + StringCalendar.toString(inputProd.getExpiry()));
+                    Toast.makeText(getActivity(), "   New Item Added!   ", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-            Log.w("Check for error","-------------------TESTING--------------------");
+        Log.w("Check for error","-------------------TESTING--------------------");
         // Inflate the layout for this fragment
         return aView;
     }
@@ -180,6 +178,7 @@ public class InsertItemFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
