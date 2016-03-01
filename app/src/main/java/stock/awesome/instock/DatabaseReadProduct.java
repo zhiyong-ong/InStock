@@ -12,6 +12,7 @@ import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 import stock.awesome.instock.Misc_classes.Product;
 import stock.awesome.instock.Misc_classes.StringCalendar;
+import stock.awesome.instock.fragments.UpdateItemFragment;
 
 /**
  * read(final String id, final ProdUseCase useCase, final Product updatedProd, final int qtyChange)
@@ -67,11 +68,12 @@ public class DatabaseReadProduct {
                     e = new ProductNotFoundException("Product name: " + id + " not found in database");
                 }
                 else {
+                    Log.e("PRODUCT", "-------------------- id input : " + id);
                     outProd = snapshot.getValue(Product.class);
-
+                    Log.e("PRODUCT", "-------------------- ID IS: " + outProd.getId());
                     switch (useCase) {
                         case DISPLAY:
-                            //TODO
+                            UpdateItemFragment.SearchItem(outProd);
                             break;
 
                         case BUILD_KIT:

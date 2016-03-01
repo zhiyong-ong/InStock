@@ -15,6 +15,11 @@ public class Product extends ProductInKit{
         this(id, null, null, null, quantity, null);
     }
 
+    public Product(String id, int quantity, GregorianCalendar expiry) {
+        this(id, null, null, null, quantity, expiry);
+    }
+
+
     public Product(String id, String name, String desc, String location, int quantity, GregorianCalendar expiry) {
         this.id = id;
         this.name = name;

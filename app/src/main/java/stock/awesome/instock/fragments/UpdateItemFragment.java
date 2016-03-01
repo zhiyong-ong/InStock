@@ -1,18 +1,29 @@
 package stock.awesome.instock.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+
+import stock.awesome.instock.DatabaseLauncher;
+import stock.awesome.instock.DatabaseReadProduct;
+import stock.awesome.instock.DatabaseWriteProduct;
+import stock.awesome.instock.Misc_classes.Product;
+import stock.awesome.instock.Misc_classes.StringCalendar;
 import stock.awesome.instock.R;
+import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +37,9 @@ public class UpdateItemFragment extends Fragment {
 
     View aView;
     Context context = getActivity();
+    static Activity activity;
+    Firebase database;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -66,39 +80,30 @@ public class UpdateItemFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        database = DatabaseLauncher.database;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         aView = inflater.inflate(R.layout.fragment_update_item, container, false);
+        activity = (Activity)aView.getContext();
+
 
         Button searchButton = (Button) aView.findViewById(R.id.searchButton);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                try {
+                    final EditText productIDText = (EditText)aView.findViewById(R.id.productSearchEdit);
+                    final String productID = productIDText.getText().toString();
+                    Log.e("PRODUCT", "------------------- product id: " + productID);
+                    DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY);
+                } catch (ProductNotFoundException e) {
+                    //some shit here, ask kabir
+                    e.printStackTrace();
+                }
 
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = LayoutInflater.from(getActivity());
-                final View dialogView = inflater.inflate(R.layout.search_box, null);
-
-                final TextView productIDText = (TextView) dialogView.findViewById(R.id.productView);
-                final TextView quantityText = (TextView) dialogView.findViewById(R.id.qtyView);
-                final TextView expiryText = (TextView) dialogView.findViewById(R.id.expiryView);
-
-                dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
-                });
-                dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //newProduct.remove(position);
-                        //listAdapter.notifyDataSetChanged();
-                    }
-                });
-                dialogBuilder.setView(dialogView);
-                AlertDialog b = dialogBuilder.create();
-                b.show();
             }
         });
         // Inflate the layout for this fragment
@@ -136,6 +141,48 @@ public class UpdateItemFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    public static void SearchItem(final Product product) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+        LayoutInflater inflater = LayoutInflater.from(activity);
+        final View dialogView = inflater.inflate(R.layout.search_box, null);
+
+        final TextView productIDText = (TextView) dialogView.findViewById(R.id.productView);
+        final TextView quantityText = (TextView) dialogView.findViewById(R.id.qtyView);
+        final TextView expiryText = (TextView) dialogView.findViewById(R.id.expiryView);
+        final TextView nameText = (TextView) dialogView.findViewById(R.id.nameView);
+        final EditText newQty = (EditText) dialogView.findViewById(R.id.newUpdateQty);
+        //TODO: center the new qty
+        Log.e("PRODUCT", "------------------" + product.getId() + "\t" + product.getQuantity());
+
+        nameText.setText(product.getName());
+        productIDText.setText(product.getId());
+
+        quantityText.setText(Integer.toString(product.getQuantity()));
+        expiryText.setText(StringCalendar.toProperDateString(product.getExpiry()));
+
+
+        dialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //int newQuantity
+                Product qtyExpProduct = new Product(product.getId(), 10000, product.getExpiry());
+                try {
+                    Log.e("PRODUCT", "--------------------- qty: " + newQty.getText().toString());
+                    DatabaseWriteProduct.updateQuantityExpiry(qtyExpProduct);
+                } catch (ProductNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+        dialogBuilder.setView(dialogView);
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
 /*
     public static class searchDialogFragment extends DialogFragment {

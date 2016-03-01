@@ -16,17 +16,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import stock.awesome.instock.DatabaseReadProduct;
 import stock.awesome.instock.DatabaseWriteProduct;
 import stock.awesome.instock.Misc_classes.Product;
-import stock.awesome.instock.R;
 import stock.awesome.instock.Misc_classes.StringCalendar;
-import stock.awesome.instock.StringCalendar;
+import stock.awesome.instock.R;
 import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 /**

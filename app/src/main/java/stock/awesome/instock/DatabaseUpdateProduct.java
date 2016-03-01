@@ -17,7 +17,7 @@ public class DatabaseUpdateProduct {
     public DatabaseUpdateProduct(Firebase database) {
         this.database = database;
     }
-    
+
 
     // To update quantity of a product, pass in id and change in qty (pos/neg)
     public void updateQuantity(String id, int qtyChange) {
@@ -31,7 +31,7 @@ public class DatabaseUpdateProduct {
 
 
     private void updateHelper(Product product, String id, int qtyChange) {
-
+/*
         // only quantity should be increased/decreased
         if (product == null) {
             reader = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_ONLY, qtyChange);
@@ -46,5 +46,7 @@ public class DatabaseUpdateProduct {
 
             reader.execute(product.getId());
         }
+
+    */
     }
 }
