@@ -97,7 +97,9 @@
                     <EditText
                         android:id="@+id/newUpdateQty"
                         style="@style/TableText"
-                        android:hint="   +/-   " />
+                        android:hint="   +/-   "
+                        android:gravity="center"
+                        android:ellipsize="start" />
                 </TableRow>
 
                 <TableRow
@@ -111,7 +113,7 @@
                         style="@style/TableText"
                         android:text="Expiry Date: " />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/expiryView"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -121,7 +123,8 @@
                         style="@style/TableText"
                         android:textSize="20dp"
                         android:ellipsize="end"
-                        android:maxLines="1"/>
+                        android:maxLines="1"
+                        android:focusable="false" />
                 </TableRow>
             </TableLayout>
 

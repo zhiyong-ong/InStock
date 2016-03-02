@@ -2,6 +2,7 @@ package stock.awesome.instock.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -12,10 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import stock.awesome.instock.DatabaseLauncher;
 import stock.awesome.instock.DatabaseReadProduct;
@@ -39,7 +46,8 @@ public class UpdateItemFragment extends Fragment {
     Context context = getActivity();
     static Activity activity;
     Firebase database;
-
+    static Calendar myCalendar;
+    static EditText expiryText = null;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -150,7 +158,7 @@ public class UpdateItemFragment extends Fragment {
 
         final TextView productIDText = (TextView) dialogView.findViewById(R.id.productView);
         final TextView quantityText = (TextView) dialogView.findViewById(R.id.qtyView);
-        final TextView expiryText = (TextView) dialogView.findViewById(R.id.expiryView);
+        expiryText = (EditText) dialogView.findViewById(R.id.expiryView);
         final TextView nameText = (TextView) dialogView.findViewById(R.id.nameView);
         final EditText newQty = (EditText) dialogView.findViewById(R.id.newUpdateQty);
         //TODO: center the new qty
@@ -158,15 +166,43 @@ public class UpdateItemFragment extends Fragment {
 
         nameText.setText(product.getName());
         productIDText.setText(product.getId());
-
         quantityText.setText(Integer.toString(product.getQuantity()));
         expiryText.setText(StringCalendar.toProperDateString(product.getExpiry()));
 
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        myCalendar = Calendar.getInstance();
+        try {
+            myCalendar.setTime(df.parse(StringCalendar.toProperDateString(product.getExpiry())));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
 
+        };
+        expiryText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(activity, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
         dialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //int newQuantity
-                Product qtyExpProduct = new Product(product.getId(), 10000, product.getExpiry());
+                String productID = product.getId();
+                int quantity = Integer.parseInt(newQty.getEditableText().toString());
+                String expiry = expiryText.getEditableText().toString();
+                Product qtyExpProduct = new Product(productID, quantity, StringCalendar.toCalendarProper(expiry));
                 try {
                     Log.e("PRODUCT", "--------------------- qty: " + newQty.getText().toString());
                     DatabaseWriteProduct.updateQuantityExpiry(qtyExpProduct);
@@ -224,4 +260,12 @@ public class UpdateItemFragment extends Fragment {
         }
     }
     */
+//method for datepicker
+    private static void updateLabel() {
+
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        expiryText.setText(sdf.format(myCalendar.getTime()));
+    }
 }
