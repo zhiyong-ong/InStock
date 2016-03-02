@@ -42,7 +42,7 @@ public class Kit {
     }
 
     // throws IllegalArgumentException if id is null
-    public void addProduct(String id, int qty) {
+    public void addProduct(String id, int qty) throws IllegalArgumentException {
         Product newProd = new Product();
         newProd.setId(id);
         addProduct(newProd, qty);
