@@ -80,11 +80,8 @@ public class DatabaseReadProduct {
                         // and write new qty to database
                         case UPDATE_QUANTITY_EXPIRY:
                             int qty = (int) (long) snapshot.child("quantity").getValue();
-                            Log.e("DBREAD", "db qty: " + Integer.toString(qty));
-                            Log.e("DBREAD", "updateProd qty: " + Integer.toString(updatedProd.getQuantity()));
 
                             outProd.setQuantity(qty + updatedProd.getQuantity());
-
                             outProd.setExpiry(updatedProd.getExpiry());
 
                             try {
