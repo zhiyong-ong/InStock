@@ -46,6 +46,9 @@ public class DatabaseReadProduct {
                                       final Product updatedProd, final int qtyChange)
             throws ProductNotFoundException, FirebaseException {
 
+        outProd = new Product();
+        e = null;
+
         if (id == null) {
             throw new ProductNotFoundException("No product ID given");
         }
