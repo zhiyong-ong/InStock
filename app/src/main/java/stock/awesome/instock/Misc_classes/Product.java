@@ -1,4 +1,4 @@
-package stock.awesome.instock.Misc_classes;
+package stock.awesome.instock.misc_classes;
 
 import java.util.GregorianCalendar;
 

@@ -1,4 +1,4 @@
-package stock.awesome.instock.Misc_classes;
+package stock.awesome.instock.misc_classes;
 
 // Only contains id and qty. Needed for firebase read.
 // For other uses, see Product.
