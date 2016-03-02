@@ -6,7 +6,7 @@ import com.firebase.client.Firebase;
 // instead of re-establishing a connection
 public class DatabaseLauncher {
 
-    protected static Firebase database;
+    public static Firebase database;
 
     public static Firebase launch() {
         database = new Firebase("https://scorching-inferno-2190.firebaseio.com/");

@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.firebase.client.Firebase;
 
+import stock.awesome.instock.Misc_classes.Product;
+import stock.awesome.instock.Misc_classes.StringCalendar;
+
 import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 /**

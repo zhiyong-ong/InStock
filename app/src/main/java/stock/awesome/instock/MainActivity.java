@@ -16,6 +16,7 @@ import com.firebase.client.Firebase;
 
 import java.util.GregorianCalendar;
 
+import stock.awesome.instock.Misc_classes.Product;
 import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
 //            DatabaseWriteProduct.write(testProd);
 //            testProd.setQuantity(80);
 //            DatabaseWriteProduct.updateProduct(testProd);
-//            DatabaseWriteProduct.updateQuantity(testProd.getId(), -120);
-            DatabaseWriteProduct.deleteProduct("refactor");
+
+            DatabaseWriteProduct.updateQuantityExpiry(new Product("282in", -1020, testProd.getExpiry()));
+            //DatabaseWriteProduct.deleteProduct("refactor");
         }
         catch (ProductNotFoundException e) {
             Log.e("", e.getMessage());

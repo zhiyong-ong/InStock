@@ -20,6 +20,8 @@ import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 
+import stock.awesome.instock.Misc_classes.Product;
+
 public class BuildKitActivity extends AppCompatActivity {
     private ArrayAdapter<Product> listAdapter;
     private ArrayList<Product> newProduct = new ArrayList<Product>();
@@ -38,7 +40,7 @@ public class BuildKitActivity extends AppCompatActivity {
 
         //set up connection with the firebase database.
         Firebase.setAndroidContext(this);
-        database = new Firebase("https://scorching-inferno-2190.firebaseio.com/");
+        database = DatabaseLauncher.database;
 
         mainListView = (ListView) findViewById(R.id.listView);
         listAdapter = new ArrayAdapter<Product>(this, android.R.layout.simple_list_item_1, newProduct);

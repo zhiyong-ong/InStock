@@ -1,4 +1,4 @@
-package stock.awesome.instock;
+package stock.awesome.instock.Misc_classes;
 
 import java.util.GregorianCalendar;
 
@@ -14,6 +14,11 @@ public class Product extends ProductInKit{
     public Product(String id, int quantity) {
         this(id, null, null, null, quantity, null);
     }
+
+    public Product(String id, int quantity, GregorianCalendar expiry) {
+        this(id, null, null, null, quantity, expiry);
+    }
+
 
     public Product(String id, String name, String desc, String location, int quantity, GregorianCalendar expiry) {
         this.id = id;

@@ -1,4 +1,4 @@
-package stock.awesome.instock;
+package stock.awesome.instock.Misc_classes;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
