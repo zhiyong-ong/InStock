@@ -20,7 +20,7 @@ import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 
-import stock.awesome.instock.Misc_classes.Product;
+import stock.awesome.instock.misc_classes.Product;
 
 public class BuildKitActivity extends AppCompatActivity {
     private ArrayAdapter<Product> listAdapter;

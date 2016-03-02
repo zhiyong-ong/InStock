@@ -20,8 +20,8 @@ import com.firebase.client.Firebase;
 import stock.awesome.instock.DatabaseLauncher;
 import stock.awesome.instock.DatabaseReadProduct;
 import stock.awesome.instock.DatabaseWriteProduct;
-import stock.awesome.instock.Misc_classes.Product;
-import stock.awesome.instock.Misc_classes.StringCalendar;
+import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.StringCalendar;
 import stock.awesome.instock.R;
 import stock.awesome.instock.exceptions.ProductNotFoundException;
 

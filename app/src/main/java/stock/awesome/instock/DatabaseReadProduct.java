@@ -10,8 +10,8 @@ import com.firebase.client.ValueEventListener;
 
 import stock.awesome.instock.exceptions.ProductNotFoundException;
 
-import stock.awesome.instock.Misc_classes.Product;
-import stock.awesome.instock.Misc_classes.StringCalendar;
+import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.StringCalendar;
 import stock.awesome.instock.fragments.UpdateItemFragment;
 
 /**
@@ -31,29 +31,22 @@ public class DatabaseReadProduct {
     }
 
 
-    // useCase DEBUG, DELETE_PRODUCT
+    // useCase DEBUG, DELETE_PRODUCT, UPDATE_PRODUCT, BUILD_KIT
     public static void read(final String id,  final ProdUseCase useCase)
             throws ProductNotFoundException, FirebaseException {
-        read(id, useCase, null, 0);
+        read(id, useCase, null);
     }
-
-    // useCase UPDATE_PRODUCT, BUILD_KIT
-    public static void read(final String id,  final ProdUseCase useCase, final Product updatedProd)
-            throws ProductNotFoundException, FirebaseException {
-        read(id, useCase, updatedProd, 0);
-    }
-
 
     // returns a product with the name, quantity and location associated with id passed in
     // by looking up the id's characteristics in the database
     public static void read(final String id, final ProdUseCase useCase,
-                                      final Product updatedProd, final int qtyChange)
+                                      final Product updatedProd)
             throws ProductNotFoundException, FirebaseException {
 
         outProd = new Product();
         e = null;
 
-        if (id == null) {
+        if (id == null || id.equals("")) {
             throw new ProductNotFoundException("No product ID given");
         }
 
@@ -87,7 +80,7 @@ public class DatabaseReadProduct {
                         // and write new qty to database
                         case UPDATE_QUANTITY_EXPIRY:
                             int qty = (int) (long) snapshot.child("quantity").getValue();
-                            outProd.setQuantity(qty + qtyChange);
+                            outProd.setQuantity(qty + updatedProd.getQuantity());
 
                             outProd.setExpiry(updatedProd.getExpiry());
 

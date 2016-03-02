@@ -8,10 +8,10 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.FirebaseException;
 import com.firebase.client.ValueEventListener;
 
-import stock.awesome.instock.Misc_classes.Kit;
-import stock.awesome.instock.Misc_classes.Product;
-import stock.awesome.instock.Misc_classes.ProductInKit;
-import stock.awesome.instock.Misc_classes.StringCalendar;
+import stock.awesome.instock.misc_classes.Kit;
+import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.ProductInKit;
+import stock.awesome.instock.misc_classes.StringCalendar;
 import stock.awesome.instock.exceptions.KitNotFoundException;
 import stock.awesome.instock.exceptions.ProductNotFoundException;
 
