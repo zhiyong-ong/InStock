@@ -22,20 +22,15 @@ public class DatabaseWriteProduct {
     // writes all the characteristic data of a product to database.
     // must have id, other values optional. All string fields are initialised with null values
     // and integer fields with -1.
-    public static void write(Product product, ProductNotFoundException e) throws ProductNotFoundException {
+    public static void write(Product product) throws ProductNotFoundException {
 
-        if (e != null) {
-            Log.e("writeProduct file", e.getMessage());
-            throw new ProductNotFoundException(e.getMessage());
+        if (product.getId() == null || product.getId().equals("")) {
+            throw new ProductNotFoundException("No product ID given");
         }
 
         Firebase ref = database.child("products").child(product.getId());
 
-        if (product.getId() == null) {
-            throw new ProductNotFoundException("No product ID given");
-        }
-
-        else if (product.getName().equals("set_as_null")) {
+        if (product.getName().equals("set_as_null")) {
             ref.removeValue();
         }
 
@@ -55,33 +50,28 @@ public class DatabaseWriteProduct {
     // rewrite all product information
     // IMPT: existing qty will not be increased/decreased but overwritten with product's quantity
     public static void updateProduct(Product product) throws ProductNotFoundException {
-        try {
-            DatabaseReadProduct.read(product.getId(), DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT, product);
-        } catch (ProductNotFoundException e) {
-            throw new ProductNotFoundException(e.getMessage());
+        if (product.getId() == null || product.getId().equals("")) {
+            throw new ProductNotFoundException("No product ID given");
         }
+        DatabaseReadProduct.read(product.getId(), DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT, product);
     }
 
 
     // To update quantity of a product, pass in id and change in qty (pos/neg)
     public static void updateQuantityExpiry(Product product) throws ProductNotFoundException {
-        try {
-            DatabaseReadProduct.read(product.getId(), DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_EXPIRY, product);
-        } catch (ProductNotFoundException e) {
-            throw new ProductNotFoundException(e.getMessage());
+        if (product.getId() == null || product.getId().equals("")) {
+            throw new ProductNotFoundException("No product ID given");
         }
+        DatabaseReadProduct.read(product.getId(), DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_EXPIRY, product);
     }
 
 
     // To delete, pass in id of product to delete
     public static void deleteProduct(String id) throws ProductNotFoundException {
-        try {
-            DatabaseReadProduct.read(id, DatabaseReadProduct.ProdUseCase.DELETE_PRODUCT);
-        } catch (ProductNotFoundException e) {
-            Log.e("writeProduct file", e.getMessage());
-            throw new ProductNotFoundException(e.getMessage());
+        if (id == null || id.equals("")) {
+            throw new ProductNotFoundException("No product ID given");
         }
-
+        DatabaseReadProduct.read(id, DatabaseReadProduct.ProdUseCase.DELETE_PRODUCT);
     }
 
 }

@@ -18,13 +18,15 @@ import stock.awesome.instock.fragments.UpdateItemFragment;
  * read(final String id, final ProdUseCase useCase, final Product updatedProd, final int qtyChange)
  * reads from database and performs operations on a product associated with that id, depending
  * on the useCase passed in.
+ * Check logcat for errors.
  * WARNING: no error checking is done to determine if the appropriate useCase has been passed in.
  */
 public class DatabaseReadProduct {
 
     private static final Firebase database = DatabaseLauncher.database;
     private static Product outProd = new Product();
-    private static ProductNotFoundException e = null;
+    private static final String READ_FAILED = "Product read failed";
+    private static final String WRITE_FAILED = "Product write failed";
 
     public enum ProdUseCase {
         BUILD_KIT, DISPLAY, UPDATE_PRODUCT, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG
@@ -32,22 +34,18 @@ public class DatabaseReadProduct {
 
 
     // useCase DEBUG, DELETE_PRODUCT, UPDATE_PRODUCT, BUILD_KIT
-    public static void read(final String id,  final ProdUseCase useCase)
-            throws ProductNotFoundException, FirebaseException {
+    public static void read(final String id,  final ProdUseCase useCase) {
         read(id, useCase, null);
     }
 
     // returns a product with the name, quantity and location associated with id passed in
     // by looking up the id's characteristics in the database
-    public static void read(final String id, final ProdUseCase useCase,
-                                      final Product updatedProd)
-            throws ProductNotFoundException, FirebaseException {
+    public static void read(final String id, final ProdUseCase useCase, final Product updatedProd) {
 
         outProd = new Product();
-        e = null;
 
         if (id == null || id.equals("")) {
-            throw new ProductNotFoundException("No product ID given");
+            Log.e(READ_FAILED, "No product ID given");
         }
 
         Firebase ref = database.child("products");
@@ -61,12 +59,11 @@ public class DatabaseReadProduct {
 
                 // the product does not exist in the database
                 if (!snapshot.exists()) {
-                    e = new ProductNotFoundException("Product name: " + id + " not found in database");
+                    Log.e(READ_FAILED, "Product name: " + id + " not found in database");
                 }
                 else {
-                    Log.e("PRODUCT", "-------------------- id input : " + id);
                     outProd = snapshot.getValue(Product.class);
-                    Log.e("PRODUCT", "-------------------- ID IS: " + outProd.getId());
+
                     switch (useCase) {
                         case DISPLAY:
                             UpdateItemFragment.SearchItem(outProd);
@@ -85,10 +82,10 @@ public class DatabaseReadProduct {
                             outProd.setExpiry(updatedProd.getExpiry());
 
                             try {
-                                DatabaseWriteProduct.write(outProd, e);
+                                DatabaseWriteProduct.write(outProd);
                             }
-                            catch (ProductNotFoundException exc) {
-                                e = exc;
+                            catch (ProductNotFoundException e) {
+                                Log.e(WRITE_FAILED, e.getMessage());
                             }
                             break;
 
@@ -97,10 +94,10 @@ public class DatabaseReadProduct {
                         // after check, product is written to database
                         case UPDATE_PRODUCT:
                             try {
-                                DatabaseWriteProduct.write(updatedProd, e);
+                                DatabaseWriteProduct.write(updatedProd);
                             }
-                            catch (ProductNotFoundException exc) {
-                                e = exc;
+                            catch (ProductNotFoundException e) {
+                                Log.e(WRITE_FAILED, e.getMessage());
                             }
                             break;
 
@@ -110,10 +107,10 @@ public class DatabaseReadProduct {
                             emptyProd.setName("set_as_null");
 
                             try {
-                                DatabaseWriteProduct.write(emptyProd, e);
+                                DatabaseWriteProduct.write(emptyProd);
                             }
-                            catch (ProductNotFoundException exc) {
-                                e = exc;
+                            catch (ProductNotFoundException e) {
+                                Log.e(WRITE_FAILED, e.getMessage());
                             }
                             break;
 
@@ -128,10 +125,9 @@ public class DatabaseReadProduct {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                throw new FirebaseException(firebaseError.getMessage());
+                Log.e(READ_FAILED, firebaseError.getMessage());
             }
         });
-
     }
 }
 
