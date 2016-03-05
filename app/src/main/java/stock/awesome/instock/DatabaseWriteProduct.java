@@ -13,8 +13,7 @@ import stock.awesome.instock.misc_classes.StringCalendar;
  */
 public class DatabaseWriteProduct {
 
-//    private static final Firebase database = DatabaseLauncher.database;
-     static Firebase database = new Firebase("https://scorching-inferno-2190.firebaseio.com/");
+    private static final Firebase database = DatabaseLauncher.database;
 
     // writes all the characteristic data of a product to database.
     // must have id, other values optional. All string fields are initialised with null values

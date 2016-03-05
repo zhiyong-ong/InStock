@@ -21,14 +21,14 @@ public class DatabaseReadKit {
     private static final String WRITE_FAILED = "Product write failed";
 
     public enum KitUseCase {
-        UPDATE_KIT, DEBUG
+        UPDATE_KIT, VIEW_PRODUCT_DETAILS, DEBUG
     }
 
 
     // UNTESTED - change logging, insert more
     // returns a kit with the product associated with id passed in
     // by looking up the id's characteristics in the database
-    public static void read(final String kitName, final KitUseCase useCase, final Product updatedProd) {
+    public static void read(final String kitName, final KitUseCase useCase) {
 
         outKit = new Kit();
         outKit.setKitName(kitName);
@@ -46,45 +46,43 @@ public class DatabaseReadKit {
 
                 // look at kits sub-database
                 else {
-                    for (DataSnapshot kitSnapshot : snapshot.child("kits").child(kitName).getChildren()) {
+                    DataSnapshot kitSnapshot = snapshot.child("kits").child(kitName);
+                    Kit outKit = kitSnapshot.getValue(Kit.class);
 
-                        ProductInKit pink = kitSnapshot.getValue(ProductInKit.class);
+                    switch (useCase) {
+                        case VIEW_PRODUCT_DETAILS:
+                            for (String prodId: outKit.getKit().keySet()) {
+                                // look at products sub-database
+                                DataSnapshot prodSnapshot = snapshot.child("products").child(prodId);
 
-                        String prodId = pink.getId();
-                        int prodQty = pink.getQuantity();
+                                // product in kit not in database
+                                if (!prodSnapshot.exists()) {
+                                    Log.e(READ_FAILED, "Product id: " + prodId + "in kit " + kitName + " not found in products database");
+                                }
+                                else {
+                                    Product outProd = prodSnapshot.getValue(Product.class);
+                                    outProd.setQuantity(outKit.getProduct(prodId).getQuantity());
+                                    Log.d("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
 
-                        Log.d("Kit info received", prodId + " " + Integer.toString(prodQty));
-
-                        // look at products sub-database
-                        DataSnapshot prodSnapshot = snapshot.child("products").child(prodId);
-
-                        // product in kit not in database
-                        if (!prodSnapshot.exists()) {
-                            Log.e(READ_FAILED, "Product id: " + prodId + "in kit " + kitName + " not found in products database");
-                        }
-                        else {
-                            Product outProd = prodSnapshot.getValue(Product.class);
-
-                            Log.d("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
-
-                            // variables from kit sub-db
-                            outProd.setId(prodId);
-                            outProd.setQuantity(prodQty);
-
-                            outKit.addProduct(outProd, prodQty);
-
-                            switch (useCase) {
-                                case UPDATE_KIT:
-                                    // TODO
-                                    break;
-
-                                case DEBUG:
-                                    Log.w("Kit info", outKit.getKit().toString());
+                                    /** TODO use product information in outProd to do something
+                                     *  note that qty in outprod is that listed in kit
+                                     **/
+                                }
                             }
-                        }
+                            break;
+
+                        case UPDATE_KIT:
+                            // TODO
+                            break;
+
+                        case DEBUG:
+                            Log.e("kit info", outKit.getKit().toString());
+                            break;
                     }
+
                 }
             }
+
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {

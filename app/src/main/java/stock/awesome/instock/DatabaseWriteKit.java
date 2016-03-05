@@ -13,13 +13,13 @@ public class DatabaseWriteKit {
 
     private static final Firebase database = DatabaseLauncher.database;
 
-    public static void write(TestKit kit) throws IllegalArgumentException {
+    public static void write(Kit kit) throws IllegalArgumentException {
 //        if (kit.getKitName() == null || kit.getKitName().equals("")) {
 //            Log.e("Kit write failed", "kit has invalid name");
 //        }
-        Firebase ref = database.child("kits").child("boo");
+        Firebase ref = database.child("kits").child(kit.getKitName());
 //        Log.e("kit name", kit.getKitName());
-        ref.setValue("ggg");
+        ref.setValue(kit);
     }
 
 
