@@ -64,7 +64,8 @@ public class DatabaseReadKit {
                                     outProd.setQuantity(outKit.getProduct(prodId).getQuantity());
                                     Log.d("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
 
-                                    /** TODO use product information in outProd to do something
+                                    /** TODO use product information in outProds to do something
+                                     *  example store in array then display all in listview
                                      *  note that qty in outprod is that listed in kit
                                      **/
                                 }

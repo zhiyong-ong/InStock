@@ -14,21 +14,21 @@ public class DatabaseWriteKit {
     private static final Firebase database = DatabaseLauncher.database;
 
     public static void write(Kit kit) throws IllegalArgumentException {
-//        if (kit.getKitName() == null || kit.getKitName().equals("")) {
-//            Log.e("Kit write failed", "kit has invalid name");
-//        }
+        if (kit.getKitName() == null || kit.getKitName().equals("")) {
+            throw new IllegalArgumentException("Kit has invalid name");
+        }
         Firebase ref = database.child("kits").child(kit.getKitName());
-//        Log.e("kit name", kit.getKitName());
+
         ref.setValue(kit);
     }
 
 
-//    public static void addProductsToKit(String kitName, Product product, int qty) throws KitNotFoundException {
-//        Kit kitWithProduct = new Kit(kitName);
-//        kitWithProduct.addProduct(product, qty);
-//
-//        addProductsToKit(kitWithProduct);
-//    }
+    public static void addProductsToKit(String kitName, Product product, int qty) throws KitNotFoundException {
+        Kit kitWithProduct = new Kit(kitName);
+        kitWithProduct.addProduct(product, qty);
+
+        addProductsToKit(kitWithProduct);
+    }
 //
 //
 //    public static void addProductsToKit(Kit kit) throws KitNotFoundException {
