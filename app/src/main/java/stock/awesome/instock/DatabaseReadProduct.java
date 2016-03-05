@@ -5,10 +5,7 @@ import android.util.Log;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.FirebaseException;
 import com.firebase.client.ValueEventListener;
-
-import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
@@ -81,24 +78,14 @@ public class DatabaseReadProduct {
                             outProd.setQuantity(qty + updatedProd.getQuantity());
                             outProd.setExpiry(updatedProd.getExpiry());
 
-                            try {
-                                DatabaseWriteProduct.write(outProd);
-                            }
-                            catch (ProductNotFoundException e) {
-                                Log.e(WRITE_FAILED, e.getMessage());
-                            }
+                            DatabaseWriteProduct.write(outProd);
                             break;
 
                         // if use case is to update product, no reading required.
                         // only check needed is that item exists in database, which is handled above
                         // after check, product is written to database
                         case UPDATE_PRODUCT:
-                            try {
-                                DatabaseWriteProduct.write(updatedProd);
-                            }
-                            catch (ProductNotFoundException e) {
-                                Log.e(WRITE_FAILED, e.getMessage());
-                            }
+                            DatabaseWriteProduct.write(updatedProd);
                             break;
 
                         case DELETE_PRODUCT:
@@ -106,12 +93,7 @@ public class DatabaseReadProduct {
                             emptyProd.setId(id);
                             emptyProd.setName("set_as_null");
 
-                            try {
-                                DatabaseWriteProduct.write(emptyProd);
-                            }
-                            catch (ProductNotFoundException e) {
-                                Log.e(WRITE_FAILED, e.getMessage());
-                            }
+                            DatabaseWriteProduct.write(emptyProd);
                             break;
 
                         // log product's characteristics

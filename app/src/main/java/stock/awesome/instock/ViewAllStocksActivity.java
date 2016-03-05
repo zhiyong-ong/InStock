@@ -30,8 +30,6 @@ import java.util.Locale;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
 
-import stock.awesome.instock.exceptions.ProductNotFoundException;
-
 public class ViewAllStocksActivity extends AppCompatActivity {
 
     Firebase database;
@@ -142,12 +140,9 @@ public class ViewAllStocksActivity extends AppCompatActivity {
                         //TODO: check for change in listView after editing. Not sure why it doesn't change as of now
                         Log.e("Some thing", updateProd.getId() + "\t" + Integer.toString(updateProd.getQuantity()) +
                                 "\t" + StringCalendar.toProperDateString(updateProd.getExpiry()));
-                        try {
-                            DatabaseWriteProduct.updateProduct(updateProd);
-                        }
-                        catch (ProductNotFoundException e) {
-                            // TODO display error msg
-                        }
+
+                        DatabaseWriteProduct.updateProduct(updateProd);
+
                         //newProduct.set(position, new Product(productID, quantity));
                         Toast.makeText(context, "ID: " + productID + ", QTY: " + quantity, Toast.LENGTH_LONG).show();
                         mAdapter.notifyDataSetChanged();

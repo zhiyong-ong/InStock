@@ -12,8 +12,6 @@ import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.ProductInKit;
 import stock.awesome.instock.misc_classes.StringCalendar;
-import stock.awesome.instock.exceptions.KitNotFoundException;
-import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 
 public class DatabaseReadKit {
@@ -81,7 +79,7 @@ public class DatabaseReadKit {
                                     break;
 
                                 case DEBUG:
-                                    Log.w("Kit info", outKit.getHashMap().toString());
+                                    Log.w("Kit info", outKit.getKit().toString());
                             }
                         }
                     }

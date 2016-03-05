@@ -16,8 +16,10 @@ import com.firebase.client.Firebase;
 
 import java.util.GregorianCalendar;
 
+import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.Product;
-import stock.awesome.instock.exceptions.ProductNotFoundException;
+import stock.awesome.instock.misc_classes.ProductInKit;
+import stock.awesome.instock.misc_classes.TestKit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         Firebase.setAndroidContext(this);
         DatabaseLauncher.launch();
+        Firebase database = new Firebase("https://scorching-inferno-2190.firebaseio.com/");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -35,17 +38,13 @@ public class MainActivity extends AppCompatActivity {
         Product testProd = new Product("AAAAAAAA", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
 
         // product write testing
-        try {
-//            DatabaseWriteProduct.write(testProd);
-//            testProd.setQuantity(80);
-//            DatabaseWriteProduct.updateProduct(testProd);
+        DatabaseWriteProduct.write(testProd);
+        testProd.setQuantity(80);
+        DatabaseWriteProduct.updateProduct(testProd);
+//
+//        DatabaseWriteProduct.updateQuantityExpiry(new Product("282in", -1020, testProd.getExpiry()));
+//        DatabaseWriteProduct.deleteProduct("refactor");
 
-            DatabaseWriteProduct.updateQuantityExpiry(new Product("282in", -1020, testProd.getExpiry()));
-//            DatabaseWriteProduct.deleteProduct("refactor");
-        }
-        catch (ProductNotFoundException e) {
-            Log.e("", e.getMessage());
-        }
 
         // product read testing
 
@@ -61,13 +60,19 @@ public class MainActivity extends AppCompatActivity {
 //        DatabaseUpdateProduct updater = new DatabaseUpdateProduct(database);
 //        updater.updateProduct(testProd);
 //
-//        // kit write testing
-//        Kit testKit = new Kit("test_kit_ching");
-//        testKit.addProduct(testProd, 3);
-//        testKit.addProduct("71ue", 6);
-//        testKit.addProduct("ab", 44);
-//        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
-//        kitWriter.writeKit(testKit);
+        // kit write testing
+        TestKit testKit = new TestKit();
+        testKit.addProduct("AAAAAA", 5);
+
+//        ProductInKit pink = new ProductInKit("71ue", 6);
+        testKit.addProduct("71ue", 6);
+
+        testKit.addProduct("ab", 44);
+
+        Log.e("testKit", testKit.getKit().toString());
+
+        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
+        kitWriter.write(testKit);
 //
 //        // kit read testing
 //        DatabaseReadKit kitReader = new DatabaseReadKit(DatabaseReadKit.KitUseCase.DEBUG);

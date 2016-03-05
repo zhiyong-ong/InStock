@@ -1,13 +1,10 @@
 package stock.awesome.instock;
 
-import android.util.Log;
-
 import com.firebase.client.Firebase;
 
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
 
-import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 /**
  * writeProduct writes a product and its associated information to the database.
@@ -16,16 +13,16 @@ import stock.awesome.instock.exceptions.ProductNotFoundException;
  */
 public class DatabaseWriteProduct {
 
-    private static final Firebase database = DatabaseLauncher.database;
-
+//    private static final Firebase database = DatabaseLauncher.database;
+     static Firebase database = new Firebase("https://scorching-inferno-2190.firebaseio.com/");
 
     // writes all the characteristic data of a product to database.
     // must have id, other values optional. All string fields are initialised with null values
     // and integer fields with -1.
-    public static void write(Product product) throws ProductNotFoundException {
+    public static void write(Product product) throws IllegalArgumentException {
 
         if (product.getId() == null || product.getId().equals("")) {
-            throw new ProductNotFoundException("No product ID given");
+            throw new IllegalArgumentException("No product ID given");
         }
 
         Firebase ref = database.child("products").child(product.getId());
@@ -49,27 +46,27 @@ public class DatabaseWriteProduct {
 
     // rewrite all product information
     // IMPT: existing qty will not be increased/decreased but overwritten with product's quantity
-    public static void updateProduct(Product product) throws ProductNotFoundException {
+    public static void updateProduct(Product product) throws IllegalArgumentException {
         if (product.getId() == null || product.getId().equals("")) {
-            throw new ProductNotFoundException("No product ID given");
+            throw new IllegalArgumentException("No product ID given");
         }
         DatabaseReadProduct.read(product.getId(), DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT, product);
     }
 
 
     // To update quantity of a product, pass in id and change in qty (pos/neg)
-    public static void updateQuantityExpiry(Product product) throws ProductNotFoundException {
+    public static void updateQuantityExpiry(Product product) throws IllegalArgumentException {
         if (product.getId() == null || product.getId().equals("")) {
-            throw new ProductNotFoundException("No product ID given");
+            throw new IllegalArgumentException("No product ID given");
         }
         DatabaseReadProduct.read(product.getId(), DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_EXPIRY, product);
     }
 
 
     // To delete, pass in id of product to delete
-    public static void deleteProduct(String id) throws ProductNotFoundException {
+    public static void deleteProduct(String id) throws IllegalArgumentException {
         if (id == null || id.equals("")) {
-            throw new ProductNotFoundException("No product ID given");
+            throw new IllegalArgumentException("No product ID given");
         }
         DatabaseReadProduct.read(id, DatabaseReadProduct.ProdUseCase.DELETE_PRODUCT);
     }
