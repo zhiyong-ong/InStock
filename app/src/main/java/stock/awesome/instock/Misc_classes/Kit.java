@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 public class Kit {
 
     // key: string id, value: prodInKit with that id
-    private LinkedHashMap<String, ProductInKit> kit;
+    private LinkedHashMap<String, ProductInKit> kitMap;
     private String kitName = null;
 
     public Kit() {
@@ -24,22 +24,17 @@ public class Kit {
         if (kitName == null || kitName.equals("")) {
             throw new IllegalArgumentException("Invalid kit name given");
         }
-        kit = new LinkedHashMap<String, ProductInKit>();
+        kitMap = new LinkedHashMap<String, ProductInKit>();
         this.kitName = kitName;
     }
 
 
-    public void setKitName(String name) {
+    // throws IllegalArgumentException if name is null or empty
+    public void setKitName(String name) throws IllegalArgumentException {
+        if (name == null || name.equals("")) {
+            throw new IllegalArgumentException("Invalid kit name");
+        }
         kitName = name;
-    }
-
-    public LinkedHashMap<String, ProductInKit> getKit() {
-        return kit;
-    }
-
-
-    public void setKit(LinkedHashMap<String, ProductInKit> kit) {
-        this.kit = kit;
     }
 
     public String getKitName() {
@@ -47,10 +42,28 @@ public class Kit {
     }
 
 
-    // adds as key value pair of id:prodInKit
-    public void addProduct(ProductInKit pink) {
-        kit.put(pink.getId(), pink);
+    public LinkedHashMap<String, ProductInKit> getKitMap() {
+        return kitMap;
     }
+
+    public void setKitMap(LinkedHashMap<String, ProductInKit> kit) throws IllegalArgumentException {
+        if (kit == null) {
+            throw new IllegalArgumentException("Null kit given");
+        }
+        this.kitMap = kit;
+    }
+
+
+    // returns product (has id and qty) associated with id
+    public ProductInKit getProduct(String id) {
+        return kitMap.get(id);
+    }
+
+    // removes id and associated product
+    public void removeProduct(String id) {
+        kitMap.remove(id);
+    }
+
 
     // adds as key value pair of id:prodInKit
     public void addProduct(Product product, int qty) {
@@ -65,14 +78,9 @@ public class Kit {
         addProduct(pink);
     }
 
-    // returns product (has id and qty) associated with id
-    public ProductInKit getProduct(String id) {
-        return kit.get(id);
-    }
-
-    // removes id and associated product
-    public void removeProduct(String id) {
-        kit.remove(id);
+    // adds as key value pair of id:prodInKit
+    public void addProduct(ProductInKit pink) {
+        kitMap.put(pink.getId(), pink);
     }
 
 }
