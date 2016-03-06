@@ -8,6 +8,11 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.FirebaseException;
 import com.firebase.client.ValueEventListener;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.ProductInKit;
@@ -18,17 +23,25 @@ public class DatabaseReadKit {
     private static final Firebase database = DatabaseLauncher.database;
     private static Kit outKit = new Kit();
     private static final String READ_FAILED = "Kit read failed";
-    private static final String WRITE_FAILED = "Product write failed";
 
     public enum KitUseCase {
         UPDATE_KIT, VIEW_PRODUCT_DETAILS, DEBUG
     }
 
 
-    // UNTESTED - change logging, insert more
+    // useCase UPDATE_KIT
+    public static void updateKit(@NotNull Kit kit, @NotNull KitUseCase useCase) throws IllegalArgumentException {
+        if (!(useCase.equals(KitUseCase.UPDATE_KIT))) {
+            throw new IllegalArgumentException("useCase must be UPDATE_KIT");
+        }
+
+        read(kit.getKitName(), useCase, kit);
+    }
+
+    // useCase VIEW_PRODUCT_DETAILS, DEBUG
     // returns a kit with the product associated with id passed in
     // by looking up the id's characteristics in the database
-    public static void read(final String kitName, final KitUseCase useCase) {
+    public static void read(@NotNull final String kitName, @NotNull final KitUseCase useCase, @NotNull final Kit updatedKit) {
 
         outKit = new Kit();
         outKit.setKitName(kitName);
@@ -51,7 +64,7 @@ public class DatabaseReadKit {
 
                     switch (useCase) {
                         case VIEW_PRODUCT_DETAILS:
-                            for (String prodId: outKit.getKit().keySet()) {
+                            for (String prodId: outKit.getKitMap().keySet()) {
                                 // look at products sub-database
                                 DataSnapshot prodSnapshot = snapshot.child("products").child(prodId);
 
@@ -73,11 +86,11 @@ public class DatabaseReadKit {
                             break;
 
                         case UPDATE_KIT:
-                            // TODO
+                            writeAddProducts(outKit);
                             break;
 
                         case DEBUG:
-                            Log.e("kit info", outKit.getKit().toString());
+                            Log.e("kit info", outKit.getKitMap().toString());
                             break;
                     }
 
@@ -90,5 +103,29 @@ public class DatabaseReadKit {
                 Log.e(READ_FAILED, firebaseError.getMessage());
             }
         });
+    }
+
+
+    // adds products to kit. DatabaseWriteKit.addProducts method
+    // calls DatabaseReadKit.read, which finally calls this
+    // the method should not be accessed outside of this class
+    private static void writeAddProducts(Kit kit) {
+        // locations where ProductInKits are stored
+        Firebase ref = database.child("kits").child(kit.getKitName()).child("kitMap");
+
+        // iterate through id-prodInKit pairs stored in kit
+        for (Map.Entry<String, ProductInKit> entry : kit.getKitMap().entrySet())  {
+
+            Map<String, Object> addKit = new LinkedHashMap<String, Object>();
+
+            String id = entry.getKey();
+            int qty = entry.getValue().getQuantity();
+
+            addKit.put("/id", id);
+            addKit.put("/quantity", qty);
+
+            // non-overwrite api method
+            ref.push().updateChildren(addKit);
+        }
     }
 }

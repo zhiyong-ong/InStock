@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // TESTING
-        Product testProd = new Product("AAAAAAAA", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
+        Product testProd = new Product("zzz", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
 
         // product write testing
 //        DatabaseWriteProduct.write(testProd);
@@ -59,22 +59,22 @@ public class MainActivity extends AppCompatActivity {
 //        DatabaseUpdateProduct updater = new DatabaseUpdateProduct(database);
 //        updater.updateProduct(testProd);
 //
-//        // kit write testing
-//        Kit testKit = new Kit("yolo");
-//        testKit.addProduct(testProd);
-//
-//        ProductInKit pink = new ProductInKit("71ue", 6);
-//        testKit.addProduct(pink);
-//
-//        testKit.addProduct("ab", 44);
-//
-//        Log.e("testKit", testKit.getKit().toString());
-//
-//        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
-//        kitWriter.write(testKit);
+        // kit write testing
+        Kit testKit = new Kit("test_kit_1");
+        testKit.addProduct(testProd);
+
+        ProductInKit pink = new ProductInKit("71ue", 6);
+        testKit.addProduct(pink);
+
+        testKit.addProduct("282in", 44);
+
+        Log.e("testKit", testKit.getKitMap().toString());
+
+        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
+        kitWriter.write(testKit);
 //
 //        // kit read testing
-//        DatabaseReadKit.read("yolo", DatabaseReadKit.KitUseCase.DEBUG);
+//        DatabaseReadKit.read("yolo", DatabaseReadKit.KitUseCase.DEBUG, null);
 
     }
 

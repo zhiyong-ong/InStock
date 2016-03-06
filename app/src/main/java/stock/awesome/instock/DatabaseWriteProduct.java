@@ -47,25 +47,25 @@ public class DatabaseWriteProduct {
     // IMPT: existing qty will not be increased/decreased but overwritten with product's quantity
     public static void updateProduct(Product product) throws IllegalArgumentException {
         if (product.getId() == null || product.getId().equals("")) {
-            throw new IllegalArgumentException("No product ID given");
+            throw new IllegalArgumentException("Invalid product ID given (null or empty string)");
         }
-        DatabaseReadProduct.read(product.getId(), DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT, product);
+        DatabaseReadProduct.read(product, DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT);
     }
 
 
     // To update quantity of a product, pass in id and change in qty (pos/neg)
     public static void updateQuantityExpiry(Product product) throws IllegalArgumentException {
         if (product.getId() == null || product.getId().equals("")) {
-            throw new IllegalArgumentException("No product ID given");
+            throw new IllegalArgumentException("Invalid product ID given (null or empty string)");
         }
-        DatabaseReadProduct.read(product.getId(), DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_EXPIRY, product);
+        DatabaseReadProduct.read(product, DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_EXPIRY);
     }
 
 
     // To delete, pass in id of product to delete
     public static void deleteProduct(String id) throws IllegalArgumentException {
         if (id == null || id.equals("")) {
-            throw new IllegalArgumentException("No product ID given");
+            throw new IllegalArgumentException("Invalid product ID given (null or empty string)");
         }
         DatabaseReadProduct.read(id, DatabaseReadProduct.ProdUseCase.DELETE_PRODUCT);
     }

@@ -8,9 +8,8 @@ public class DatabaseLauncher {
 
     public static Firebase database;
 
-    public static Firebase launch() {
+    public static void launch() {
         database = new Firebase("https://scorching-inferno-2190.firebaseio.com/");
-        return database;
     }
 
 }

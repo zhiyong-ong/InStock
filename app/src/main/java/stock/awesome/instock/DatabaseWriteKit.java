@@ -4,7 +4,12 @@ import android.util.Log;
 
 import com.firebase.client.Firebase;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import stock.awesome.instock.misc_classes.Kit;
+import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.ProductInKit;
 import stock.awesome.instock.misc_classes.TestKit;
 
 
@@ -12,6 +17,7 @@ import stock.awesome.instock.misc_classes.TestKit;
 public class DatabaseWriteKit {
 
     private static final Firebase database = DatabaseLauncher.database;
+
 
     public static void write(Kit kit) throws IllegalArgumentException {
         if (kit.getKitName() == null || kit.getKitName().equals("")) {
@@ -23,36 +29,25 @@ public class DatabaseWriteKit {
     }
 
 
-    public static void addProductsToKit(String kitName, Product product, int qty) throws KitNotFoundException {
+    public static void addProductsToKit(String kitName, String prodId, int qty) throws IllegalArgumentException {
         Kit kitWithProduct = new Kit(kitName);
-        kitWithProduct.addProduct(product, qty);
-
+        ProductInKit pink = new ProductInKit(prodId, qty);
+        kitWithProduct.addProduct(pink);
         addProductsToKit(kitWithProduct);
     }
-//
-//
-//    public static void addProductsToKit(Kit kit) throws KitNotFoundException {
-//        if (kit.getKitName() == null || kit.getKitName().equals("")) {
-//            Log.e("Kit write failed", "kit has no name");
-//            throw new KitNotFoundException("No kit name given");
-//        }
-//
-//        Firebase ref = database.child("kits").child(kit.getKitName());
-//
-//        LinkedHashMap<Product, Integer> kitHashMap = kit.getHashMap();
-//
-//        for (Map.Entry<Product, Integer> entry : kitHashMap.entrySet())  {
-//
-//            Map<String, Object> newKit = new LinkedHashMap<String, Object>();
-//
-//            String id = entry.getKey().getId();
-//            int qty = entry.getValue();
-//
-//            newKit.put("/id", id);
-//            newKit.put("/quantity", qty);
-//
-//            ref.push().updateChildren(newKit);
-//        }
-//    }
+
+    public static void addProductsToKit(String kitName, ProductInKit pink) throws IllegalArgumentException {
+        Kit kitWithProduct = new Kit(kitName);
+        kitWithProduct.addProduct(pink);
+        addProductsToKit(kitWithProduct);
+    }
+
+    public static void addProductsToKit(Kit kit) throws IllegalArgumentException {
+        if (kit.getKitName() == null || kit.getKitName().equals("")) {
+            throw new IllegalArgumentException("No kit name given");
+        }
+
+        DatabaseReadKit.updateKit(kit, DatabaseReadKit.KitUseCase.UPDATE_KIT);
+    }
 
 }
