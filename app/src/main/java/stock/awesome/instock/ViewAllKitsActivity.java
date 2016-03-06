@@ -81,19 +81,4 @@ public class ViewAllKitsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-    public static ArrayList<Kit> displayListOfKits(ArrayList<Kit> list) {
-        return list;
-    }
-
-
-//    public static class KitViewHolder extends RecyclerView.ViewHolder {
-//        TextView nameText;
-//
-//        public KitViewHolder(View itemView) {
-//            super(itemView);
-//            nameText = (TextView)itemView.findViewById(android.R.id.text1);
-//        }
-//    }
 }

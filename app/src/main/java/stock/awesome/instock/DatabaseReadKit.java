@@ -98,71 +98,42 @@ public class DatabaseReadKit {
             }
         });
 
-        switch (useCase) {
-            case VIEW_PRODUCT_DETAILS:
-                Firebase productsRef = database.child("products");
-
-                productsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        for (String prodId : outKit.getKitMap().keySet()) {
-                            // look at products sub-database
-                            DataSnapshot prodSnapshot = snapshot.child(prodId);
-
-                            // product in kit not in database
-                            if (!prodSnapshot.exists()) {
-                                Log.e(READ_FAILED, "Product id " + prodId + "in kit " + kitName + " not found in products database");
-                            }
-                            else {
-                                Product outProd = prodSnapshot.getValue(Product.class);
-                                Log.d("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
-
-                                /** TODO use product information in outProds to do something
-                                 *  example store in array then display all in listview
-                                 *  note that qty in outprod is total inventory quantity
-                                 *  kit quantity is stored in outKit.getProduct(productId).getQuantity();
-                                 **/
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-                        Log.e(READ_FAILED, firebaseError.getMessage());
-                    }
-                });
-
-                break;
-        }
-    }
-
-
-    // sends arraylist of kits to a method in ViewAllStockActivity
-    public static void getArrayOfKits() {
-        Firebase ref = database.child("kits");
-        Query queryRef = ref.orderByKey();
-
-        final ArrayList<Kit> arrayList = new ArrayList<>();
-
-        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                for (DataSnapshot eachKitSnapshot : snapshot.getChildren()) {
-                    Kit eachKit = eachKitSnapshot.getValue(Kit.class);
-                    arrayList.add(eachKit);
-                }
-
-//                Log.e("list of kits", arrayList.toString());
-//                Log.e("item id in kit", arrayList.get(1).getProduct("282in").getId());
-
-                ViewAllKitsActivity.displayListOfKits(arrayList);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.e(READ_FAILED, firebaseError.getMessage());
-            }
-        });
+//        switch (useCase) {
+//            case VIEW_PRODUCT_DETAILS:
+//                Firebase productsRef = database.child("products");
+//
+//                productsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot snapshot) {
+//                        for (String prodId : outKit.getKitMap().keySet()) {
+//                            // look at products sub-database
+//                            DataSnapshot prodSnapshot = snapshot.child(prodId);
+//
+//                            // product in kit not in database
+//                            if (!prodSnapshot.exists()) {
+//                                Log.e(READ_FAILED, "Product id " + prodId + "in kit " + kitName + " not found in products database");
+//                            }
+//                            else {
+//                                Product outProd = prodSnapshot.getValue(Product.class);
+//                                Log.d("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
+//
+//                                /** TODO use product information in outProd to do something
+//                                 *  example store in array then display all in listview
+//                                 *  note that qty in outprod is total inventory quantity
+//                                 *  kit quantity is stored in outKit.getProduct(productId).getQuantity();
+//                                 **/
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(FirebaseError firebaseError) {
+//                        Log.e(READ_FAILED, firebaseError.getMessage());
+//                    }
+//                });
+//
+//                break;
+//        }
     }
 
     // adds products to kit. DatabaseWriteKit.addProducts method
