@@ -19,7 +19,6 @@ import java.util.GregorianCalendar;
 import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.ProductInKit;
-import stock.awesome.instock.misc_classes.TestKit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,22 +58,27 @@ public class MainActivity extends AppCompatActivity {
 //        DatabaseUpdateProduct updater = new DatabaseUpdateProduct(database);
 //        updater.updateProduct(testProd);
 //
-        // kit write testing
-        Kit testKit = new Kit("test_kit_1");
-        testKit.addProduct(testProd);
-
-        ProductInKit pink = new ProductInKit("71ue", 6);
-        testKit.addProduct(pink);
-
-        testKit.addProduct("282in", 44);
-
-        Log.e("testKit", testKit.getKitMap().toString());
-
-        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
-        kitWriter.write(testKit);
+//        // kit write testing
+//        Kit testKit = new Kit("test_kit_1");
+//        testKit.addProduct(testProd, 6);
 //
-//        // kit read testing
-//        DatabaseReadKit.read("yolo", DatabaseReadKit.KitUseCase.DEBUG, null);
+//        ProductInKit pink = new ProductInKit("71ue", 6);
+//        testKit.addProduct(pink);
+//
+//        testKit.addProduct("282in", 44);
+//
+//        Log.e("testKit", testKit.getKitMap().toString());
+//
+//        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
+//        kitWriter.write(testKit);
+//
+//        // Kit update testing
+//        DatabaseWriteKit.addProductsToKit("test_kit_1", "AAAAAAAA", 200);
+//
+//        DatabaseReadKit.read("test_kit_1", DatabaseReadKit.KitUseCase.DEBUG);
+//
+//        // Kit delete test
+//        DatabaseWriteKit.deleteKit("test_kit_4");
 
     }
 

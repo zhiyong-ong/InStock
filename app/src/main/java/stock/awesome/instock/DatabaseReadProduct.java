@@ -32,7 +32,7 @@ public class DatabaseReadProduct {
 
 
     // useCase DEBUG, DELETE_PRODUCT, BUILD_KIT
-    public static void read(@NotNull final String id,  @NotNull final ProdUseCase useCase) throws IllegalArgumentException {
+    public static void read(@NotNull final String id, @NotNull final ProdUseCase useCase) throws IllegalArgumentException {
         if (id.equals("")) {
             throw new IllegalArgumentException("Invalid product ID (empty string)");
         }
@@ -69,7 +69,7 @@ public class DatabaseReadProduct {
 
                 // the product does not exist in the database
                 if (!snapshot.exists()) {
-                    Log.e(READ_FAILED, "Product name: " + id + " not found in database");
+                    Log.e(READ_FAILED, "Product ID " + id + " not found in database");
                 }
                 else {
                     outProd = snapshot.getValue(Product.class);

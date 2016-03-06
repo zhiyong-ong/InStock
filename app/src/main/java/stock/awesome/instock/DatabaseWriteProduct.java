@@ -37,7 +37,7 @@ public class DatabaseWriteProduct {
             if (product.getExpiry() != null) {
                 ref.child("expiry").setValue(StringCalendar.toString(product.getExpiry()));
             } else {
-                ref.child("expiry").setValue(null);
+                ref.child("expiry").setValue("");
             }
         }
     }
