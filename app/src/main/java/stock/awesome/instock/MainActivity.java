@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,9 +15,7 @@ import com.firebase.client.Firebase;
 
 import java.util.GregorianCalendar;
 
-import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.Product;
-import stock.awesome.instock.misc_classes.ProductInKit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -79,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
 //
 //        // Kit delete test
 //        DatabaseWriteKit.deleteKit("test_kit_4");
-
+//
+//        // get array of kits test
+//        DatabaseReadKit.getArrayOfKits();
     }
 
     public void sendNewItemIntent(View view) {
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendExistingKitIntent(View view) {
-        Intent intent = new Intent(this, ExistingKitActivity.class);
+        Intent intent = new Intent(this, ViewAllKitsActivity.class);
         startActivity(intent);
     }
 

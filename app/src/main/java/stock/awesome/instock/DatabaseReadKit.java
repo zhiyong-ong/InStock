@@ -5,12 +5,12 @@ import android.util.Log;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.FirebaseException;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.Map;
 
 import stock.awesome.instock.misc_classes.Kit;
@@ -57,11 +57,9 @@ public class DatabaseReadKit {
 
         Firebase ref = database.child("kits").child(kitName);
 
-        Log.d("Adding listener ", "SingleValueEvent");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                Log.d("onDataChange started", "success");
 
                 // kitName not in the database
                 if (!snapshot.exists()) {
@@ -138,6 +136,34 @@ public class DatabaseReadKit {
         }
     }
 
+
+    // sends arraylist of kits to a method in ViewAllStockActivity
+    public static void getArrayOfKits() {
+        Firebase ref = database.child("kits");
+        Query queryRef = ref.orderByKey();
+
+        final ArrayList<Kit> arrayList = new ArrayList<>();
+
+        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot eachKitSnapshot : snapshot.getChildren()) {
+                    Kit eachKit = eachKitSnapshot.getValue(Kit.class);
+                    arrayList.add(eachKit);
+                }
+
+//                Log.e("list of kits", arrayList.toString());
+//                Log.e("item id in kit", arrayList.get(1).getProduct("282in").getId());
+
+                ViewAllKitsActivity.displayListOfKits(arrayList);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e(READ_FAILED, firebaseError.getMessage());
+            }
+        });
+    }
 
     // adds products to kit. DatabaseWriteKit.addProducts method
     // calls DatabaseReadKit.read, which finally calls this

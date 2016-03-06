@@ -39,7 +39,7 @@
                 android:value="MainActivity" />
         </activity>
         <activity
-            android:name=".ExistingKitActivity"
+            android:name=".ViewAllKitsActivity"
             android:label="@string/title_activity_existing_kit"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >

@@ -37,6 +37,7 @@ public class ViewAllStocksActivity extends AppCompatActivity {
     Context context = this;
     Calendar myCalendar;
     static EditText expiryText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +46,8 @@ public class ViewAllStocksActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ListView itemView = (ListView) findViewById(R.id.viewAllListView);
-        //set up connection with the firebase database.
-        Firebase.setAndroidContext(this);
+//        //set up connection with the firebase database.
+//        Firebase.setAndroidContext(this);
 
         database = DatabaseLauncher.database.child("products");
         //database.child("products");
@@ -159,6 +160,7 @@ public class ViewAllStocksActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
