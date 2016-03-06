@@ -1,5 +1,6 @@
 package stock.awesome.instock;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,8 +26,7 @@ import stock.awesome.instock.misc_classes.StringCalendar;
 
 
 public class ViewAllKitsActivity extends AppCompatActivity {
-    //private static RecyclerView mRecyclerView;
-    //private static RecyclerView.Adapter mAdapter;
+    public final static String KIT_NAME = "stock.awesome.instock.KIT_NAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,6 @@ public class ViewAllKitsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Firebase.setAndroidContext(this);
         Firebase kitRef = DatabaseLauncher.database.child("kits");
 
         ListView kitView = (ListView) findViewById(R.id.list_view_all_kits);
@@ -48,6 +48,20 @@ public class ViewAllKitsActivity extends AppCompatActivity {
             }
         };
         kitView.setAdapter(mAdapter);
+
+        // when kit in list is clicked, go to new activity that populates products of that kit
+        kitView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ViewAllKitsActivity.this, ViewKitDetailsActivity.class);
+
+                Kit entry = (Kit) parent.getAdapter().getItem(position);
+                String message = entry.getKitName();
+
+                intent.putExtra(KIT_NAME, message);
+                startActivity(intent);
+            }
+        });
 
 
 //        Firebase.setAndroidContext(this);
