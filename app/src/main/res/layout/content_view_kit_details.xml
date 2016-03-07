@@ -10,9 +10,9 @@
     tools:context=".ViewKitDetailsActivity">
 
     <ListView
+        android:id="@+id/list_view_kit_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_view_kit_details"
         android:layout_alignParentTop="true"/>
 
 </RelativeLayout>

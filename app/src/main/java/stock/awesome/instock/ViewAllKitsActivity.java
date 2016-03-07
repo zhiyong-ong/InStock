@@ -19,9 +19,12 @@ import com.firebase.ui.FirebaseListAdapter;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import stock.awesome.instock.misc_classes.Kit;
+import stock.awesome.instock.misc_classes.KitStorer;
 import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.ProductInKit;
 import stock.awesome.instock.misc_classes.StringCalendar;
 
 
@@ -56,9 +59,9 @@ public class ViewAllKitsActivity extends AppCompatActivity {
                 Intent intent = new Intent(ViewAllKitsActivity.this, ViewKitDetailsActivity.class);
 
                 Kit entry = (Kit) parent.getAdapter().getItem(position);
-                String message = entry.getKitName();
+                LinkedHashMap<String, ProductInKit> kitMap = entry.getKitMap();
 
-                intent.putExtra(KIT_NAME, message);
+                intent.putExtra(KIT_NAME, entry.getKitName());
                 startActivity(intent);
             }
         });
