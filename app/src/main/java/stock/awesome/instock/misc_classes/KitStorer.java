@@ -10,4 +10,5 @@ public class KitStorer {
     public static void storeKit(Kit inKit) {
         kit = inKit;
     }
+
 }

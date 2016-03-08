@@ -30,19 +30,19 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // TESTING
-        Product testProd = new Product("zzz", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
-
-        // product write testing
+//        Product testProd = new Product("zzz", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
+//        // product write testing
 //        DatabaseWriteProduct.write(testProd);
 //        testProd.setQuantity(80);
 //        DatabaseWriteProduct.updateProduct(testProd);
 //
 //        DatabaseWriteProduct.updateQuantityExpiry(new Product("282in", -1020, testProd.getExpiry()));
 //        DatabaseWriteProduct.deleteProduct("refactor");
-
-
-        // product read testing
-
+//
+//        Product[] toUpdate = {new Product("282in", 6000), new Product("71ue", -6000), new Product("8272br", -8)};
+//        DatabaseWriteProduct.updateQuantities(toUpdate);
+//
+//        // product read testing
 //        try {
 //            DatabaseReadProduct.read("282in", DatabaseReadProduct.ProdUseCase.DEBUG);
 //        }

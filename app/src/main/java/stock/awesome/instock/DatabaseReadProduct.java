@@ -27,7 +27,7 @@ public class DatabaseReadProduct {
     private static final String READ_FAILED = "Product read failed";
 
     public enum ProdUseCase {
-        BUILD_KIT, DISPLAY, UPDATE_PRODUCT, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG
+        BUILD_KIT, DISPLAY, UPDATE_PRODUCT, UPDATE_QUANTITY, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG
     }
 
 
@@ -41,6 +41,14 @@ public class DatabaseReadProduct {
         }
 
         read(id, useCase, new Product(id));
+    }
+
+    public static void read(@NotNull final Product[] updatedProducts, @NotNull final ProdUseCase useCase) {
+        if ( !(useCase.equals(ProdUseCase.UPDATE_QUANTITY)) ) {
+            throw new IllegalArgumentException ("useCase must be UPDATE_QUANTITY");
+        }
+
+        updateQuantities(updatedProducts);
     }
 
     // useCase UPDATE_PRODUCT, UPDATE_QUANTITY_EXPIRY
@@ -70,8 +78,7 @@ public class DatabaseReadProduct {
                 // the product does not exist in the database
                 if (!snapshot.exists()) {
                     Log.e(READ_FAILED, "Product ID " + id + " not found in database");
-                }
-                else {
+                } else {
                     outProd = snapshot.getValue(Product.class);
 
                     switch (useCase) {
@@ -83,8 +90,8 @@ public class DatabaseReadProduct {
 //                            BuildKitActivity.displayProduct(result);
                             break;
 
-                        // if use case is to update quantity only, set outProd's qty to qty
-                        // and write new qty to database
+                        // if use case is to update quantity and expiry only,
+                        // set outProd's qty to qty and write new qty, expiry to database
                         case UPDATE_QUANTITY_EXPIRY:
                             int qty = (int) (long) snapshot.child("quantity").getValue();
 
@@ -114,6 +121,40 @@ public class DatabaseReadProduct {
                             Log.w("result info", outProd.getId() + " " + outProd.getName() + " " +
                                     outProd.getQuantity() + " " + StringCalendar.toString(outProd.getExpiry()));
                             break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e(READ_FAILED, firebaseError.getMessage());
+            }
+        });
+    }
+
+
+    private static void updateQuantities(final Product[] updatedProducts) {
+        Firebase ref = database.child("products");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot bigSnapshot) {
+                Log.d("onDataChange started ", "success");
+
+                for (Product updatedProd : updatedProducts) {
+                    DataSnapshot snapshot = bigSnapshot.child(updatedProd.getId());
+
+                    // the product does not exist in the database
+                    if (!snapshot.exists()) {
+                        Log.e(READ_FAILED, "Product ID " + updatedProd.getId() + " not found in database");
+                    }
+                    else {
+                        outProd = snapshot.getValue(Product.class);
+
+                        int oldQty = outProd.getQuantity();
+                        outProd.setQuantity(oldQty + updatedProd.getQuantity());
+
+                        DatabaseWriteProduct.write(outProd);
                     }
                 }
             }

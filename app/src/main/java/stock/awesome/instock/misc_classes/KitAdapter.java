@@ -23,18 +23,18 @@ import stock.awesome.instock.R;
 // (described in the getView method)
 public class KitAdapter extends BaseAdapter {
 
-    private LinkedHashMap<String, ProductInKit> mKitMap = new LinkedHashMap<String, ProductInKit>();
-    private String[] mKeys;
+    public LinkedHashMap<String, ProductInKit> mKitMap = new LinkedHashMap<String, ProductInKit>();
+    public String[] mKeys;
+    public static HashMap<String, Product> mProductMap;
+    public ArrayList<Boolean> status = new ArrayList<>();
     private Context mContext;
-    private static HashMap<String, Product> mProductMap;
-    private ArrayList<Boolean> status = new ArrayList<Boolean>();
 
     public KitAdapter(Context context, Kit data){
         mContext = context;
         mKitMap  = data.getKitMap();
         mKeys = mKitMap.keySet().toArray(new String[mKitMap.size()]);
 
-        for (int i = 0; i < mKeys.length; i++) {
+        for (int i=0; i<mKeys.length; i++) {
             status.add(false);
         }
     }
@@ -44,7 +44,6 @@ public class KitAdapter extends BaseAdapter {
         mProductMap = productMap;
         Log.d("productMap received", productMap.toString());
     }
-
 
     @Override
     public int getCount() {
