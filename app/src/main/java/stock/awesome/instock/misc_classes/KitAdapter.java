@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,25 +23,27 @@ import stock.awesome.instock.R;
 // (described in the getView method)
 public class KitAdapter extends BaseAdapter {
 
-    private String mKitName;
-    private LinkedHashMap<String, ProductInKit> mKitMap = new LinkedHashMap<String, ProductInKit>();
-    private String[] mKeys;
+    public LinkedHashMap<String, ProductInKit> mKitMap = new LinkedHashMap<String, ProductInKit>();
+    public String[] mKeys;
+    public static HashMap<String, Product> mProductMap;
+    public ArrayList<Boolean> status = new ArrayList<>();
     private Context mContext;
-    private static HashMap<String, Product> mProductMap;
 
     public KitAdapter(Context context, Kit data){
         mContext = context;
-        mKitName = data.getKitName();
         mKitMap  = data.getKitMap();
         mKeys = mKitMap.keySet().toArray(new String[mKitMap.size()]);
+
+        for (int i=0; i<mKeys.length; i++) {
+            status.add(false);
+        }
     }
 
 
     public static void getProductDetails(HashMap<String, Product> productMap) {
         mProductMap = productMap;
-        Log.e("productMap received", productMap.toString());
+        Log.d("productMap received", productMap.toString());
     }
-
 
     @Override
     public int getCount() {
@@ -58,7 +62,7 @@ public class KitAdapter extends BaseAdapter {
 
     // LAGS UI THREAD BECAUSE IT IS ONLY CALLED AFTER THE PRODUCT DETAILS ARE RETURNED FROM DATABASE
     @Override
-    public View getView(int pos, View convertView, ViewGroup parent) {
+    public View getView(final int pos, View convertView, ViewGroup parent) {
         ProductInKit value = (ProductInKit) getItem(pos);
         String id = value.getId();
 
@@ -77,6 +81,24 @@ public class KitAdapter extends BaseAdapter {
         prodName.setText(mProductMap.get(id).getName());
         prodLocation.setText(mProductMap.get(id).getLocation());
 
+        CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.product_in_kit_checkbox);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+
+                if (isChecked) {
+                    status.set(pos, true);
+                } else {
+                    status.set(pos, false);
+                }
+            }
+        });
+
+        checkBox.setChecked(status.get(pos));
+
         return convertView;
     }
+
 }
