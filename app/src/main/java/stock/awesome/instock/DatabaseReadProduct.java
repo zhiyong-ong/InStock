@@ -29,7 +29,7 @@ public class DatabaseReadProduct {
     private static final String READ_FAILED = "Product read failed";
 
     public enum ProdUseCase {
-        BUILD_KIT, DISPLAY_SEARCH, DISPLAY_PRODUCT, UPDATE_PRODUCT, UPDATE_QUANTITY, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG
+        BUILD_KIT, DISPLAY_SEARCH, DISPLAY_PRODUCT, UPDATE_PRODUCT, UPDATE_QUANTITIES, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG
     }
 
 
@@ -47,8 +47,9 @@ public class DatabaseReadProduct {
         read(id, useCase, new Product(id));
     }
 
+    // useCase UPDATE_QUANTITIES
     public static void read(@NotNull final ArrayList<Product> updatedProducts, @NotNull final ProdUseCase useCase) {
-        if ( !(useCase.equals(ProdUseCase.UPDATE_QUANTITY)) ) {
+        if ( !(useCase.equals(ProdUseCase.UPDATE_QUANTITIES)) ) {
             throw new IllegalArgumentException ("useCase must be UPDATE_QUANTITY");
         }
 
@@ -144,6 +145,8 @@ public class DatabaseReadProduct {
     private static void updateQuantities(final ArrayList<Product> updatedProducts) {
         Firebase ref = database.child("products");
 
+        final ArrayList<Product> lowQtyProds = new ArrayList<>();
+
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot bigSnapshot) {
@@ -159,11 +162,20 @@ public class DatabaseReadProduct {
                     else {
                         outProd = snapshot.getValue(Product.class);
 
-                        int oldQty = outProd.getQuantity();
-                        outProd.setQuantity(oldQty + updatedProd.getQuantity());
+                        int newQty = outProd.getQuantity() + updatedProd.getQuantity();
+                        outProd.setQuantity(newQty);
 
                         DatabaseWriteProduct.write(outProd);
+
+                        // Threshold for sending email
+                        if (newQty < 100) {
+                            lowQtyProds.add(outProd);
+                        }
                     }
+                }
+
+                if (lowQtyProds.size() > 0) {
+                    ViewKitDetailsActivity.sendEmail(lowQtyProds);
                 }
             }
 
