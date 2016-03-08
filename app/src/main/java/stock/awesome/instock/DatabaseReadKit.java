@@ -147,6 +147,7 @@ public class DatabaseReadKit {
                         KitAdapter.getProductDetails(prodMap);
 
                         Intent intent = new Intent(fromContext, toClass);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         fromContext.startActivity(intent);
                     }
 

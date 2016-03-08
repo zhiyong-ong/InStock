@@ -39,7 +39,6 @@
             android:background="?android:attr/selectableItemBackground"
             android:text="Done"
             android:textSize="16dip"
-            android:onClick="onDonePressed"
             android:id="@+id/kit_details_done_button"
             android:layout_alignParentBottom="true"/>
 
