@@ -1,5 +1,6 @@
 package stock.awesome.instock;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,16 +68,8 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 //            toUpdate.add(product);
 //        }
 
-        try {
-            GMailSender sender = new GMailSender("tembusu.college.events@gmail.com", "teas_checker1");
-            sender.sendMail("This is Subject",
-                    "This is Body",
-                    "tembusu.college.events@gmail.com",
-                    "kabirk@live.com");
-            Log.e("sendMail", "happened");
-        } catch (Exception e) {
-            Log.e("Mail send failed", e.getMessage(), e);
-        }
+        SendEmailTask emailer = new SendEmailTask();
+        emailer.execute();
     }
 
     @Override
@@ -86,4 +85,24 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    public class SendEmailTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                GMailSender sender = new GMailSender("tembusu.college.events@gmail.com", "teas_checker1");
+                sender.sendMail("This is Subject",
+                        "This is Body",
+                        "tembusu.college.events@gmail.com",
+                        "kabirk@live.com");
+                Log.e("sendMail", "happened");
+            } catch (Exception e) {
+                Log.e("Mail send failed", e.getMessage(), e);
+            }
+            return null;
+        }
+    }
+
 }

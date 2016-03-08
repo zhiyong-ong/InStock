@@ -9,6 +9,8 @@ import com.firebase.client.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
 import stock.awesome.instock.fragments.UpdateItemFragment;
@@ -43,7 +45,7 @@ public class DatabaseReadProduct {
         read(id, useCase, new Product(id));
     }
 
-    public static void read(@NotNull final Product[] updatedProducts, @NotNull final ProdUseCase useCase) {
+    public static void read(@NotNull final ArrayList<Product> updatedProducts, @NotNull final ProdUseCase useCase) {
         if ( !(useCase.equals(ProdUseCase.UPDATE_QUANTITY)) ) {
             throw new IllegalArgumentException ("useCase must be UPDATE_QUANTITY");
         }
@@ -133,7 +135,7 @@ public class DatabaseReadProduct {
     }
 
 
-    private static void updateQuantities(final Product[] updatedProducts) {
+    private static void updateQuantities(final ArrayList<Product> updatedProducts) {
         Firebase ref = database.child("products");
 
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
