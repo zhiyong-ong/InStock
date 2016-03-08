@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 //        // Kit update testing
 //        DatabaseWriteKit.addProductsToKit("test_kit_1", "AAAAAAAA", 200);
 //
-//        DatabaseReadKit.read("test_kit_1", DatabaseReadKit.KitUseCase.DEBUG);
+//        DatabaseReadKit.read("test_kit_1", DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS);
 //
 //        // Kit delete test
 //        DatabaseWriteKit.deleteKit("test_kit_4");

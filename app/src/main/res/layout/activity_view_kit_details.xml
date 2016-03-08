@@ -11,11 +11,11 @@
 
         <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
             android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-            style="@style/MyDarkToolbarStyle"
-            app:popupTheme="@style/PopupOverlay" />
+            style="@style/MyDarkToolbarStyle" app:popupTheme="@style/PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
+    <include layout="@layout/v2_layout_view_kit_name" />
     <include layout="@layout/content_view_kit_details" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -56,32 +56,14 @@ public class ViewAllKitsActivity extends AppCompatActivity {
         kitView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ViewAllKitsActivity.this, ViewKitDetailsActivity.class);
-
                 Kit entry = (Kit) parent.getAdapter().getItem(position);
-                LinkedHashMap<String, ProductInKit> kitMap = entry.getKitMap();
+                KitStorer.storeKit(entry);
 
-                intent.putExtra(KIT_NAME, entry.getKitName());
-                startActivity(intent);
+                // this method starts an intent that starts ViewKitDetailsActivity
+                DatabaseReadKit.read(entry.getKitName(), DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
+                        ViewAllKitsActivity.this, ViewKitDetailsActivity.class);
             }
         });
-
-
-//        Firebase.setAndroidContext(this);
-//        Firebase database = DatabaseLauncher.database.child("kits");
-//
-//        RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler_view_kits);
-//        recycler.setHasFixedSize(true);
-//        recycler.setLayoutManager(new LinearLayoutManager(this));
-//
-//        FirebaseRecyclerAdapter<Kit, KitViewHolder> mAdapter = new FirebaseRecyclerAdapter<Kit, KitViewHolder>
-//                (Kit.class, android.R.layout.simple_list_item_1, KitViewHolder.class, database) {
-//            @Override
-//            public void populateViewHolder(KitViewHolder kitViewHolder, Kit kit, int position) {
-//                kitViewHolder.nameText.setText(kit.getKitName());
-//            }
-//        };
-//        recycler.setAdapter(mAdapter);
 
     }
 
