@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -20,7 +21,9 @@ import com.firebase.client.Firebase;
 import java.util.ArrayList;
 
 import stock.awesome.instock.misc_classes.BuildKitAdapter;
+import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.StringCalendar;
 
 public class BuildKitActivity extends AppCompatActivity {
     private static BuildKitAdapter listAdapter;
@@ -30,6 +33,7 @@ public class BuildKitActivity extends AppCompatActivity {
     final Context context = this;
     Firebase database;
     String LOG_TAG = Product.class.getSimpleName();
+    static int quantity = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,29 +52,39 @@ public class BuildKitActivity extends AppCompatActivity {
             //check when items in the listview are clicked
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
                 LayoutInflater inflater = LayoutInflater.from(context);
-                final View dialogView = inflater.inflate(R.layout.popup_add_item, null);
+                final View dialogView = inflater.inflate(R.layout.item_edit_build_kit, null);
 
-                final EditText productIDText = (EditText) dialogView.findViewById(R.id.productID);
-                final EditText quantityText = (EditText) dialogView.findViewById(R.id.addQuantity);
+                final TextView productIDText = (TextView) dialogView.findViewById(R.id.productView);
+                final EditText quantityText = (EditText) dialogView.findViewById(R.id.quantityEdit);
+                final TextView nameText = (TextView) dialogView.findViewById(R.id.nameEdit);
+                final TextView locationText = (TextView) dialogView.findViewById(R.id.locationEdit);
+                final TextView descText = (TextView) dialogView.findViewById(R.id.descriptionEdit);
+                final TextView expiryText = (TextView) dialogView.findViewById(R.id.expiryEdit);
 
-                productIDText.setText(newProduct.get(position).getId());
-                quantityText.setText(newProduct.get(position).getQuantity());
+                //set all the text to the current product
+                final Product selectedProduct = listAdapter.getItem(position);
+                productIDText.setText(selectedProduct.getId());
+                quantityText.setText(Integer.toString(selectedProduct.getQuantity()));
+                nameText.setText(selectedProduct.getName());
+                locationText.setText(selectedProduct.getLocation());
+                expiryText.setText(StringCalendar.toProperDateString(selectedProduct.getExpiry()));
+                descText.setText(selectedProduct.getDesc());
+                //set the cursor to the end of quantity edit text
+                quantityText.setSelection(quantityText.getText().length());
 
                 dialogBuilder.setView(dialogView);
                 dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String productID = productIDText.getEditableText().toString();
-                        int quantity = Integer.parseInt(quantityText.getEditableText().toString());
-                        Toast.makeText(context, "ID: " + productID + ", QTY: " + quantity, Toast.LENGTH_LONG).show();
 
-                        newProduct.set(position, new Product(productID, quantity));
+                        //update quantity here and notify the listadapter
+                        int quantity = Integer.parseInt(quantityText.getEditableText().toString());
+                        selectedProduct.setQuantity(quantity);
                         listAdapter.notifyDataSetChanged();
+
                     }
                 });
-
                 dialogBuilder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         newProduct.remove(position);
@@ -84,8 +98,10 @@ public class BuildKitActivity extends AppCompatActivity {
 
     }
     public static void displayItem(final Product product) {
+        product.setQuantity(quantity);
         newProduct.add(product);
-        mainListView.setAdapter(listAdapter);
+        //don't need this.
+        //mainListView.setAdapter(listAdapter);
         listAdapter.notifyDataSetChanged();
 
     }
@@ -129,7 +145,7 @@ public class BuildKitActivity extends AppCompatActivity {
                 }
                 else {
                     String productID = productIDText.getText().toString();
-                    String qty = quantityText.getText().toString();
+                    quantity = Integer.parseInt(quantityText.getText().toString());
                     //add to the list.
                     //communicate with the database here
                     //DatabaseReadProduct reader = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.BUILD_KIT);
@@ -154,6 +170,8 @@ public class BuildKitActivity extends AppCompatActivity {
                 result.getQuantity() + " " + StringCalendar.toString(result.getExpiry()));
         return result;
     }*/
+
+    //intent when clicking on the button for save kit
     public void sendSaveKit(View view) {
 
         //display error message for empty kit
@@ -185,7 +203,8 @@ public class BuildKitActivity extends AppCompatActivity {
             dialogBuilder.setView(dialogView);
             dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                    String kitName = kitNameText.getEditableText().toString();
+
+                    final String kitName = kitNameText.getEditableText().toString();
                     Toast.makeText(context, "Kit Name: " + kitName, Toast.LENGTH_LONG).show();
 
                     //show the dialog to confirm to save kit
@@ -196,12 +215,25 @@ public class BuildKitActivity extends AppCompatActivity {
                     dialogBuilder.setView(dialogView);
                     dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            //do nothing, go back.
+                            //save kit to database here!
+                            Kit newKit = new Kit(kitName);
+                            for(Product cur : newProduct) {
+                                newKit.addProduct(cur, cur.getQuantity());
+                            }
+                            DatabaseWriteKit.write(newKit);
+
+                            newProduct.clear();
+                            listAdapter.notifyDataSetChanged();
+                            Toast.makeText(context, "Kit " + kitName + " saved", Toast.LENGTH_LONG).show();
+                            //go back to the main activity
+//                            Intent intent = new Intent(BuildKitActivity.this, MainActivity.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                            startActivity(intent);
                         }
                     });
                     dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            //do nothing here.
+
                         }
                     });
                     AlertDialog b = dialogBuilder.create();

@@ -8,7 +8,7 @@
         android:layout_height="64dp"
         android:scaleType="center"
         android:background="#ab483d"
-        android:text="EDIT ITEM"
+        android:text="EDIT QUANTITY"
         android:gravity="center"
         android:textSize="23dp"
         android:textColor="#FFFFFF"
@@ -25,17 +25,17 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical">
-        <TextView
-            android:id="@+id/productView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:gravity="center_horizontal"
-            android:textStyle="bold"
-            style="@style/TableText"
-            android:textSize="22dp"
-            android:ellipsize="end"
-            android:maxLines="1"/>
+            <TextView
+                android:id="@+id/productView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                style="@style/TableText"
+                android:textSize="22dp"
+                android:ellipsize="end"
+                android:maxLines="1"/>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -55,24 +55,22 @@
                         style="@style/TableText"
                         android:text="Name: " />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/nameEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="text" >
-                    </EditText>
+                        style="@style/TableText"
+                        android:ems="10" >
+                    </TextView>
                     <requestFocus />
                 </TableRow>
 
                 <TableRow
-                    android:id="@+id/tableRow4"
+                    android:id="@+id/tableRow3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"  >
 
                     <TextView
-                        android:id="@+id/textView4"
+                        android:id="@+id/textView3"
                         style="@style/TableText"
                         android:text="Quantity: " />
 
@@ -84,6 +82,7 @@
                         android:inputType="number" />
 
                 </TableRow>
+
                 <TableRow
                     android:id="@+id/tableRow5"
                     android:layout_width="wrap_content"
@@ -95,15 +94,13 @@
                         style="@style/TableText"
                         android:text="Location: " />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/locationEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="text" >
+                        style="@style/TableText"
+                        android:ems="10" >
 
 
-                    </EditText>
+                    </TextView>
 
                 </TableRow>
 
@@ -118,35 +115,28 @@
                         style="@style/TableText"
                         android:text="Expiry Date: " />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/expiryEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:focusable="false" >
-                    </EditText>
+                        style="@style/TableText"
+                        android:ems="10" >
+                    </TextView>
                 </TableRow>
                 <TableRow
-                    android:id="@+id/tableRow3"
+                    android:id="@+id/tableRow4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp" >
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/textView4"
                         style="@style/TableText"
                         android:text="Description: " />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/descriptionEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="text"
-                        android:hint=" Optional" >
-
-
-                    </EditText>
+                        style="@style/TableText"
+                        android:ems="10" >
+                    </TextView>
 
                 </TableRow>
             </TableLayout>

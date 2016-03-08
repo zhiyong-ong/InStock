@@ -63,7 +63,7 @@ public class BuildKitAdapter extends ArrayAdapter<Product>{
         }
 
         holder.productID.setText(item.getId());
-        holder.qty.setText(item.getQuantity());
+        holder.qty.setText(String.valueOf(item.getQuantity()));
         holder.name.setText(item.getName());
         holder.location.setText(item.getLocation());
 

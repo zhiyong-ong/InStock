@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
@@ -103,14 +104,22 @@ public class UpdateItemFragment extends Fragment {
             public void onClick(View view) {
                 final EditText productIDText = (EditText) aView.findViewById(R.id.productSearchEdit);
                 final String productID = productIDText.getText().toString();
-                Log.e("PRODUCT", "------------------- product id: " + productID);
-                DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY_SEARCH);
+
+                if (productID.trim().length() == 0) {
+                    Toast.makeText(getActivity(), "No Product ID entered", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Log.e("PRODUCT", "------------------- product id: " + productID);
+                    DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY_SEARCH);
+                }
             }
         });
         // Inflate the layout for this fragment
         return aView;
     }
-
+    public static void noSuchProduct() {
+        Toast.makeText(activity, "No such product exists", Toast.LENGTH_SHORT).show();
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

@@ -80,11 +80,15 @@ public class DatabaseReadProduct {
                 // the product does not exist in the database
                 if (!snapshot.exists()) {
                     Log.e(READ_FAILED, "Product ID " + id + " not found in database");
+                    if(useCase.equals(ProdUseCase.DISPLAY_SEARCH) || useCase.equals(ProdUseCase.DISPLAY_PRODUCT)) {
+                        UpdateItemFragment.noSuchProduct();
+                    }
                 } else {
                     outProd = snapshot.getValue(Product.class);
 
                     switch (useCase) {
                         case DISPLAY_SEARCH:
+
                             UpdateItemFragment.SearchItem(outProd);
                             break;
 
