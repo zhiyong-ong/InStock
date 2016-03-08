@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.LinkedHashMap;
 
 
@@ -22,8 +24,8 @@ public class Kit {
     }
 
     // throws IllegalArgumentException if name is null or empty
-    public Kit(String kitName) throws IllegalArgumentException {
-        if (kitName == null || kitName.equals("")) {
+    public Kit(@NotNull String kitName) throws IllegalArgumentException {
+        if (kitName.equals("")) {
             throw new IllegalArgumentException("Invalid kit name given");
         }
         kitMap = new LinkedHashMap<String, ProductInKit>();

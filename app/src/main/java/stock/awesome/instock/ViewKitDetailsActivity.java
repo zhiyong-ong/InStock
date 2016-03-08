@@ -1,25 +1,25 @@
 package stock.awesome.instock;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import stock.awesome.instock.misc_classes.GMailSender;
 import stock.awesome.instock.misc_classes.KitAdapter;
 import stock.awesome.instock.misc_classes.KitStorer;
 import stock.awesome.instock.misc_classes.Product;
-import stock.awesome.instock.misc_classes.ProductInKit;
 
 
 public class ViewKitDetailsActivity extends AppCompatActivity {
+
+    private static SendEmailTask emailer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         KitAdapter mAdapter = new KitAdapter(this, KitStorer.kit);
         listView.setAdapter(mAdapter);
 
+        emailer = new SendEmailTask();
 
         // ON BUTTON PRESS
 //        // copy hash map from adapter
@@ -61,23 +62,12 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 //            toUpdate.add(product);
 //        }
 
-        try {
-            GMailSender sender = new GMailSender("tembusu.college.events@gmail.com", "teas_checker1");
-            sender.sendMail("This is Subject",
-                    "This is Body",
-                    "tembusu.college.events@gmail.com",
-                    "kabirk@live.com");
-            Log.e("sendMail", "happened");
-        } catch (Exception e) {
-            Log.e("Mail send failed", e.getMessage(), e);
-        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
         return true;
     }
 
@@ -86,4 +76,40 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    public static void sendEmail(ArrayList<Product> lowQtyProds) {
+        emailer.execute(lowQtyProds);
+    }
+
+
+    public class SendEmailTask extends AsyncTask<ArrayList<Product>, Void, Void>{
+
+        @Override
+        protected Void doInBackground(ArrayList<Product>... params) {
+            String subject = "Low stock alert at warehouse";
+            String prefix = "Inventory levels for the following items have fallen below the threshold of 100: \n";
+
+            StringBuilder body = new StringBuilder();
+
+            for (Product product : params[0]) {
+                body.append(product.getId()).append(" has quantity ").append(product.getQuantity()).append("\n");
+            }
+
+            try {
+                GMailSender sender = new GMailSender("tembusu.college.events@gmail.com", "teas_checker1");
+                sender.sendMail(subject,
+                        prefix + body.toString(),
+                        "tembusu.college.events@gmail.com",
+                        "kabirk@live.com");
+
+                Log.e("sendMail", "happened");
+
+            } catch (Exception e) {
+                Log.e("Mail send failed", e.getMessage(), e);
+            }
+            return null;
+        }
+    }
+
 }

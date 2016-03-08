@@ -2,6 +2,8 @@ package stock.awesome.instock;
 
 import com.firebase.client.Firebase;
 
+import java.util.ArrayList;
+
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
 
@@ -53,14 +55,14 @@ public class DatabaseWriteProduct {
     }
 
 
-    public static void updateQuantities(Product[] products) throws IllegalArgumentException {
-        for (int i=0; i<products.length; i++) {
-            if (products[i].getId() == null || products[i].getId().equals("")) {
+    public static void updateQuantities(ArrayList<Product> products) throws IllegalArgumentException {
+        for (Product product : products) {
+            if (product.getId() == null || product.getId().equals("")) {
                 throw new IllegalArgumentException("Invalid product ID given (null or empty string)");
             }
         }
 
-        DatabaseReadProduct.read(products, DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY);
+        DatabaseReadProduct.read(products, DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITIES);
     }
 
 

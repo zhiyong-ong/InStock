@@ -13,6 +13,35 @@
         android:id="@+id/list_view_kit_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_below="@+id/kit_name_view"
         android:paddingTop="32dp"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/relativeLayout">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"
+            android:background="?android:attr/dividerVertical"
+            android:layout_alignParentTop="true"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="Done"
+            android:textSize="16dip"
+            android:onClick="onDonePressed"
+            android:id="@+id/kit_details_done_button"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
 </RelativeLayout>
