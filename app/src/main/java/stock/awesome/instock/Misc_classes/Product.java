@@ -1,15 +1,17 @@
-package stock.awesome.instock.Misc_classes;
+package stock.awesome.instock.misc_classes;
 
 import java.util.GregorianCalendar;
 
-public class Product extends ProductInKit{
+public class Product {
 
     private String id = null, name = null, desc = null, location = null;
     private int quantity = -1;
     private GregorianCalendar expiry = null;
-    //long stackId;
+
     // empty constructor
     public Product() {}
+
+    public Product(String id) { this (id, null, null, null, 0, null); }
 
     public Product(String id, int quantity) {
         this(id, null, null, null, quantity, null);

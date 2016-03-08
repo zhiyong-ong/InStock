@@ -4,19 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:fitsSystemWindows="true"
-    tools:context=".ViewAllStocksActivity">
+    tools:context=".ViewKitDetailsActivity">
 
     <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
         android:layout_width="match_parent" android:theme="@style/AppBarOverlay">
 
         <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
             android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-            style="@style/MyDarkToolbarStyle"
-            app:popupTheme="@style/PopupOverlay" />
+            style="@style/MyDarkToolbarStyle" app:popupTheme="@style/PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_view_all_stocks" />
-
+    <include layout="@layout/v2_layout_view_kit_name" />
+    <include layout="@layout/content_view_kit_details" />
 
 </android.support.design.widget.CoordinatorLayout>

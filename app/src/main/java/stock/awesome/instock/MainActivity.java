@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,8 +15,7 @@ import com.firebase.client.Firebase;
 
 import java.util.GregorianCalendar;
 
-import stock.awesome.instock.Misc_classes.Product;
-import stock.awesome.instock.exceptions.ProductNotFoundException;
+import stock.awesome.instock.misc_classes.Product;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,20 +30,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // TESTING
-        Product testProd = new Product("AAAAAAAA", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
+        Product testProd = new Product("zzz", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
 
-        //product write testing
-        try {
-//            DatabaseWriteProduct.write(testProd);
-//            testProd.setQuantity(80);
-//            DatabaseWriteProduct.updateProduct(testProd);
+        // product write testing
+//        DatabaseWriteProduct.write(testProd);
+//        testProd.setQuantity(80);
+//        DatabaseWriteProduct.updateProduct(testProd);
+//
+//        DatabaseWriteProduct.updateQuantityExpiry(new Product("282in", -1020, testProd.getExpiry()));
+//        DatabaseWriteProduct.deleteProduct("refactor");
 
-            DatabaseWriteProduct.updateQuantityExpiry(new Product("282in", -1020, testProd.getExpiry()));
-            //DatabaseWriteProduct.deleteProduct("refactor");
-        }
-        catch (ProductNotFoundException e) {
-            Log.e("", e.getMessage());
-        }
 
         // product read testing
 
@@ -62,18 +56,29 @@ public class MainActivity extends AppCompatActivity {
 //        updater.updateProduct(testProd);
 //
 //        // kit write testing
-//        Kit testKit = new Kit("test_kit_ching");
-//        testKit.addProduct(testProd, 3);
-//        testKit.addProduct("71ue", 6);
-//        testKit.addProduct("ab", 44);
-//        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
-//        kitWriter.writeKit(testKit);
+//        Kit testKit = new Kit("test_kit_1");
+//        testKit.addProduct(testProd, 6);
 //
-//        // kit read testing
-//        DatabaseReadKit kitReader = new DatabaseReadKit(DatabaseReadKit.KitUseCase.DEBUG);
-//        kitReader.execute("test_kit_ching");
-
-
+//        ProductInKit pink = new ProductInKit("71ue", 6);
+//        testKit.addProduct(pink);
+//
+//        testKit.addProduct("282in", 44);
+//
+//        Log.e("testKit", testKit.getKitMap().toString());
+//
+//        DatabaseWriteKit kitWriter = new DatabaseWriteKit();
+//        kitWriter.write(testKit);
+//
+//        // Kit update testing
+//        DatabaseWriteKit.addProductsToKit("test_kit_1", "AAAAAAAA", 200);
+//
+//        DatabaseReadKit.read("test_kit_1", DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS);
+//
+//        // Kit delete test
+//        DatabaseWriteKit.deleteKit("test_kit_4");
+//
+//        // get array of kits test
+//        DatabaseReadKit.getArrayOfKits();
     }
 
     public void sendNewItemIntent(View view) {
@@ -87,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendExistingKitIntent(View view) {
-        Intent intent = new Intent(this, ExistingKitActivity.class);
+        Intent intent = new Intent(this, ViewAllKitsActivity.class);
         startActivity(intent);
     }
 

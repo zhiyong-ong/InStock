@@ -20,10 +20,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import stock.awesome.instock.DatabaseWriteProduct;
-import stock.awesome.instock.Misc_classes.Product;
-import stock.awesome.instock.Misc_classes.StringCalendar;
+import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.StringCalendar;
 import stock.awesome.instock.R;
-import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -155,12 +154,8 @@ public class InsertItemFragment extends Fragment {
         int inputExpiryDate = myCalendar.get(Calendar.DATE);
         inputProd.setExpiry(new GregorianCalendar(inputExpiryYear, inputExpiryMonth, inputExpiryDate));
 
-        try {
-            DatabaseWriteProduct.updateProduct(inputProd);
-        }
-        catch (ProductNotFoundException e) {
-            //TODO display error msg
-        }
+        DatabaseWriteProduct.updateProduct(inputProd);
+
     }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

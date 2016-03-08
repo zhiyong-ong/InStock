@@ -1,13 +1,10 @@
 package stock.awesome.instock;
 
-import android.util.Log;
-
 import com.firebase.client.Firebase;
 
-import stock.awesome.instock.Misc_classes.Product;
-import stock.awesome.instock.Misc_classes.StringCalendar;
+import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.StringCalendar;
 
-import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 /**
  * writeProduct writes a product and its associated information to the database.
@@ -18,24 +15,18 @@ public class DatabaseWriteProduct {
 
     private static final Firebase database = DatabaseLauncher.database;
 
-
     // writes all the characteristic data of a product to database.
     // must have id, other values optional. All string fields are initialised with null values
     // and integer fields with -1.
-    public static void write(Product product, ProductNotFoundException e) throws ProductNotFoundException {
+    public static void write(Product product) throws IllegalArgumentException {
 
-        if (e != null) {
-            Log.e("writeProduct file", e.getMessage());
-            throw new ProductNotFoundException(e.getMessage());
+        if (product.getId() == null || product.getId().equals("")) {
+            throw new IllegalArgumentException("No product ID given");
         }
 
         Firebase ref = database.child("products").child(product.getId());
 
-        if (product.getId() == null) {
-            throw new ProductNotFoundException("No product ID given");
-        }
-
-        else if (product.getName().equals("set_as_null")) {
+        if (product.getName().equals("set_as_null")) {
             ref.removeValue();
         }
 
@@ -46,7 +37,7 @@ public class DatabaseWriteProduct {
             if (product.getExpiry() != null) {
                 ref.child("expiry").setValue(StringCalendar.toString(product.getExpiry()));
             } else {
-                ref.child("expiry").setValue(null);
+                ref.child("expiry").setValue("");
             }
         }
     }
@@ -54,34 +45,29 @@ public class DatabaseWriteProduct {
 
     // rewrite all product information
     // IMPT: existing qty will not be increased/decreased but overwritten with product's quantity
-    public static void updateProduct(Product product) throws ProductNotFoundException {
-        try {
-            DatabaseReadProduct.read(product.getId(), DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT, product);
-        } catch (ProductNotFoundException e) {
-            throw new ProductNotFoundException(e.getMessage());
+    public static void updateProduct(Product product) throws IllegalArgumentException {
+        if (product.getId() == null || product.getId().equals("")) {
+            throw new IllegalArgumentException("Invalid product ID given (null or empty string)");
         }
+        DatabaseReadProduct.read(product, DatabaseReadProduct.ProdUseCase.UPDATE_PRODUCT);
     }
 
 
     // To update quantity of a product, pass in id and change in qty (pos/neg)
-    public static void updateQuantityExpiry(Product product) throws ProductNotFoundException {
-        try {
-            DatabaseReadProduct.read(product.getId(), DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_EXPIRY, product);
-        } catch (ProductNotFoundException e) {
-            throw new ProductNotFoundException(e.getMessage());
+    public static void updateQuantityExpiry(Product product) throws IllegalArgumentException {
+        if (product.getId() == null || product.getId().equals("")) {
+            throw new IllegalArgumentException("Invalid product ID given (null or empty string)");
         }
+        DatabaseReadProduct.read(product, DatabaseReadProduct.ProdUseCase.UPDATE_QUANTITY_EXPIRY);
     }
 
 
     // To delete, pass in id of product to delete
-    public static void deleteProduct(String id) throws ProductNotFoundException {
-        try {
-            DatabaseReadProduct.read(id, DatabaseReadProduct.ProdUseCase.DELETE_PRODUCT);
-        } catch (ProductNotFoundException e) {
-            Log.e("writeProduct file", e.getMessage());
-            throw new ProductNotFoundException(e.getMessage());
+    public static void deleteProduct(String id) throws IllegalArgumentException {
+        if (id == null || id.equals("")) {
+            throw new IllegalArgumentException("Invalid product ID given (null or empty string)");
         }
-
+        DatabaseReadProduct.read(id, DatabaseReadProduct.ProdUseCase.DELETE_PRODUCT);
     }
 
 }

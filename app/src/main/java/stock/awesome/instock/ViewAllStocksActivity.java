@@ -27,10 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import stock.awesome.instock.Misc_classes.Product;
-import stock.awesome.instock.Misc_classes.StringCalendar;
-
-import stock.awesome.instock.exceptions.ProductNotFoundException;
+import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.StringCalendar;
 
 public class ViewAllStocksActivity extends AppCompatActivity {
 
@@ -39,6 +37,7 @@ public class ViewAllStocksActivity extends AppCompatActivity {
     Context context = this;
     Calendar myCalendar;
     static EditText expiryText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +46,8 @@ public class ViewAllStocksActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ListView itemView = (ListView) findViewById(R.id.viewAllListView);
-        //set up connection with the firebase database.
-        Firebase.setAndroidContext(this);
+//        //set up connection with the firebase database.
+//        Firebase.setAndroidContext(this);
 
         database = DatabaseLauncher.database.child("products");
         //database.child("products");
@@ -142,12 +141,9 @@ public class ViewAllStocksActivity extends AppCompatActivity {
                         //TODO: check for change in listView after editing. Not sure why it doesn't change as of now
                         Log.e("Some thing", updateProd.getId() + "\t" + Integer.toString(updateProd.getQuantity()) +
                                 "\t" + StringCalendar.toProperDateString(updateProd.getExpiry()));
-                        try {
-                            DatabaseWriteProduct.updateProduct(updateProd);
-                        }
-                        catch (ProductNotFoundException e) {
-                            // TODO display error msg
-                        }
+
+                        DatabaseWriteProduct.updateProduct(updateProd);
+
                         //newProduct.set(position, new Product(productID, quantity));
                         Toast.makeText(context, "ID: " + productID + ", QTY: " + quantity, Toast.LENGTH_LONG).show();
                         mAdapter.notifyDataSetChanged();
@@ -164,6 +160,7 @@ public class ViewAllStocksActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

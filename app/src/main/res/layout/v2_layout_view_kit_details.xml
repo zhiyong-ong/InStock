@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Layout for ProductInKit list item in Kit -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_weight="1">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/product_in_kit_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="5263810"/>
+
+            <TextView
+                android:id="@+id/product_in_kit_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="x5"/>
+
+            <TextView
+                android:id="@+id/product_in_kit_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="A6"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/product_in_kit_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Foger poly test tube 5ml"/>
+
+        </LinearLayout>
+        
+    </LinearLayout>
+    
+    
+    <CheckBox
+        android:id="@+id/product_in_kit_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+        <!-- android:onClick="onCheckBoxClick"
+        calls method onCheckBoxClick in activity hosting the layout -->
+
+</LinearLayout>

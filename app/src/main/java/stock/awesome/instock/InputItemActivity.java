@@ -11,7 +11,7 @@ import android.view.MenuItem;
 
 import com.firebase.client.Firebase;
 
-import stock.awesome.instock.Misc_classes.PagerAdapter;
+import stock.awesome.instock.misc_classes.PagerAdapter;
 import stock.awesome.instock.fragments.InsertItemFragment;
 import stock.awesome.instock.fragments.UpdateItemFragment;
 

@@ -27,10 +27,9 @@ import java.util.Locale;
 import stock.awesome.instock.DatabaseLauncher;
 import stock.awesome.instock.DatabaseReadProduct;
 import stock.awesome.instock.DatabaseWriteProduct;
-import stock.awesome.instock.Misc_classes.Product;
-import stock.awesome.instock.Misc_classes.StringCalendar;
+import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.StringCalendar;
 import stock.awesome.instock.R;
-import stock.awesome.instock.exceptions.ProductNotFoundException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -102,16 +101,10 @@ public class UpdateItemFragment extends Fragment {
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                try {
-                    final EditText productIDText = (EditText)aView.findViewById(R.id.productSearchEdit);
-                    final String productID = productIDText.getText().toString();
-                    Log.e("PRODUCT", "------------------- product id: " + productID);
-                    DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY);
-                } catch (ProductNotFoundException e) {
-                    //some shit here, ask kabir
-                    e.printStackTrace();
-                }
-
+                final EditText productIDText = (EditText) aView.findViewById(R.id.productSearchEdit);
+                final String productID = productIDText.getText().toString();
+                Log.e("PRODUCT", "------------------- product id: " + productID);
+                DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY);
             }
         });
         // Inflate the layout for this fragment
@@ -203,12 +196,8 @@ public class UpdateItemFragment extends Fragment {
                 int quantity = Integer.parseInt(newQty.getEditableText().toString());
                 String expiry = expiryText.getEditableText().toString();
                 Product qtyExpProduct = new Product(productID, quantity, StringCalendar.toCalendarProper(expiry));
-                try {
-                    Log.e("PRODUCT", "--------------------- qty: " + newQty.getText().toString());
-                    DatabaseWriteProduct.updateQuantityExpiry(qtyExpProduct);
-                } catch (ProductNotFoundException e) {
-                    e.printStackTrace();
-                }
+                Log.e("PRODUCT", "--------------------- qty: " + newQty.getText().toString());
+                DatabaseWriteProduct.updateQuantityExpiry(qtyExpProduct);
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

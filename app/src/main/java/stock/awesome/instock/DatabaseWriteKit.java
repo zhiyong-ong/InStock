@@ -1,40 +1,60 @@
 package stock.awesome.instock;
 
-import android.util.Log;
-
 import com.firebase.client.Firebase;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 
-import stock.awesome.instock.Misc_classes.Kit;
-import stock.awesome.instock.Misc_classes.Product;
+import stock.awesome.instock.misc_classes.Kit;
+import stock.awesome.instock.misc_classes.ProductInKit;
 
+
+
+// write method overwrites existing kit. To add more products, use addProductsToKit
 public class DatabaseWriteKit {
 
     private static final Firebase database = DatabaseLauncher.database;
 
-    public static void write(Kit kit) {
-        if (kit.getKitName() == null) {
-            Log.e("Kit write failed", "kit has no name");
-        }
 
+    public static void write(@NotNull Kit kit) throws IllegalArgumentException {
+        if (kit.getKitName() == null || kit.getKitName().equals("")) {
+            throw new IllegalArgumentException("Kit has invalid name");
+        }
         Firebase ref = database.child("kits").child(kit.getKitName());
 
-        LinkedHashMap<Product, Integer> kitHashMap = kit.getHashMap();
+        ref.setValue(kit);
+    }
 
-        for (Map.Entry<Product, Integer> entry : kitHashMap.entrySet())  {
 
-            Map<String, Object> newKit = new LinkedHashMap<String, Object>();
-
-            String id = entry.getKey().getId();
-            int qty = entry.getValue();
-
-            newKit.put("/id", id);
-            newKit.put("/quantity", qty);
-
-            ref.push().updateChildren(newKit);
+    public static void addProductsToKit(@NotNull String kitName, @NotNull String prodId, int qty) throws IllegalArgumentException {
+        if (kitName.equals("")) {
+            throw new IllegalArgumentException("Invalid kit name given (empty string)");
         }
+        Kit kitWithProduct = new Kit(kitName);
+        ProductInKit pink = new ProductInKit(prodId, qty);
+        kitWithProduct.addProduct(pink);
+        addProductsToKit(kitWithProduct);
+    }
+
+    public static void addProductsToKit(@NotNull String kitName, @NotNull ProductInKit pink) throws IllegalArgumentException {
+        if (kitName.equals("")) {
+            throw new IllegalArgumentException("Invalid kit name given (empty string)");
+        }
+        Kit kitWithProduct = new Kit(kitName);
+        kitWithProduct.addProduct(pink);
+        addProductsToKit(kitWithProduct);
+    }
+
+    public static void addProductsToKit(@NotNull Kit kit) throws IllegalArgumentException {
+        if (kit.getKitName().equals("")) {
+            throw new IllegalArgumentException("Invalid kit name given (empty string)");
+        }
+
+        DatabaseReadKit.updateKit(kit, DatabaseReadKit.KitUseCase.UPDATE_KIT);
+    }
+
+
+    public static void deleteKit(String kitName) {
+        DatabaseReadKit.read(kitName, DatabaseReadKit.KitUseCase.DELETE_KIT);
     }
 
 }
