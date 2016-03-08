@@ -7,12 +7,10 @@ import android.util.Log;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -120,14 +118,12 @@ public class DatabaseReadKit {
 
         switch (useCase) {
             case GET_PRODUCT_DETAILS:
-                Log.e("DbReadKit", "At use case GET_PRODUCT_DETAILS");
 
                 Firebase productsRef = database.child("products");
 
                 productsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        Log.e("DbReadKit", "onDataChange started");
 
                         HashMap<String, Product> prodMap = new HashMap<String, Product>();
 
@@ -141,7 +137,7 @@ public class DatabaseReadKit {
                             }
                             else {
                                 Product outProd = prodSnapshot.getValue(Product.class);
-                                Log.e("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
+                                Log.d("Product info received", outProd.getName() + " " + StringCalendar.toString(outProd.getExpiry()));
 
                                 prodMap.put(outProd.getId(), outProd);
                             }

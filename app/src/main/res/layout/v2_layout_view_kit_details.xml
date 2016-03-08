@@ -63,8 +63,6 @@
     <CheckBox
         android:id="@+id/product_in_kit_checkbox"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
-        <!-- android:onClick="onCheckBoxClick"
-        calls method onCheckBoxClick in activity hosting the layout -->
+        android:layout_height="match_parent" />
 
 </LinearLayout>
