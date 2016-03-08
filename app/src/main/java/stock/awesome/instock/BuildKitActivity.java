@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -20,12 +19,13 @@ import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 
+import stock.awesome.instock.misc_classes.BuildKitAdapter;
 import stock.awesome.instock.misc_classes.Product;
 
 public class BuildKitActivity extends AppCompatActivity {
-    private ArrayAdapter<Product> listAdapter;
-    private ArrayList<Product> newProduct = new ArrayList<Product>();
-    private ListView mainListView;
+    private static BuildKitAdapter listAdapter;
+    private static ArrayList<Product> newProduct = new ArrayList<Product>();
+    private static ListView mainListView;
 
     final Context context = this;
     Firebase database;
@@ -38,12 +38,8 @@ public class BuildKitActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //set up connection with the firebase database.
-        Firebase.setAndroidContext(this);
-        database = DatabaseLauncher.database;
-
         mainListView = (ListView) findViewById(R.id.listView);
-        listAdapter = new ArrayAdapter<Product>(this, android.R.layout.simple_list_item_1, newProduct);
+        listAdapter = new BuildKitAdapter(this, R.layout.item_view_build_kit, newProduct);
         mainListView.setAdapter(listAdapter);
 
         //edit items that are already inside the kit
@@ -87,7 +83,12 @@ public class BuildKitActivity extends AppCompatActivity {
         });
 
     }
+    public static void displayItem(final Product product) {
+        newProduct.add(product);
+        mainListView.setAdapter(listAdapter);
+        listAdapter.notifyDataSetChanged();
 
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -127,14 +128,14 @@ public class BuildKitActivity extends AppCompatActivity {
                     Toast.makeText(context, "You did not enter a quantity", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    String productID = productIDText.getText().toString();
+                    String qty = quantityText.getText().toString();
                     //add to the list.
                     //communicate with the database here
                     //DatabaseReadProduct reader = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.BUILD_KIT);
                     //reader.execute(productIDText.getText().toString());
+                    DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY_PRODUCT);
 
-                    Product productTuple = new Product(productIDText.getText().toString(), Integer.parseInt(quantityText.getText().toString()));
-                    newProduct.add(productTuple);
-                    listAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -218,6 +219,7 @@ public class BuildKitActivity extends AppCompatActivity {
             b.show();
         }
     }
+
 }
 
 

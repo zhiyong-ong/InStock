@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import stock.awesome.instock.DatabaseReadKit;
 import stock.awesome.instock.R;
 
 

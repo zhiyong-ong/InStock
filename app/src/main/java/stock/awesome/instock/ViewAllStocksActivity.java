@@ -50,8 +50,7 @@ public class ViewAllStocksActivity extends AppCompatActivity {
 //        Firebase.setAndroidContext(this);
 
         database = DatabaseLauncher.database.child("products");
-        //database.child("products");
-        //database = new Firebase("https://scorching-inferno-2190.firebaseio.com/products");
+
         mAdapter = new FirebaseListAdapter<Product>(this, Product.class, R.layout.item_view, database) {
             @Override
             protected void populateView(View view, Product product, int position) {
@@ -81,7 +80,6 @@ public class ViewAllStocksActivity extends AppCompatActivity {
                 final EditText locationText = (EditText) dialogView.findViewById(R.id.locationEdit);
                 final EditText descText = (EditText) dialogView.findViewById(R.id.descriptionEdit);
                 expiryText = (EditText) dialogView.findViewById(R.id.expiryEdit);
-
 
                 //set all the text to the current product
                 Product selectedProduct = mAdapter.getItem(position);
