@@ -123,40 +123,38 @@ public class InsertItemFragment extends Fragment {
                 } else if (inputLocation.getText().toString().trim().length() == 0) {
                     Toast.makeText(getActivity(), "No location entered", Toast.LENGTH_SHORT).show();
                 } else {
+                    //update the product with all the relevant details
                     Product inputProd = new Product();
-                    onSubmitPress(inputProd);
+                    inputProd.setId(inputId.getText().toString());
+                    inputProd.setName(inputName.getText().toString());
+                    inputProd.setDesc(inputDesc.getText().toString());
+                    inputProd.setQuantity(Integer.valueOf(inputQty.getText().toString()));
+                    inputProd.setLocation(inputLocation.getText().toString());
+                    int inputExpiryYear = myCalendar.get(Calendar.YEAR);
+                    int inputExpiryMonth = myCalendar.get(Calendar.MONTH);
+                    int inputExpiryDate = myCalendar.get(Calendar.DATE);
+                    inputProd.setExpiry(new GregorianCalendar(inputExpiryYear, inputExpiryMonth, inputExpiryDate));
+                    DatabaseWriteProduct.write(inputProd);
+
+                    //clear the edit text
+                    inputId.getText().clear();
+                    inputName.getText().clear();
+                    inputDesc.getText().clear();
+                    inputQty.getText().clear();
+                    inputLocation.getText().clear();
+                    expiryDate.getText().clear();
+
                     Log.d("Submit successful", inputProd.getName() + " " + inputProd.getQuantity() + " "
                             + StringCalendar.toString(inputProd.getExpiry()));
-                    Toast.makeText(getActivity(), "   New Item Added!   ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "   New Item Added   ", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        Log.w("Check for error","-------------------TESTING--------------------");
+        Log.w("Check for error", "-------------------TESTING--------------------");
         // Inflate the layout for this fragment
         return aView;
     }
 
-    // Called when submit button is pressed
-    public void onSubmitPress(Product inputProd) {
-
-        inputProd.setId(inputId.getText().toString());
-
-        inputProd.setName(inputName.getText().toString());
-
-        inputProd.setDesc(inputDesc.getText().toString());
-
-        inputProd.setQuantity(Integer.valueOf(inputQty.getText().toString()));
-
-        inputProd.setLocation(inputLocation.getText().toString());
-
-        int inputExpiryYear = myCalendar.get(Calendar.YEAR);
-        int inputExpiryMonth = myCalendar.get(Calendar.MONTH);
-        int inputExpiryDate = myCalendar.get(Calendar.DATE);
-        inputProd.setExpiry(new GregorianCalendar(inputExpiryYear, inputExpiryMonth, inputExpiryDate));
-
-        DatabaseWriteProduct.updateProduct(inputProd);
-
-    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

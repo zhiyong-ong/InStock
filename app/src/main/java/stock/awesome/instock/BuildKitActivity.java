@@ -224,7 +224,7 @@ public class BuildKitActivity extends AppCompatActivity {
 
                             newProduct.clear();
                             listAdapter.notifyDataSetChanged();
-                            Toast.makeText(context, "Kit " + kitName + " saved", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Kit " + kitName + " saved", Toast.LENGTH_SHORT).show();
                             //go back to the main activity
 //                            Intent intent = new Intent(BuildKitActivity.this, MainActivity.class);
 //                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

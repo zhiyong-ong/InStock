@@ -82,7 +82,7 @@ public class ViewAllStocksActivity extends AppCompatActivity {
                 expiryText = (EditText) dialogView.findViewById(R.id.expiryEdit);
 
                 //set all the text to the current product
-                Product selectedProduct = mAdapter.getItem(position);
+                final Product selectedProduct = mAdapter.getItem(position);
                 productIDText.setText(selectedProduct.getId());
                 quantityText.setText(Integer.toString(selectedProduct.getQuantity()));
                 nameText.setText(selectedProduct.getName());
@@ -149,8 +149,29 @@ public class ViewAllStocksActivity extends AppCompatActivity {
                 });
                 dialogBuilder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //newProduct.remove(position);
-                        //listAdapter.notifyDataSetChanged();
+                        //show the dialog to confirm to delete item
+                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                        LayoutInflater inflater = LayoutInflater.from(context);
+                        final View dialogView = inflater.inflate(R.layout.delete_item, null);
+
+                        final TextView deleteProductID = (TextView) dialogView.findViewById(R.id.deleteIDView);
+                        deleteProductID.setText(selectedProduct.getId());
+
+                        dialogBuilder.setView(dialogView);
+                        dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                DatabaseWriteProduct.deleteProduct(selectedProduct.getId());
+                                mAdapter.notifyDataSetChanged();
+                                Toast.makeText(context, "Item " + selectedProduct.getId() + " deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                            }
+                        });
+                        AlertDialog b = dialogBuilder.create();
+
+                        b.show();
                     }
                 });
                 AlertDialog b = dialogBuilder.create();
