@@ -29,7 +29,7 @@ public class DatabaseReadProduct {
     private static final String READ_FAILED = "Product read failed";
 
     public enum ProdUseCase {
-        BUILD_KIT, DISPLAY, UPDATE_PRODUCT, UPDATE_QUANTITY, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG
+        BUILD_KIT, DISPLAY_SEARCH, DISPLAY_PRODUCT, UPDATE_PRODUCT, UPDATE_QUANTITY, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG
     }
 
 
@@ -38,8 +38,10 @@ public class DatabaseReadProduct {
         if (id.equals("")) {
             throw new IllegalArgumentException("Invalid product ID (empty string)");
         }
-        if ( !(useCase.equals(ProdUseCase.DEBUG) || useCase.equals(ProdUseCase.DELETE_PRODUCT) || useCase.equals(ProdUseCase.BUILD_KIT)) ) {
-            throw new IllegalArgumentException ("useCase must be DEBUG, DELETE_PRODUCT or BUILD_KIT");
+        if ( !(useCase.equals(ProdUseCase.DEBUG) || useCase.equals(ProdUseCase.DELETE_PRODUCT)
+                || useCase.equals(ProdUseCase.BUILD_KIT) || useCase.equals(ProdUseCase.DISPLAY_PRODUCT)
+                || useCase.equals(ProdUseCase.DISPLAY_SEARCH)) ) {
+            throw new IllegalArgumentException ("useCase must be DEBUG, DELETE_PRODUCT, DISPLAY_SEARCH, DISPLAY_PRODUCT or BUILD_KIT");
         }
 
         read(id, useCase, new Product(id));
@@ -84,8 +86,12 @@ public class DatabaseReadProduct {
                     outProd = snapshot.getValue(Product.class);
 
                     switch (useCase) {
-                        case DISPLAY:
+                        case DISPLAY_SEARCH:
                             UpdateItemFragment.SearchItem(outProd);
+                            break;
+
+                        case DISPLAY_PRODUCT:
+                            BuildKitActivity.displayItem(outProd);
                             break;
 
                         case BUILD_KIT:

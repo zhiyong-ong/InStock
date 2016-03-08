@@ -104,7 +104,7 @@ public class UpdateItemFragment extends Fragment {
                 final EditText productIDText = (EditText) aView.findViewById(R.id.productSearchEdit);
                 final String productID = productIDText.getText().toString();
                 Log.e("PRODUCT", "------------------- product id: " + productID);
-                DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY);
+                DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY_SEARCH);
             }
         });
         // Inflate the layout for this fragment
