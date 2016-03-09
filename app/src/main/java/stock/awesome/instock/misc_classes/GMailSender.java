@@ -47,17 +47,17 @@ public class GMailSender extends javax.mail.Authenticator {
         return new PasswordAuthentication(user, password);
     }
 
-    public synchronized void sendMail(String subject, String body, String sender, String recipients) throws Exception {
+    public synchronized void sendMail(String subject, String body, String senderName, String senderAddr, String recipientsAddr) throws Exception {
         try{
             MimeMessage message = new MimeMessage(session);
             DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
-            message.setSender(new InternetAddress(sender));
+            message.setSender(new InternetAddress(senderAddr, senderName));
             message.setSubject(subject);
             message.setDataHandler(handler);
-            if (recipients.indexOf(',') > 0)
-                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
+            if (recipientsAddr.indexOf(',') > 0)
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientsAddr));
             else
-                message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
+                message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientsAddr));
             Transport.send(message);
         }catch(Exception e){
 

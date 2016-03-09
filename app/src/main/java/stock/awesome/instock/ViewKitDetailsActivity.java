@@ -105,7 +105,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         protected Void doInBackground(ArrayList<Product>... params) {
             String subject = "Low stock alert at warehouse";
             String prefix = "Inventory levels for the following items have fallen below the threshold of 100: \n\n";
-            
+
             StringBuilder body = new StringBuilder();
 
             for (Product product : params[0]) {
@@ -116,6 +116,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
                 GMailSender sender = new GMailSender("tembusu.college.events@gmail.com", "teas_checker1");
                 sender.sendMail(subject,
                         prefix + body.toString(),
+                        "InStock",
                         "tembusu.college.events@gmail.com",
                         "kabirk@live.com");
             } catch (Exception e) {
