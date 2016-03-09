@@ -104,7 +104,9 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(ArrayList<Product>... params) {
             String subject = "Low stock alert at warehouse";
-            String prefix = "Inventory levels for the following items have fallen below the threshold of 100: \n\n";
+
+            String prefix = "Inventory levels for the following items have fallen below the threshold of 100: \n";
+            String suffix = "\n InStock";
 
             StringBuilder body = new StringBuilder();
 
@@ -114,9 +116,8 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 
             try {
                 GMailSender sender = new GMailSender("tembusu.college.events@gmail.com", "teas_checker1");
-                sender.sendMail(subject,
-                        prefix + body.toString(),
-                        "InStock",
+                //check sender name here.
+                sender.sendMail(subject, prefix + body.toString() + suffix, "InStock",
                         "tembusu.college.events@gmail.com",
                         "kabirk@live.com");
             } catch (Exception e) {

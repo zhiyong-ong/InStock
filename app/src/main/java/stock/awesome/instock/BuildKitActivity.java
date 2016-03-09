@@ -30,6 +30,7 @@ public class BuildKitActivity extends AppCompatActivity {
     private static ArrayList<Product> newProduct = new ArrayList<Product>();
     private static ListView mainListView;
 
+    static Context contextStatic;
     final Context context = this;
     Firebase database;
     String LOG_TAG = Product.class.getSimpleName();
@@ -41,6 +42,8 @@ public class BuildKitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_build_kit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        contextStatic = getApplicationContext();
 
         mainListView = (ListView) findViewById(R.id.listView);
         listAdapter = new BuildKitAdapter(this, R.layout.item_view_build_kit, newProduct);
@@ -122,6 +125,9 @@ public class BuildKitActivity extends AppCompatActivity {
         showChangeLangDialog();
     }
 
+    public static void noSuchProduct() {
+        Toast.makeText(contextStatic , "No such product exists", Toast.LENGTH_SHORT).show();
+    }
     public void showChangeLangDialog() {
         //adding a new item to the kit
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
