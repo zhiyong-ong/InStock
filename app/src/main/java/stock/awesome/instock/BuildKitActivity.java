@@ -1,5 +1,6 @@
 package stock.awesome.instock;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,7 +31,7 @@ public class BuildKitActivity extends AppCompatActivity {
     private static ArrayList<Product> newProduct = new ArrayList<Product>();
     private static ListView mainListView;
 
-    static Context contextStatic;
+    static Activity activity;
     final Context context = this;
     Firebase database;
     String LOG_TAG = Product.class.getSimpleName();
@@ -43,7 +44,7 @@ public class BuildKitActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        contextStatic = getApplicationContext();
+        activity = this;
 
         mainListView = (ListView) findViewById(R.id.listView);
         listAdapter = new BuildKitAdapter(this, R.layout.item_view_build_kit, newProduct);
@@ -126,7 +127,7 @@ public class BuildKitActivity extends AppCompatActivity {
     }
 
     public static void noSuchProduct() {
-        Toast.makeText(contextStatic , "No such product exists", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, "No such product exists", Toast.LENGTH_SHORT).show();
     }
     public void showChangeLangDialog() {
         //adding a new item to the kit

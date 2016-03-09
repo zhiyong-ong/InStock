@@ -67,13 +67,14 @@ public class KitAdapter extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.v2_layout_view_kit_details, parent, false);
+            convertView = inflater.inflate(R.layout.item_view_kit_details, parent, false);
         }
 
         TextView pinkId = (TextView) convertView.findViewById(R.id.product_in_kit_id);
         TextView pinkQty = (TextView) convertView.findViewById(R.id.product_in_kit_qty);
         TextView prodName = (TextView) convertView.findViewById(R.id.product_in_kit_name);
         TextView prodLocation = (TextView) convertView.findViewById(R.id.product_in_kit_location);
+
 
         pinkId.setText(id);
         pinkQty.setText(Integer.toString(value.getQuantity()));

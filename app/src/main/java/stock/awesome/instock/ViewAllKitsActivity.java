@@ -1,31 +1,20 @@
 package stock.awesome.instock;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseListAdapter;
-import com.firebase.ui.FirebaseRecyclerAdapter;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.KitStorer;
-import stock.awesome.instock.misc_classes.Product;
-import stock.awesome.instock.misc_classes.ProductInKit;
-import stock.awesome.instock.misc_classes.StringCalendar;
 
 
 public class ViewAllKitsActivity extends AppCompatActivity {
@@ -44,10 +33,10 @@ public class ViewAllKitsActivity extends AppCompatActivity {
 
         // to change the way each item in the list looks, replace android.R.layout.simple_list_item_1
         // in the following code with a custom linear layout. The xml file should have only one textview
-        FirebaseListAdapter<Kit> mAdapter = new FirebaseListAdapter<Kit>(this, Kit.class, android.R.layout.simple_list_item_1, kitRef) {
+        FirebaseListAdapter<Kit> mAdapter = new FirebaseListAdapter<Kit>(this, Kit.class, R.layout.item_view_existing_kits, kitRef) {
             @Override
             protected void populateView(View view, Kit kit, int position) {
-                ((TextView) view.findViewById(android.R.id.text1)).setText(kit.getKitName());
+                ((TextView) view.findViewById(R.id.nameText)).setText(kit.getKitName());
             }
         };
         kitView.setAdapter(mAdapter);

@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">InStock</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_input_stock">InputStockActivity</string>
-    <string name="title_activity_build_kit">BuildKit</string>
-    <string name="title_activity_view_all_stocks">ViewAllStocks</string>
-    <string name="title_activity_view_all_kits">ViewAllKits</string>
-    <string name="title_activity_update_item">UpdateItemActivity</string>
-    <string name="title_activity_input_item">InputItemActivity</string>
-    <string name="title_activity_view_kit_details">ViewKitDetails</string>
+    <string name="title_activity_input_stock">Add Item</string>
+    <string name="title_activity_build_kit">Build New Kit</string>
+    <string name="title_activity_view_all_stocks">View All Items</string>
+    <string name="title_activity_view_all_kits">Existing Kit</string>
+    <string name="title_activity_update_item">Update Item</string>
+    <string name="title_activity_input_item">Add / Update Item</string>
+    <string name="title_activity_view_kit_details">Kit Details</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
     <!-- TODO: Remove or change this placeholder text -->

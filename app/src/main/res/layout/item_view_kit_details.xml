@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Layout for ProductInKit list item in Kit -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_weight="1">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/idView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:paddingLeft="5dp"
+                android:text="ID: "
+                android:textColor="@color/lightGrey">
+            </TextView>
+            <TextView
+                android:id="@+id/product_in_kit_id"
+                android:layout_height="wrap_content"
+                android:layout_width="174dip"
+                android:textSize="18dp"
+                android:textColor="@color/darkGrey"
+                android:textStyle="bold"
+                android:text="263810"
+                android:ellipsize="end"
+                android:maxLines="1"/>
+
+            <TextView
+                android:id="@+id/qtyView"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:paddingLeft="5dp"
+                android:text="QTY: "
+                android:textColor="@color/lightGrey">
+            </TextView>
+            <TextView
+                android:textSize="18dp"
+                android:textColor="@color/darkGrey"
+                android:textStyle="bold"
+                android:id="@+id/product_in_kit_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="x5"
+                android:ellipsize="end"
+                android:maxLines="1"/>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/product_in_kit_name"
+                android:textSize="18dp"
+                android:textColor="@color/darkGrey"
+                android:textStyle="bold"
+                android:layout_width="205dip"
+                android:layout_height="wrap_content"
+                android:text="Foger poly test tube 5ml"
+                android:ellipsize="end"
+                android:maxLines="1"/>
+            <TextView
+                android:id="@+id/locView"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/qtyView"
+                android:layout_toRightOf="@id/nameText"
+                android:textSize="18dp"
+                android:paddingLeft="5dp"
+                android:text="LOC: "
+                android:textColor="@color/lightGrey">
+            </TextView>
+
+            <TextView
+                android:id="@+id/product_in_kit_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="@color/darkGrey"
+                android:textStyle="bold"
+                android:text="A6"
+                android:ellipsize="end"
+                android:maxLines="1"/>
+        </LinearLayout>
+        
+    </LinearLayout>
+    
+    
+    <CheckBox
+        android:id="@+id/product_in_kit_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

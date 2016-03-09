@@ -8,14 +8,28 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_view_kit_details"
     tools:context=".ViewKitDetailsActivity">
-
+    <TextView
+        android:id="@+id/kit_name_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:text="Kit Name"/>
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/kit_name_view"/>
     <ListView
         android:id="@+id/list_view_kit_details"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@+id/relativeLayout"
-        android:layout_below="@+id/kit_name_view"
-        android:paddingTop="32dp"/>
+        android:layout_below="@+id/line1"
+        android:paddingTop="10dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

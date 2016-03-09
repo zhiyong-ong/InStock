@@ -21,9 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/idView"
         android:textSize="18dp"
-        android:paddingLeft="5dp"
         android:textColor="@color/darkGrey"
         android:textStyle="bold"
+        android:paddingLeft="5dp"
         android:ellipsize="end"
         android:maxLines="1">
     </TextView>
