@@ -33,7 +33,7 @@
             <TextView
                 android:id="@+id/product_in_kit_id"
                 android:layout_height="wrap_content"
-                android:layout_width="174dip"
+                android:layout_width="154dip"
                 android:textSize="18dp"
                 android:textColor="@color/darkGrey"
                 android:textStyle="bold"
@@ -75,7 +75,7 @@
                 android:textSize="18dp"
                 android:textColor="@color/darkGrey"
                 android:textStyle="bold"
-                android:layout_width="205dip"
+                android:layout_width="185dip"
                 android:layout_height="wrap_content"
                 android:text="Foger poly test tube 5ml"
                 android:ellipsize="end"

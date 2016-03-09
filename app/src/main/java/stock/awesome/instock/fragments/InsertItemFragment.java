@@ -17,12 +17,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import stock.awesome.instock.DatabaseWriteProduct;
+import stock.awesome.instock.R;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
-import stock.awesome.instock.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -122,18 +121,20 @@ public class InsertItemFragment extends Fragment {
                     Toast.makeText(getActivity(), "No quantity entered", Toast.LENGTH_SHORT).show();
                 } else if (inputLocation.getText().toString().trim().length() == 0) {
                     Toast.makeText(getActivity(), "No location entered", Toast.LENGTH_SHORT).show();
+                } else if (expiryDate.getText().toString().trim().length() == 0) {
+                    Toast.makeText(getActivity(), "No expiry date entered", Toast.LENGTH_SHORT).show();
                 } else {
+
                     //update the product with all the relevant details
                     Product inputProd = new Product();
+                    String expiry = expiryDate.getEditableText().toString();
                     inputProd.setId(inputId.getText().toString());
                     inputProd.setName(inputName.getText().toString());
                     inputProd.setDesc(inputDesc.getText().toString());
                     inputProd.setQuantity(Integer.valueOf(inputQty.getText().toString()));
                     inputProd.setLocation(inputLocation.getText().toString());
-                    int inputExpiryYear = myCalendar.get(Calendar.YEAR);
-                    int inputExpiryMonth = myCalendar.get(Calendar.MONTH);
-                    int inputExpiryDate = myCalendar.get(Calendar.DATE);
-                    inputProd.setExpiry(new GregorianCalendar(inputExpiryYear, inputExpiryMonth, inputExpiryDate));
+                    inputProd.setExpiry(StringCalendar.toCalendarProper(expiry));
+
                     DatabaseWriteProduct.write(inputProd);
 
                     //clear the edit text

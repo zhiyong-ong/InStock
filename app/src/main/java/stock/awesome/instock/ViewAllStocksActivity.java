@@ -152,7 +152,7 @@ public class ViewAllStocksActivity extends AppCompatActivity {
                         //show the dialog to confirm to delete item
                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
                         LayoutInflater inflater = LayoutInflater.from(context);
-                        final View dialogView = inflater.inflate(R.layout.delete_item, null);
+                        final View dialogView = inflater.inflate(R.layout.popup_delete_item, null);
 
                         final TextView deleteProductID = (TextView) dialogView.findViewById(R.id.deleteIDView);
                         deleteProductID.setText(selectedProduct.getId());
