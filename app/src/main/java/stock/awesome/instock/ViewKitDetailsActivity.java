@@ -104,8 +104,8 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(ArrayList<Product>... params) {
             String subject = "Low stock alert at warehouse";
-            String prefix = "Inventory levels for the following items have fallen below the threshold of 100: \n";
-
+            String prefix = "Inventory levels for the following items have fallen below the threshold of 100: \n\n";
+            
             StringBuilder body = new StringBuilder();
 
             for (Product product : params[0]) {
