@@ -109,7 +109,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
             StringBuilder body = new StringBuilder();
 
             for (Product product : params[0]) {
-                body.append(product.getId()).append(" has quantity ").append(product.getQuantity()).append("\n");
+                body.append(product.getId()).append(": ").append(product.getQuantity()).append(" units left").append("\n");
             }
 
             try {
