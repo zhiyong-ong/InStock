@@ -138,14 +138,15 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
             StringBuilder body = new StringBuilder();
 
             for (Product product : params[0]) {
-                body.append(product.getId()).append(" has quantity ").append(product.getQuantity()).append("\n");
+                body.append(product.getId()).append(": ").append(product.getQuantity()).append(" units left.").append("\n");
             }
 
             try {
-                GMailSender sender = new GMailSender("tembusu.college.events@gmail.com", "teas_checker1");
-                //check sender name here.
-                sender.sendMail(subject, prefix + body.toString() + suffix, "InStock",
-                        "tembusu.college.events@gmail.com",
+                GMailSender sender = new GMailSender("noreply.instock@gmail.com", "instockinno");
+                sender.sendMail(subject,
+                        prefix + body.toString() + suffix,
+                        "Instock App",
+                        "noreply.instock@gmail.com",
                         "kabirk@live.com");
             } catch (Exception e) {
                 Log.e("Mail send failed", e.getMessage(), e);
