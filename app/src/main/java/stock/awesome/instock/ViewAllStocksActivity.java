@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -72,7 +73,7 @@ public class ViewAllStocksActivity extends AppCompatActivity {
 
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
                 LayoutInflater inflater = LayoutInflater.from(context);
-                final View dialogView = inflater.inflate(R.layout.item_edit, null);
+                final View dialogView = inflater.inflate(R.layout.popup_item_edit, null);
 
                 final TextView productIDText = (TextView) dialogView.findViewById(R.id.productView);
                 final EditText quantityText = (EditText) dialogView.findViewById(R.id.quantityEdit);
@@ -90,6 +91,8 @@ public class ViewAllStocksActivity extends AppCompatActivity {
                 expiryText.setText(StringCalendar.toProperDateString(selectedProduct.getExpiry()));
                 descText.setText(selectedProduct.getDesc());
 
+                nameText.setHorizontalScrollBarEnabled(true);
+                nameText.setMovementMethod(new ScrollingMovementMethod());
                 //pop up for datepicker dialog box
                 SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 myCalendar = Calendar.getInstance();
@@ -190,7 +193,23 @@ public class ViewAllStocksActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.info) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            final View dialogView = inflater.inflate(R.layout.info, null);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //do nothing, go back.
+                }
+            });
+            AlertDialog b = dialogBuilder.create();
+            b.show();
+        }
         return super.onOptionsItemSelected(item);
     }
 

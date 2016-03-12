@@ -64,7 +64,7 @@
     </TextView>
     <TextView
         android:id="@+id/nameText"
-        android:layout_width="143dp"
+        android:layout_width="142dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/idText"
         android:layout_toRightOf="@+id/nameView"

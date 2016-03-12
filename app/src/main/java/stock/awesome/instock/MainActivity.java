@@ -3,6 +3,9 @@ package stock.awesome.instock;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,10 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.firebase.client.Firebase;
-
-import java.util.GregorianCalendar;
-
-import stock.awesome.instock.misc_classes.Product;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Drawable dr = getResources().getDrawable(R.drawable.ic_info_black_24dp);
+        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
+        Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 100, 100, true));
         // TESTING
 //        Product testProd = new Product("zzz", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));
 //        // product write testing

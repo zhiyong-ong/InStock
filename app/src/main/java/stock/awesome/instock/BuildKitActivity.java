@@ -58,7 +58,7 @@ public class BuildKitActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
                 LayoutInflater inflater = LayoutInflater.from(context);
-                final View dialogView = inflater.inflate(R.layout.item_edit_build_kit, null);
+                final View dialogView = inflater.inflate(R.layout.popup_item_edit_build_kit, null);
 
                 final TextView productIDText = (TextView) dialogView.findViewById(R.id.productView);
                 final EditText quantityText = (EditText) dialogView.findViewById(R.id.quantityEdit);
@@ -118,7 +118,23 @@ public class BuildKitActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.info) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            final View dialogView = inflater.inflate(R.layout.info, null);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //do nothing, go back.
+                }
+            });
+            AlertDialog b = dialogBuilder.create();
+            b.show();
+        }
         return super.onOptionsItemSelected(item);
     }
     //add new item to kit

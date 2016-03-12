@@ -38,7 +38,7 @@
             android:maxLines="1"/>
 
             <TableLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/table"
                 android:layout_gravity="start" >
@@ -60,9 +60,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:inputType="text" >
+                        android:inputType="text"
+                        android:ellipsize="end"
+                        android:scrollHorizontally="true"
+                        >
                     </EditText>
-                    <requestFocus />
+
                 </TableRow>
 
                 <TableRow
@@ -100,7 +103,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:inputType="text" >
+                        android:inputType="text"
+                        android:ellipsize="start">
 
 
                     </EditText>
@@ -123,7 +127,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:focusable="false" >
+                        android:focusable="false"
+                        android:ellipsize="start">
                     </EditText>
                 </TableRow>
                 <TableRow
@@ -143,7 +148,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="text"
-                        android:hint=" Optional" >
+                        android:hint=" Optional"
+                        android:ellipsize="start">
 
 
                     </EditText>

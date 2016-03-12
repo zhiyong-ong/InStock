@@ -1,8 +1,11 @@
 package stock.awesome.instock;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,7 +69,23 @@ public class ViewAllKitsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.info) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            final View dialogView = inflater.inflate(R.layout.info, null);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //do nothing, go back.
+                }
+            });
+            AlertDialog b = dialogBuilder.create();
+            b.show();
+        }
         return super.onOptionsItemSelected(item);
     }
 }

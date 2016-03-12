@@ -21,14 +21,42 @@
         android:layout_marginRight="4dip"
         android:background="@color/lightGrey"
         android:layout_alignParentTop="true"/>
+
+    <ScrollView
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:padding="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
     <TextView
         android:id="@+id/textView2"
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="12dp"
-        android:text="Editing the Product ID after submitting it as a new item is not allowed. Instead, delete it and create add a new product with the corrected Product ID." />
+        android:text="Editing the Product ID after submitting it as a new item is not allowed. Instead, delete it and create a new product with the corrected Product ID." />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="After confirming the picking of the kit, the quantity of the items stated in the kit will be automatically deducted from the database." />
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="When the quantity of the items fall below a certain threshold value, an email will be sent to the specified email address, notifying the user of the falling stock count." />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

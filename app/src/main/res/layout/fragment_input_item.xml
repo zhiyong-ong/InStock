@@ -38,8 +38,9 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="text"
-                        android:ellipsize="start"/>
-                    <requestFocus />
+                        android:ellipsize="start"
+                        android:scrollHorizontally="true"/>
+
 
                 </TableRow>
                 <TableRow
@@ -81,7 +82,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="text"
-                        android:hint=" Optional" >
+                        android:hint=" Optional"
+                        android:ellipsize="start">
 
 
                     </EditText>
@@ -122,7 +124,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:inputType="text" >
+                        android:inputType="text"
+                        android:ellipsize="start">
 
 
                     </EditText>
@@ -145,7 +148,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:focusable="false" >
+                        android:focusable="false"
+                        android:ellipsize="start">
                     </EditText>
                 </TableRow>
 

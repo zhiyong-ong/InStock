@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +41,8 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ListView listView = (ListView) findViewById(R.id.list_view_kit_details);
+        TextView kitName = (TextView) findViewById(R.id.kit_name_view);
+        kitName.setText(KitStorer.kit.getKitName());
 
         final KitAdapter mAdapter = new KitAdapter(this, KitStorer.kit);
         listView.setAdapter(mAdapter);
@@ -86,7 +90,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 
                         DatabaseWriteProduct.updateQuantities(toUpdate);
 
-                        //Toast.makeText(context, "Kit " +  + " saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Kit " + KitStorer.kit.getKitName() + " saved", Toast.LENGTH_SHORT).show();
                         //go back to the main activity
                         Intent intent = new Intent(ViewKitDetailsActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -120,15 +124,36 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.info) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            final View dialogView = inflater.inflate(R.layout.info, null);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //do nothing, go back.
+                }
+            });
+            AlertDialog b = dialogBuilder.create();
+            b.show();
+        }
+        //noinspection SimplifiableIfStatement
         if (id == R.id.deleteKit) {
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
             LayoutInflater inflater = LayoutInflater.from(this);
             final View dialogView = inflater.inflate(R.layout.popup_delete_kit, null);
+            final TextView kitName = (TextView) dialogView.findViewById(R.id.deleteIDView);
+            kitName.setText(KitStorer.kit.getKitName());
 
             dialogBuilder.setView(dialogView);
             dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                    //do nothing, go back.
+                    DatabaseWriteKit.deleteKit(kitName.getText().toString());
+                    Toast.makeText(context, "Deleted Kit: " + kitName.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ViewKitDetailsActivity.this, ViewAllKitsActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
             });
             dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
