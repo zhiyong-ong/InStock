@@ -173,7 +173,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
     }
 
 
-    public class SendEmailTask extends AsyncTask<ArrayList<Product>, Void, Void>{
+    private class SendEmailTask extends AsyncTask<ArrayList<Product>, Void, Void>{
 
         @Override
         protected Void doInBackground(ArrayList<Product>... params) {
