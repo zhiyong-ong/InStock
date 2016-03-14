@@ -152,10 +152,9 @@ public class DatabaseReadKit {
                         // send hashmap to KitAdapter so it can display product's other info (eg location)
                         KitAdapter.getProductDetails(prodMap);
 
-                        ContextClassHolder holder = new ContextClassHolder(fromContext, toClass);
                         ActivityStarter starter = new ActivityStarter();
-                        // Don't lag the UI thread
-                        starter.execute(holder);
+                        // Don't lag the UI thread to start intent
+                        starter.execute();
 
                     }
 
@@ -205,34 +204,15 @@ public class DatabaseReadKit {
 
 
 
-    // To ensure type safety, context and class are passed in in a holder object
-    private static class ActivityStarter extends AsyncTask<ContextClassHolder, Void, Void> {
+    private static class ActivityStarter extends AsyncTask<Void, Void, Void> {
+
         @Override
-        protected Void doInBackground(ContextClassHolder... params) {
+        protected Void doInBackground(Void... params) {
             Intent intent = new Intent(fromContext, toClass);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             fromContext.startActivity(intent);
 
             return null;
-        }
-    }
-
-    // Holder class for context and class
-    private static class ContextClassHolder {
-        private Context mContext;
-        private Class mClass;
-
-        public ContextClassHolder(Context context, Class classObj) {
-            mContext = context;
-            mClass = classObj;
-        }
-
-        public Context getmContext() {
-            return mContext;
-        }
-
-        public Class getmClass() {
-            return mClass;
         }
     }
 
