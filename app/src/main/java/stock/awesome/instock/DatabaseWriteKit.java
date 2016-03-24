@@ -53,6 +53,24 @@ public class DatabaseWriteKit {
     }
 
 
+    public static void removeProductsFromKit(@NotNull String kitName, @NotNull String id) throws IllegalArgumentException {
+        if (kitName.equals("")) {
+            throw new IllegalArgumentException("Invalid kit name given (empty string)");
+        }
+        Kit kitWithProduct = new Kit(kitName);
+        kitWithProduct.addProduct(new ProductInKit(id, 0));
+        removeProductsFromKit(kitWithProduct);
+    }
+
+    public static void removeProductsFromKit(@NotNull Kit kit) throws IllegalArgumentException {
+        if (kit.getKitName().equals("")) {
+            throw new IllegalArgumentException("Invalid kit name given (empty string)");
+        }
+
+        DatabaseReadKit.updateKit(kit, DatabaseReadKit.KitUseCase.DELETE_PRODUCTS);
+    }
+
+
     public static void deleteKit(String kitName) {
         DatabaseReadKit.read(kitName, DatabaseReadKit.KitUseCase.DELETE_KIT);
     }

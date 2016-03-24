@@ -2,6 +2,7 @@ package stock.awesome.instock;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
@@ -12,7 +13,6 @@ import com.firebase.client.ValueEventListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.KitAdapter;
@@ -29,7 +29,7 @@ public class DatabaseReadKit {
     private static final String READ_FAILED = "Kit read failed";
 
     public enum KitUseCase {
-        UPDATE_KIT, GET_PRODUCT_DETAILS, DEBUG, DELETE_KIT
+        UPDATE_KIT, GET_PRODUCT_DETAILS, DEBUG, DELETE_KIT, DELETE_PRODUCTS
     }
 
 
@@ -56,16 +56,16 @@ public class DatabaseReadKit {
         read(kitName, useCase, emptyKit);
     }
 
-    // useCase UPDATE_KIT
+    // useCase UPDATE_KIT, DELETE_PRODUCTS
     public static void updateKit(@NotNull Kit kit, @NotNull KitUseCase useCase) throws IllegalArgumentException {
-        if (!(useCase.equals(KitUseCase.UPDATE_KIT))) {
-            throw new IllegalArgumentException("useCase must be UPDATE_KIT");
+        if (!(useCase.equals(KitUseCase.UPDATE_KIT) || useCase.equals(KitUseCase.DELETE_PRODUCTS))) {
+            throw new IllegalArgumentException("useCase must be UPDATE_KIT or DELETE_PRODUCTS");
         }
 
         read(kit.getKitName(), useCase, kit);
     }
 
-    // useCase GET_PRODUCT_DETAILS, DEBUG
+
     // returns a kit with the product associated with id passed in
     // by looking up the id's characteristics in the database
     private static void read(@NotNull final String kitName, @NotNull final KitUseCase useCase, @NotNull final Kit updatedKit) {
@@ -93,8 +93,14 @@ public class DatabaseReadKit {
                             break;
 
                         // check was needed to see if kit existed
+                        case DELETE_PRODUCTS:
+                            // remove products whose id is stored in kit
+                            deleteProducts(updatedKit);
+                            break;
+
+                        // check was needed to see if kit existed
                         case DELETE_KIT:
-                            DatabaseReadKit.delete(kitName);
+                            deleteKit(kitName);
                             break;
 
                         case GET_PRODUCT_DETAILS:
@@ -146,9 +152,10 @@ public class DatabaseReadKit {
                         // send hashmap to KitAdapter so it can display product's other info (eg location)
                         KitAdapter.getProductDetails(prodMap);
 
-                        Intent intent = new Intent(fromContext, toClass);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        fromContext.startActivity(intent);
+                        ActivityStarter starter = new ActivityStarter();
+                        // Don't lag the UI thread to start intent
+                        starter.execute();
+
                     }
 
                     @Override
@@ -161,15 +168,15 @@ public class DatabaseReadKit {
         }
     }
 
-    // adds products to kit. DatabaseWriteKit.addProducts method
-    // calls DatabaseReadKit.read, which finally calls this
-    // the method should not be accessed outside of this class
+
+    // adds products to kit. Original call by DatabaseWriteKit.addProductsToKit method,
+    // which calls DatabaseReadKit.read, which finally calls this.
     private static void writeAddProducts(Kit kit) {
         // locations where ProductInKits are stored
         Firebase ref = database.child("kits").child(kit.getKitName()).child("kitMap");
 
         // iterate through id-prodInKit pairs stored in kit
-        for (Map.Entry<String, ProductInKit> entry : kit.getKitMap().entrySet())  {
+        for (HashMap.Entry<String, ProductInKit> entry : kit.getKitMap().entrySet())  {
 
             String id = entry.getKey();
             ProductInKit pink = entry.getValue();
@@ -178,9 +185,35 @@ public class DatabaseReadKit {
         }
     }
 
+    // contains repeated code from writeAddProducts. sigh.
+    private static void deleteProducts(Kit kit) {
+        // locations where ProductInKits are stored
+        Firebase ref = database.child("kits").child(kit.getKitName()).child("kitMap");
 
-    // the method should not be accessed outside of this class
-    private static void delete(String kitName) {
+        // iterate through id-prodInKit pairs stored in kit
+        for (HashMap.Entry<String, ProductInKit> entry : kit.getKitMap().entrySet())  {
+            String id = entry.getKey();
+
+            ref.child(id).removeValue();
+        }
+    }
+
+    private static void deleteKit(String kitName) {
         database.child("kits").child(kitName).removeValue();
     }
+
+
+
+    private static class ActivityStarter extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Intent intent = new Intent(fromContext, toClass);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            fromContext.startActivity(intent);
+
+            return null;
+        }
+    }
+
 }

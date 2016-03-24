@@ -22,7 +22,7 @@ import stock.awesome.instock.R;
 // (described in the getView method)
 public class KitAdapter extends BaseAdapter {
 
-    public LinkedHashMap<String, ProductInKit> mKitMap = new LinkedHashMap<String, ProductInKit>();
+    public LinkedHashMap<String, ProductInKit> mKitMap = new LinkedHashMap<>();
     public String[] mKeys;
     public static HashMap<String, Product> mProductMap;
     public ArrayList<Boolean> status = new ArrayList<>();
