@@ -88,11 +88,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void searchtest(View view) {
+        Intent intent = new Intent(this, SearchProductsActivity.class);
+        startActivity(intent);
+    }
+
     public void sendNewKitIntent(View view) {
         Intent intent = new Intent(this, BuildKitActivity.class);
         startActivity(intent);
     }
-
     public void sendExistingKitIntent(View view) {
         Intent intent = new Intent(this, ViewAllKitsActivity.class);
         startActivity(intent);

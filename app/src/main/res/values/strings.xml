@@ -17,4 +17,5 @@
 
     <string name="product_id">ID: </string>
     <string name="product_quantity">Quantity: </string>
+    <string name="title_activity_search_products">SearchProductsActivity</string>
 </resources>
