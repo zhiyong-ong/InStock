@@ -34,4 +34,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.firebaseui:firebase-ui:0.3.1'
     compile 'org.jetbrains:annotations:13.0'
+    compile 'com.blunderer:materialdesignlibrary:2.0.4'
 }
