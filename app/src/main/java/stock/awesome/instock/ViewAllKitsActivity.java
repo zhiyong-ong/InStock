@@ -19,8 +19,8 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.firebase.ui.FirebaseListAdapter;
 
+import stock.awesome.instock.misc_classes.Globals;
 import stock.awesome.instock.misc_classes.Kit;
-import stock.awesome.instock.misc_classes.KitStorer;
 
 
 public class ViewAllKitsActivity extends AppCompatActivity {
@@ -52,7 +52,7 @@ public class ViewAllKitsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Kit entry = (Kit) parent.getAdapter().getItem(position);
-                KitStorer.storeKit(entry);
+                Globals.kit = entry;
 
                 // this method starts an intent that starts ViewKitDetailsActivity
                 DatabaseReadKit.read(entry.getKitName(), DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
@@ -109,14 +109,14 @@ public class ViewAllKitsActivity extends AppCompatActivity {
         }
         else if(menuItemName.equals("Edit")) {
             Kit entry = mAdapter.getItem(info.position);
-            KitStorer.storeKit(entry);
+            Globals.kit = (entry);
             // this method starts an intent that starts ViewKitDetailsActivity
             DatabaseReadKit.read(entry.getKitName(), DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
                     ViewAllKitsActivity.this, EditKitActivity.class);
         }
         else if(menuItemName.equals("View")) {
             Kit entry = mAdapter.getItem(info.position);
-            KitStorer.storeKit(entry);
+            Globals.kit = (entry);
 
             // this method starts an intent that starts ViewKitDetailsActivity
             DatabaseReadKit.read(entry.getKitName(), DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,

@@ -19,8 +19,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import stock.awesome.instock.misc_classes.Globals;
 import stock.awesome.instock.misc_classes.KitAdapter;
-import stock.awesome.instock.misc_classes.KitStorer;
+
 
 public class EditKitActivity extends AppCompatActivity {
 
@@ -34,12 +35,12 @@ public class EditKitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_kit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        kitNameStr = KitStorer.kit.getKitName();
+        kitNameStr = Globals.kit.getKitName();
         ListView listView = (ListView) findViewById(R.id.list_view_edit_kit);
         TextView kitName = (TextView) findViewById(R.id.kit_name_view);
         kitName.setText(kitNameStr);
 
-        mAdapter = new KitAdapter(this, KitStorer.kit, R.layout.item_view_edit_kit);
+        mAdapter = new KitAdapter(this, Globals.kit, R.layout.item_view_edit_kit);
         listView.setAdapter(mAdapter);
 
         Button doneButton = (Button) findViewById(R.id.kit_details_done_button);
@@ -55,7 +56,7 @@ public class EditKitActivity extends AppCompatActivity {
                 dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
-                        Toast.makeText(context, "Kit " + KitStorer.kit.getKitName() + " Edited", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Kit " + Globals.kit.getKitName() + " Edited", Toast.LENGTH_SHORT).show();
                         //go back to the main activity
                         Intent intent = new Intent(EditKitActivity.this, ViewAllKitsActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -115,7 +116,7 @@ public class EditKitActivity extends AppCompatActivity {
 
             final EditText productIDText = (EditText) dialogView.findViewById(R.id.id_name_autocomplete_text_view);
             final EditText quantityText = (EditText) dialogView.findViewById(R.id.addQuantity);
-
+            String[] idNameArr = Globals.idNameList.toArray(new String[Globals.idNameList.size()]);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>
                     (this, android.R.layout.simple_dropdown_item_1line, idNameArr);
 

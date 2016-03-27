@@ -3,9 +3,6 @@ package stock.awesome.instock;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,10 +20,8 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import stock.awesome.instock.misc_classes.Globals;
-import stock.awesome.instock.misc_classes.KitStorer;
 import stock.awesome.instock.misc_classes.Product;
 
 public class MainActivity extends AppCompatActivity {
