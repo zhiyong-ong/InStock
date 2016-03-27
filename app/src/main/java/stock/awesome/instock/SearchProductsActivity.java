@@ -1,5 +1,6 @@
 package stock.awesome.instock;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -36,44 +37,9 @@ public class SearchProductsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-//                android.R.layout.simple_dropdown_item_1line, COUNTRIES);
-
-        idNameArr = KitStorer.idNameList.toArray(new String[KitStorer.idNameList.size()]);
-        viewAdapter(idNameArr);
-    }
-
-//    private static final String[] COUNTRIES = new String[] {
-//            "Belgium", "France", "Italy", "Germany", "Spain"
-//    };
-
-//    private void getFirebaseDataArray() { // String startingChar
-//        idNameList = new ArrayList<>();
-//        Query queryRef = database.orderByKey(); //.startAt(startingChar).endAt(startingChar + "\uf8ff");
-//
-//        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot child : dataSnapshot.getChildren()) {
-//                    Product prod = child.getValue(Product.class);
-//                    Log.e("prod details", prod.getId() + " " + prod.getName());
-//                    idNameList.add(prod.getId());
-//                    idNameList.add(prod.getName());
-//
-//                    viewAdapter(idNameList.toArray(new String[idNameList.size()]));
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError firebaseError) {
-//                Log.e("Product read failed", firebaseError.getMessage());
-//            }
-//        });
-//    }
-
-
-    private void viewAdapter(String[] idNameArr) {
-        Log.e("idNameList", idNameArr.toString());
+        Intent intent = getIntent();
+        ArrayList<String> idNameList = intent.getStringArrayListExtra("idNameList");
+        idNameArr = idNameList.toArray(new String[idNameList.size()]);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, idNameArr);

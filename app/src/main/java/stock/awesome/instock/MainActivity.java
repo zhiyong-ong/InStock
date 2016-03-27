@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                     idNameList.add(prod.getId());
                     idNameList.add(prod.getName());
 
-                    KitStorer.storeProductIdNameList(idNameList);
                     // TODO go from loading screen to main page
                     // doneLoading();
                 }
@@ -83,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchtest(View view) {
         Intent intent = new Intent(this, SearchProductsActivity.class);
+        intent.putStringArrayListExtra("idNameList", idNameList);
         startActivity(intent);
     }
 

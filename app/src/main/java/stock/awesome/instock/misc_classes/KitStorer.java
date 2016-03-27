@@ -9,14 +9,8 @@ import stock.awesome.instock.misc_classes.Kit;
 // Also stores list of product ids and names for autocompletetextview in SearchProductsActivity
 public class KitStorer {
     public static Kit kit = null;
-    public static ArrayList<String> idNameList = null;
 
     public static void storeKit(Kit inKit) {
         kit = inKit;
     }
-
-    public static void storeProductIdNameList(ArrayList<String> list) {
-        idNameList = list;
-    }
-
 }
