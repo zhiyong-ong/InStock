@@ -171,18 +171,37 @@ public class DatabaseReadKit {
 
     // adds products to kit. Original call by DatabaseWriteKit.addProductsToKit method,
     // which calls DatabaseReadKit.read, which finally calls this.
-    private static void writeAddProducts(Kit kit) {
+    private static void writeAddProducts(final Kit kit) {
         // locations where ProductInKits are stored
-        Firebase ref = database.child("kits").child(kit.getKitName()).child("kitMap");
+        final Firebase ref = database.child("kits").child(kit.getKitName()).child("kitMap");
+        Firebase productsRef = database.child("products");
 
-        // iterate through id-prodInKit pairs stored in kit
-        for (HashMap.Entry<String, ProductInKit> entry : kit.getKitMap().entrySet())  {
+        productsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                // iterate through id-prodInKit pairs stored in kit
+                for (HashMap.Entry<String, ProductInKit> entry : kit.getKitMap().entrySet())  {
+                    String id = entry.getKey();
+                    ProductInKit pink = entry.getValue();
 
-            String id = entry.getKey();
-            ProductInKit pink = entry.getValue();
+                    // look at products sub-database
+                    DataSnapshot prodSnapshot = snapshot.child(id);
+                    // product in kit not in database
+                    if (!prodSnapshot.exists()) {
+                        Log.e(READ_FAILED, "Product ID " + id + " in kit " + kit.getKitName() + " not found in products database");
+                        // TODO throw error
+                    }
+                    else {
+                        ref.child(id).setValue(pink);
+                    }
+                }
+            }
 
-            ref.child(id).setValue(pink);
-        }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e(READ_FAILED, firebaseError.getMessage());
+            }
+        });
     }
 
     // contains repeated code from writeAddProducts. sigh.
