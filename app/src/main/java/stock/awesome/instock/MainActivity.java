@@ -22,6 +22,8 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import stock.awesome.instock.misc_classes.KitStorer;
 import stock.awesome.instock.misc_classes.Product;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static Firebase ref;
     private static ArrayList<String> idNameList;
+    private static HashMap<String, String> idNameMap;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,8 +53,16 @@ public class MainActivity extends AppCompatActivity {
         testSuite();
     }
 
+
+    protected void onResume() {
+        super.onResume();
+        getFirebaseDataArray();
+    }
+
+
     private void getFirebaseDataArray() {
         idNameList = new ArrayList<>();
+        idNameMap = new HashMap<>();
         Query queryRef = ref.orderByKey(); //.startAt(startingChar).endAt(startingChar + "\uf8ff");
 
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -59,13 +70,14 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Product prod = child.getValue(Product.class);
-                    Log.e("prod details", prod.getId() + " " + prod.getName());
+//                    Log.e("prod details", prod.getId() + " " + prod.getName());
                     idNameList.add(prod.getId());
                     idNameList.add(prod.getName());
-
-                    // TODO go from loading screen to main page
-                    // doneLoading();
+                    // map the name/id to id
+                    idNameMap.put(prod.getName(), prod.getId());
                 }
+
+                Log.e("list", idNameList.toString());
             }
 
             @Override
@@ -80,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void searchtest(View view) {
+    public void searchTest(View view) {
         Intent intent = new Intent(this, SearchProductsActivity.class);
         intent.putStringArrayListExtra("idNameList", idNameList);
         startActivity(intent);
@@ -88,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendNewKitIntent(View view) {
         Intent intent = new Intent(this, BuildKitActivity.class);
+        intent.putStringArrayListExtra("idNameList", idNameList);
+        intent.putExtra("idNameMap", idNameMap);
         startActivity(intent);
     }
     public void sendExistingKitIntent(View view) {

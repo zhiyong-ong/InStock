@@ -4,14 +4,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +24,7 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import stock.awesome.instock.misc_classes.BuildKitAdapter;
 import stock.awesome.instock.misc_classes.Kit;
@@ -30,11 +35,13 @@ public class BuildKitActivity extends AppCompatActivity {
     private static BuildKitAdapter listAdapter;
     private static ArrayList<Product> newProduct = new ArrayList<Product>();
     private static ListView mainListView;
+    // stores product id and names for the AutoCompleteTextView
+    private static ArrayList<String> idNameList;
+    private static String[] idNameArr;
+    private static HashMap<String, String> idNameMap;
 
     static Activity activity;
     final Context context = this;
-    Firebase database;
-    String LOG_TAG = Product.class.getSimpleName();
     static int quantity = 0;
 
     @Override
@@ -43,6 +50,12 @@ public class BuildKitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_build_kit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Store the list of products ids and names that was filled in MainActivity
+        Intent intent = getIntent();
+        idNameList = intent.getStringArrayListExtra("idNameList");
+        idNameArr = idNameList.toArray(new String[idNameList.size()]);
+        idNameMap = (HashMap<String, String>) intent.getSerializableExtra("idNameMap");
 
         activity = this;
 
@@ -101,6 +114,7 @@ public class BuildKitActivity extends AppCompatActivity {
         });
 
     }
+
     public static void displayItem(final Product product) {
         product.setQuantity(quantity);
         newProduct.add(product);
@@ -109,6 +123,7 @@ public class BuildKitActivity extends AppCompatActivity {
         listAdapter.notifyDataSetChanged();
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -137,7 +152,8 @@ public class BuildKitActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    //add new item to kit
+
+    // add new item to kit
     public void sendNewKitItem(View view) {
         showChangeLangDialog();
     }
@@ -145,6 +161,7 @@ public class BuildKitActivity extends AppCompatActivity {
     public static void noSuchProduct() {
         Toast.makeText(activity, "No such product exists", Toast.LENGTH_SHORT).show();
     }
+
     public void showChangeLangDialog() {
         //adding a new item to the kit
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
@@ -153,21 +170,36 @@ public class BuildKitActivity extends AppCompatActivity {
 
         dialogBuilder.setView(dialogView);
 
-        final EditText productIDText = (EditText) dialogView.findViewById(R.id.productID);
+        // Search for ids and names with suggestions
+        // Give the AutoCompleteTextView the list of product ids and names that was received in onCreate
+        Log.e("idNameArr", idNameList.toString());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_dropdown_item_1line, idNameArr);
+
+        final AutoCompleteTextView idNameText = (AutoCompleteTextView)
+                dialogView.findViewById(R.id.id_name_autocomplete_text_view);
+        // start auto-completing from 1st char
+        idNameText.setThreshold(1);
+        idNameText.setAdapter(adapter);
+
         final EditText quantityText = (EditText) dialogView.findViewById(R.id.addQuantity);
 
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //Log.v(LOG_TAG, "-------------------TESTING on click: " + productID + "\t" + productID.getText().toString());
                 //Error handling
-                if(productIDText.getText().toString().trim().length() == 0) {
+                if (idNameText.getText().toString().trim().length() == 0) {
                     Toast.makeText(context, "You did not enter an ID", Toast.LENGTH_SHORT).show();
-                }
-                else if(quantityText.getText().toString().trim().length() == 0) {
+                } else if (quantityText.getText().toString().trim().length() == 0) {
                     Toast.makeText(context, "You did not enter a quantity", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    String productID = productIDText.getText().toString();
+                } else {
+                    String productID = idNameText.getText().toString();
+                    productID = idNameMap.get(productID);
+                    // if the id/name entered does not exist in the list
+                    if (productID == null) {
+                        noSuchProduct();
+                    }
+                    Log.e("ID selected", productID);
                     quantity = Integer.parseInt(quantityText.getText().toString());
                     //add to the list.
                     //communicate with the database here
@@ -186,13 +218,7 @@ public class BuildKitActivity extends AppCompatActivity {
         AlertDialog b = dialogBuilder.create();
         b.show();
     }
-    /*
-    // Handle exceptions thrown by DatabaseReadProduct here
-    public static Product displayProduct(Product result, Exception e) {
-        Log.w("result info:", result.getId() + " " + result.getName() + " " +
-                result.getQuantity() + " " + StringCalendar.toString(result.getExpiry()));
-        return result;
-    }*/
+
 
     //intent when clicking on the button for save kit
     public void sendSaveKit(View view) {

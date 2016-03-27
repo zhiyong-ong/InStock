@@ -25,6 +25,7 @@ public class KitAdapter extends BaseAdapter {
     public LinkedHashMap<String, ProductInKit> mKitMap = new LinkedHashMap<>();
     public String[] mKeys;
     public static HashMap<String, Product> mProductMap;
+    // whether item in list is checked, ordered by position
     public ArrayList<Boolean> status = new ArrayList<>();
     private Context mContext;
 
@@ -69,7 +70,6 @@ public class KitAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.item_view_kit_details, parent, false);
         }
-
 
         TextView pinkId = (TextView) convertView.findViewById(R.id.product_in_kit_id);
         TextView pinkQty = (TextView) convertView.findViewById(R.id.product_in_kit_qty);
