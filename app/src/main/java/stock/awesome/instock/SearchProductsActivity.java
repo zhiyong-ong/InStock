@@ -21,13 +21,13 @@ import com.firebase.ui.FirebaseListAdapter;
 
 import java.util.ArrayList;
 
+import stock.awesome.instock.misc_classes.KitStorer;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
 
 public class SearchProductsActivity extends AppCompatActivity {
 
-    private static Firebase database;
-    private static ArrayList<String> idNameList;
+    private static String[] idNameArr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,47 +39,49 @@ public class SearchProductsActivity extends AppCompatActivity {
 //        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
 //                android.R.layout.simple_dropdown_item_1line, COUNTRIES);
 
-        database = DatabaseLauncher.database.child("products");
-        getFirebaseDataArray();
+        idNameArr = KitStorer.idNameList.toArray(new String[KitStorer.idNameList.size()]);
+        viewAdapter(idNameArr);
     }
 
 //    private static final String[] COUNTRIES = new String[] {
 //            "Belgium", "France", "Italy", "Germany", "Spain"
 //    };
 
-    private void getFirebaseDataArray() { // String startingChar
-        idNameList = new ArrayList<>();
-        Query queryRef = database.orderByKey(); //.startAt(startingChar).endAt(startingChar + "\uf8ff");
+//    private void getFirebaseDataArray() { // String startingChar
+//        idNameList = new ArrayList<>();
+//        Query queryRef = database.orderByKey(); //.startAt(startingChar).endAt(startingChar + "\uf8ff");
+//
+//        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                    Product prod = child.getValue(Product.class);
+//                    Log.e("prod details", prod.getId() + " " + prod.getName());
+//                    idNameList.add(prod.getId());
+//                    idNameList.add(prod.getName());
+//
+//                    viewAdapter(idNameList.toArray(new String[idNameList.size()]));
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(FirebaseError firebaseError) {
+//                Log.e("Product read failed", firebaseError.getMessage());
+//            }
+//        });
+//    }
 
-        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Product prod = child.getValue(Product.class);
-                    Log.e("prod details", prod.getId() + " " + prod.getName());
-                    idNameList.add(prod.getId());
-                    idNameList.add(prod.getName());
 
-                    viewAdapter(idNameList.toArray(new String[idNameList.size()]));
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.e("Product read failed", firebaseError.getMessage());
-            }
-        });
-    }
-
-
-    private void viewAdapter(String[] idNameList) {
-        Log.e("idNameList", idNameList.toString());
+    private void viewAdapter(String[] idNameArr) {
+        Log.e("idNameList", idNameArr.toString());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, idNameList);
+                android.R.layout.simple_dropdown_item_1line, idNameArr);
 
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.autoCompleteTextView1);
+        // start auto-completing from 1st char
+        textView.setThreshold(1);
         textView.setAdapter(adapter);
     }
 
