@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import stock.awesome.instock.misc_classes.GMailSender;
+import stock.awesome.instock.misc_classes.Globals;
 import stock.awesome.instock.misc_classes.KitAdapter;
-import stock.awesome.instock.misc_classes.KitStorer;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.ProductInKit;
 
@@ -42,9 +42,9 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.list_view_kit_details);
         TextView kitName = (TextView) findViewById(R.id.kit_name_view);
-        kitName.setText(KitStorer.kit.getKitName());
+        kitName.setText(Globals.kit.getKitName());
 
-        final KitAdapter mAdapter = new KitAdapter(this, KitStorer.kit);
+        final KitAdapter mAdapter = new KitAdapter(this, Globals.kit);
         listView.setAdapter(mAdapter);
 
         emailer = new SendEmailTask();
@@ -90,7 +90,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 
                         DatabaseWriteProduct.updateQuantities(toUpdate);
 
-                        Toast.makeText(context, "Kit " + KitStorer.kit.getKitName() + " saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Kit " + Globals.kit.getKitName() + " saved", Toast.LENGTH_SHORT).show();
                         //go back to the main activity
                         Intent intent = new Intent(ViewKitDetailsActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -144,7 +144,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
             LayoutInflater inflater = LayoutInflater.from(this);
             final View dialogView = inflater.inflate(R.layout.popup_delete_kit, null);
             final TextView kitName = (TextView) dialogView.findViewById(R.id.deleteIDView);
-            kitName.setText(KitStorer.kit.getKitName());
+            kitName.setText(Globals.kit.getKitName());
 
             dialogBuilder.setView(dialogView);
             dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
