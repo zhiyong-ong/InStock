@@ -71,10 +71,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ViewAllKitsActivity" />
         </activity>
-        <activity
-            android:name=".SearchProductsActivity"
-            android:label="@string/title_activity_search_products"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import stock.awesome.instock.misc_classes.BuildKitAdapter;
+import stock.awesome.instock.misc_classes.Globals;
 import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
@@ -53,9 +54,9 @@ public class BuildKitActivity extends AppCompatActivity {
 
         // Store the list of products ids and names that was filled in MainActivity
         Intent intent = getIntent();
-        idNameList = intent.getStringArrayListExtra("idNameList");
+        idNameList = Globals.idNameList;
         idNameArr = idNameList.toArray(new String[idNameList.size()]);
-        idNameMap = (HashMap<String, String>) intent.getSerializableExtra("idNameMap");
+        idNameMap = Globals.idNameMap;
 
         activity = this;
 

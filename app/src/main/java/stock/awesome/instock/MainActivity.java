@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import stock.awesome.instock.misc_classes.Globals;
 import stock.awesome.instock.misc_classes.KitStorer;
 import stock.awesome.instock.misc_classes.Product;
 
@@ -35,19 +36,14 @@ public class MainActivity extends AppCompatActivity {
     private static HashMap<String, String> idNameMap;
 
     protected void onCreate(Bundle savedInstanceState) {
-
-        Firebase.setAndroidContext(this);
-        DatabaseLauncher.launch();
-        ref = DatabaseLauncher.database.child("products");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Drawable dr = getResources().getDrawable(R.drawable.ic_info_black_24dp);
-        Bitmap bitmap = ((BitmapDrawable) dr).getBitmap();
-        Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 100, 100, true));
+        Firebase.setAndroidContext(this);
+        DatabaseLauncher.launch();
+        ref = DatabaseLauncher.database.child("products");
 
         getFirebaseDataArray();
         testSuite();
@@ -76,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
                     // map the name/id to id
                     idNameMap.put(prod.getName(), prod.getId());
                 }
-
-                Log.e("list", idNameList.toString());
             }
 
             @Override
@@ -85,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Product read failed", firebaseError.getMessage());
             }
         });
+
+        Globals.idNameList = idNameList;
+        Globals.idNameMap = idNameMap;
     }
 
     public void sendNewItemIntent(View view) {
@@ -92,16 +89,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void searchTest(View view) {
-        Intent intent = new Intent(this, SearchProductsActivity.class);
-        intent.putStringArrayListExtra("idNameList", idNameList);
-        startActivity(intent);
-    }
-
     public void sendNewKitIntent(View view) {
         Intent intent = new Intent(this, BuildKitActivity.class);
-        intent.putStringArrayListExtra("idNameList", idNameList);
-        intent.putExtra("idNameMap", idNameMap);
         startActivity(intent);
     }
     public void sendExistingKitIntent(View view) {
