@@ -25,6 +25,7 @@ public class KitAdapter extends BaseAdapter {
     public LinkedHashMap<String, ProductInKit> mKitMap = new LinkedHashMap<>();
     public String[] mKeys;
     public static HashMap<String, Product> mProductMap;
+    // whether item in list is checked, ordered by position
     public ArrayList<Boolean> status = new ArrayList<>();
     private Context mContext;
     int layout = 0;

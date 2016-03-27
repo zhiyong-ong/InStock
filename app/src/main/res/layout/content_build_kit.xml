@@ -9,12 +9,34 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_build_kit" tools:context=".BuildKitActivity">
 
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/add_product_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true">-->
+
+        <!--<AutoCompleteTextView-->
+            <!--android:id="@+id/buildkit_autocomplete"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="@string/search_for_id_name_no_colon" />-->
+
+        <!--<EditText-->
+            <!--android:id="@+id/_buildkit_quantity_input"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/buildkit_autocomplete"-->
+            <!--android:hint="@string/quantity_no_colon"/>-->
+
+    <!--</RelativeLayout>-->
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_above="@+id/relativeLayout"
         android:id="@+id/listView" />
+        <!--android:layout_below="@+id/add_product_layout"-->
+
 
 
     <RelativeLayout

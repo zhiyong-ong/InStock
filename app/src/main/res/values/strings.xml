@@ -24,4 +24,8 @@
         <item>Delete</item>
     </string-array>
     <string name="title_activity_edit_kit">EditKit</string>
+    <string name="title_activity_search_products">SearchProductsActivity</string>
+
+    <string name="search_for_id_name_no_colon">Search for an ID/name</string>
+    <string name="quantity_no_colon">Quantity</string>
 </resources>

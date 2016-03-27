@@ -216,7 +216,7 @@ public class ViewAllStocksActivity extends AppCompatActivity {
     //method for datepicker
     private void updateLabel() {
 
-        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         expiryText.setText(sdf.format(myCalendar.getTime()));

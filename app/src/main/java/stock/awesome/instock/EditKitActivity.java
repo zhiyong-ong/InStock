@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -111,9 +113,17 @@ public class EditKitActivity extends AppCompatActivity {
 
             dialogBuilder.setView(dialogView);
 
-            final EditText productIDText = (EditText) dialogView.findViewById(R.id.productID);
+            final EditText productIDText = (EditText) dialogView.findViewById(R.id.id_name_autocomplete_text_view);
             final EditText quantityText = (EditText) dialogView.findViewById(R.id.addQuantity);
 
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                    (this, android.R.layout.simple_dropdown_item_1line, idNameArr);
+
+            final AutoCompleteTextView idNameText = (AutoCompleteTextView)
+                    dialogView.findViewById(R.id.id_name_autocomplete_text_view);
+            // start auto-completing from 1st char
+            idNameText.setThreshold(1);
+            idNameText.setAdapter(adapter);
             dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     //Log.v(LOG_TAG, "-------------------TESTING on click: " + productID + "\t" + productID.getText().toString());
@@ -131,9 +141,8 @@ public class EditKitActivity extends AppCompatActivity {
                         //communicate with the database here
                         //DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY_PRODUCT);
                         DatabaseWriteKit.addProductsToKit(kitNameStr, productID, quantity);
-//                        DatabaseReadKit.read(entry.getKitName(), DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
-//                                ViewAllKitsActivity.this, ViewKitDetailsActivity.class);
-                        mAdapter.notifyDataSetChanged();
+                        DatabaseReadKit.read(kitNameStr, DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
+                                EditKitActivity.this, EditKitActivity.class);
                     }
                 }
             });

@@ -8,15 +8,16 @@
         android:layout_height="64dp"
         android:scaleType="center"
         android:background="#ab483d"
-        android:text="INPUT NEW ITEM"
+        android:text="ADD NEW ITEM"
         android:gravity="center"
         android:textSize="23dp"
         android:textColor="#FFFFFF"
         android:contentDescription="@string/app_name"
         android:fontFamily="san-serif-condensed"
         android:textStyle="bold"/>
-    <EditText
-        android:id="@+id/productID"
+
+    <AutoCompleteTextView
+        android:id="@+id/id_name_autocomplete_text_view"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +25,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:hint="Product ID" />
+        android:hint="@string/search_for_id_name_no_colon" />
 
     <EditText
         android:id="@+id/addQuantity"
@@ -35,6 +36,6 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:hint="Quantity" />
+        android:hint="@string/quantity_no_colon" />
 
 </LinearLayout>
