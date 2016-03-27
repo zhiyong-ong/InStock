@@ -44,7 +44,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         TextView kitName = (TextView) findViewById(R.id.kit_name_view);
         kitName.setText(KitStorer.kit.getKitName());
 
-        final KitAdapter mAdapter = new KitAdapter(this, KitStorer.kit);
+        final KitAdapter mAdapter = new KitAdapter(this, KitStorer.kit, R.layout.item_view_kit_details);
         listView.setAdapter(mAdapter);
 
         emailer = new SendEmailTask();

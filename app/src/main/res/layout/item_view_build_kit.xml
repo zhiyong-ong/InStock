@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="20dp"
+    android:paddingBottom="10dp"
     android:paddingTop="10dp">
 
     <TextView
@@ -17,8 +17,9 @@
 
     <TextView
         android:id="@+id/idText"
-        android:layout_width="175dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="ID"
         android:layout_toRightOf="@+id/idView"
         android:textSize="18dp"
         android:textColor="@color/darkGrey"
@@ -30,20 +31,23 @@
 
     <TextView
         android:id="@+id/qtyView"
-        android:layout_width="48dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/idText"
         android:textSize="18dp"
         android:paddingLeft="5dp"
         android:text="QTY: "
-        android:textColor="@color/lightGrey">
+        android:textColor="@color/lightGrey"
+        android:layout_below="@+id/nameView"
+        android:layout_centerHorizontal="true">
     </TextView>
 
     <TextView
         android:id="@+id/qtyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="QTY"
         android:layout_toRightOf="@+id/qtyView"
+        android:layout_below="@+id/nameView"
         android:textSize="18dp"
         android:paddingLeft="5dp"
         android:textStyle="bold"
@@ -64,8 +68,9 @@
     </TextView>
     <TextView
         android:id="@+id/nameText"
-        android:layout_width="142dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="NAME"
         android:layout_below="@+id/idText"
         android:layout_toRightOf="@+id/nameView"
         android:textSize="18dp"
@@ -81,18 +86,18 @@
         android:id="@+id/locView"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/qtyView"
-        android:layout_toRightOf="@id/nameText"
         android:textSize="18dp"
         android:paddingLeft="5dp"
         android:text="LOC: "
-        android:textColor="@color/lightGrey">
+        android:textColor="@color/lightGrey"
+        android:layout_below="@+id/nameView">
     </TextView>
     <TextView
         android:id="@+id/locText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/qtyView"
+        android:text="LOC"
+        android:layout_below="@id/nameView"
         android:layout_toRightOf="@id/locView"
         android:textSize="18dp"
         android:maxLength="18"

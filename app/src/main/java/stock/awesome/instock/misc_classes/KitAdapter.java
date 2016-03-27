@@ -27,12 +27,13 @@ public class KitAdapter extends BaseAdapter {
     public static HashMap<String, Product> mProductMap;
     public ArrayList<Boolean> status = new ArrayList<>();
     private Context mContext;
+    int layout = 0;
 
-    public KitAdapter(Context context, Kit data){
+    public KitAdapter(Context context, Kit data, int layout){
         mContext = context;
         mKitMap  = data.getKitMap();
         mKeys = mKitMap.keySet().toArray(new String[mKitMap.size()]);
-
+        this.layout = layout;
         for (int i=0; i<mKeys.length; i++) {
             status.add(false);
         }
@@ -67,9 +68,8 @@ public class KitAdapter extends BaseAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_view_kit_details, parent, false);
+            convertView = inflater.inflate(layout, parent, false);
         }
-
 
         TextView pinkId = (TextView) convertView.findViewById(R.id.product_in_kit_id);
         TextView pinkQty = (TextView) convertView.findViewById(R.id.product_in_kit_qty);

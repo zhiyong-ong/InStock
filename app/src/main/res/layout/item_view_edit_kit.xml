@@ -11,8 +11,25 @@
     android:paddingLeft="5dp"
     android:paddingRight="5dp">
 
-
-
+    <CheckBox
+        android:id="@+id/product_in_kit_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/checkbox_selector"
+        android:checked="false"
+        android:gravity="center_horizontal"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/kit_details_layout"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/product_in_kit_checkbox"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingLeft="5dp">
     <TextView
         android:id="@+id/idView"
         android:layout_width="wrap_content"
@@ -120,17 +137,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
     </TextView>
-
-    <CheckBox
-
-        android:id="@+id/product_in_kit_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/product_in_kit_name"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:checked="false" />
-
+    </RelativeLayout>
 
 </RelativeLayout>
-

@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:paddingLeft="3dp" android:paddingRight="3dp"
-    android:paddingTop="@dimen/activity_vertical_margin" android:paddingBottom="@dimen/activity_vertical_margin"
+
+    android:paddingTop="10dp" android:paddingBottom="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_view_kit_details"
-    tools:context=".ViewKitDetailsActivity">
+    tools:showIn="@layout/activity_edit_kit"
+    tools:context=".EditKitActivity">
     <TextView
         android:id="@+id/kit_name_view"
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"/>
     <ListView
-        android:id="@+id/list_view_kit_details"
+        android:id="@+id/list_view_edit_kit"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_above="@+id/relativeLayout"
@@ -43,8 +43,7 @@
             android:layout_marginLeft="4dip"
             android:layout_marginRight="4dip"
             android:background="?android:attr/dividerVertical"
-            android:layout_alignParentTop="true"
-            />
+            android:layout_alignParentTop="true"/>
 
         <Button
             android:layout_width="match_parent"
