@@ -1,5 +1,6 @@
 package stock.awesome.instock;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import stock.awesome.instock.misc_classes.Globals;
@@ -30,10 +33,11 @@ import stock.awesome.instock.misc_classes.ProductInKit;
 
 
 public class EditKitActivity extends AppCompatActivity {
-
+    private static HashMap<String, String> idNameMap;
     final Context context = this;
     String kitNameStr;
     KitAdapter mAdapter;
+    static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,9 @@ public class EditKitActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list_view_edit_kit);
         TextView kitName = (TextView) findViewById(R.id.kit_name_view);
         kitName.setText(kitNameStr);
+        idNameMap = Globals.idNameMap;
+        activity = this;
+
 
         mAdapter = new KitAdapter(this, Globals.kit, R.layout.item_view_edit_kit);
         listView.setAdapter(mAdapter);
@@ -165,22 +172,27 @@ public class EditKitActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     //Log.v(LOG_TAG, "-------------------TESTING on click: " + productID + "\t" + productID.getText().toString());
                     //Error handling
-                    if(productIDText.getText().toString().trim().length() == 0) {
+                    if (idNameText.getText().toString().trim().length() == 0) {
                         Toast.makeText(context, "You did not enter an ID", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(quantityText.getText().toString().trim().length() == 0) {
+                    } else if (quantityText.getText().toString().trim().length() == 0) {
                         Toast.makeText(context, "You did not enter a quantity", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        String productID = productIDText.getText().toString();
-                        int quantity = Integer.parseInt(quantityText.getText().toString());
-                        //add to the list.
-                        //communicate with the database here
-                        //DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY_PRODUCT);
-                        DatabaseWriteKit.addProductsToKit(kitNameStr, productID, quantity);
-                        DatabaseReadKit.read(kitNameStr, DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
-                                EditKitActivity.this, EditKitActivity.class);
-                        mAdapter.notifyDataSetChanged();
+                    } else {
+                        String productID = idNameText.getText().toString();
+                        productID = idNameMap.get(productID);
+                        // if the id/name entered does not exist in the list
+                        if (productID == null) {
+                            noSuchProduct();
+                        } else {
+                            Log.e("ID selected", productID);
+                            int quantity = Integer.parseInt(quantityText.getText().toString());
+                            //add to the list.
+                            //communicate with the database here
+                            //DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY_PRODUCT);
+                            DatabaseWriteKit.addProductsToKit(kitNameStr, productID, quantity);
+                            DatabaseReadKit.read(kitNameStr, DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
+                                    EditKitActivity.this, EditKitActivity.class);
+                            mAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
             });
@@ -193,6 +205,10 @@ public class EditKitActivity extends AppCompatActivity {
             b.show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static void noSuchProduct() {
+        Toast.makeText(activity, "No such product exists", Toast.LENGTH_SHORT).show();
     }
 
 }

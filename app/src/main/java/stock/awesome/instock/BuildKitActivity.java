@@ -198,13 +198,16 @@ public class BuildKitActivity extends AppCompatActivity {
                     if (productID == null) {
                         noSuchProduct();
                     }
-                    Log.e("ID selected", productID);
-                    quantity = Integer.parseInt(quantityText.getText().toString());
-                    //add to the list.
-                    //communicate with the database here
-                    //DatabaseReadProduct reader = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.BUILD_KIT);
-                    //reader.execute(productIDText.getText().toString());
-                    DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY_PRODUCT);
+                    else {
+                        Log.e("ID selected", productID);
+
+                        quantity = Integer.parseInt(quantityText.getText().toString());
+                        //add to the list.
+                        //communicate with the database here
+                        //DatabaseReadProduct reader = new DatabaseReadProduct(database, DatabaseReadProduct.ProdUseCase.BUILD_KIT);
+                        //reader.execute(productIDText.getText().toString());
+                        DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY_PRODUCT);
+                    }
 
                 }
             }
