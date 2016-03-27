@@ -64,7 +64,7 @@
         android:text="QTY: "
         android:textColor="@color/lightGrey"
         android:layout_below="@+id/product_in_kit_name"
-        android:layout_centerHorizontal="true">
+        android:layout_marginLeft="200dp">
     </TextView>
     <TextView
         android:textSize="18dp"

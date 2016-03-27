@@ -90,7 +90,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 
                         DatabaseWriteProduct.updateQuantities(toUpdate);
 
-                        Toast.makeText(context, "Kit " + Globals.kit.getKitName() + " saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Kit " + Globals.kit.getKitName() + " picked", Toast.LENGTH_SHORT).show();
                         //go back to the main activity
                         Intent intent = new Intent(ViewKitDetailsActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

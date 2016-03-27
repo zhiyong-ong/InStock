@@ -210,6 +210,7 @@ public class DatabaseReadKit {
         protected Void doInBackground(Void... params) {
             Intent intent = new Intent(fromContext, toClass);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Log.e("Check async task: ", "YOLO!");
             fromContext.startActivity(intent);
 
             return null;

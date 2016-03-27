@@ -39,7 +39,13 @@ public class KitAdapter extends BaseAdapter {
             status.add(false);
         }
     }
-
+    public void reconstruct(Kit kitName) {
+        mKitMap  = kitName.getKitMap();
+        mKeys = mKitMap.keySet().toArray(new String[mKitMap.size()]);
+        for (int i=0; i<mKeys.length; i++) {
+            status.add(false);
+        }
+    }
 
     public static void getProductDetails(HashMap<String, Product> productMap) {
         mProductMap = productMap;

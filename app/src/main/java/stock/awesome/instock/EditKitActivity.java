@@ -11,16 +11,22 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.LinkedHashMap;
+
 import stock.awesome.instock.misc_classes.Globals;
+import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.KitAdapter;
+import stock.awesome.instock.misc_classes.ProductInKit;
 
 
 public class EditKitActivity extends AppCompatActivity {
@@ -42,7 +48,24 @@ public class EditKitActivity extends AppCompatActivity {
 
         mAdapter = new KitAdapter(this, Globals.kit, R.layout.item_view_edit_kit);
         listView.setAdapter(mAdapter);
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CheckBox checkBox = (CheckBox) view
+                        .findViewById(R.id.product_in_kit_checkbox);
+//                Category category = (Category) imageView.getTag();
+//
+//                if (category.getChecked() == false) {
+//                    imageView.setImageResource(R.drawable.set_check);
+//                    listOfItemsToDelete.add(category.getId());
+//                    category.setChecked(true);
+//                } else {
+//                    imageView.setImageResource(R.drawable.set_basecircle);
+//                    listOfItemsToDelete.remove((Integer) category.getId());
+//                    category.setChecked(false);
+//                }
+            }
+        });
         Button doneButton = (Button) findViewById(R.id.kit_details_done_button);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +78,20 @@ public class EditKitActivity extends AppCompatActivity {
                 dialogBuilder.setView(dialogView);
                 dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        // copy hash map from adapter
+                        LinkedHashMap<String, ProductInKit> checkedItems = mAdapter.mKitMap;
 
+                        // if item is unchecked, remove from map
+                        for (int i = 0; i < mAdapter.status.size(); i++) {
+                            if (!mAdapter.status.get(i)) {
+                                checkedItems.remove(mAdapter.mKeys[i]);
+                            }
+                        }
+
+                        Kit toDelete = new Kit(Globals.kit.getKitName());
+                        toDelete.setKitMap(checkedItems);
+
+                        DatabaseWriteKit.removeProductsFromKit(toDelete);
                         Toast.makeText(context, "Kit " + Globals.kit.getKitName() + " Edited", Toast.LENGTH_SHORT).show();
                         //go back to the main activity
                         Intent intent = new Intent(EditKitActivity.this, ViewAllKitsActivity.class);
@@ -144,6 +180,7 @@ public class EditKitActivity extends AppCompatActivity {
                         DatabaseWriteKit.addProductsToKit(kitNameStr, productID, quantity);
                         DatabaseReadKit.read(kitNameStr, DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
                                 EditKitActivity.this, EditKitActivity.class);
+                        mAdapter.notifyDataSetChanged();
                     }
                 }
             });
