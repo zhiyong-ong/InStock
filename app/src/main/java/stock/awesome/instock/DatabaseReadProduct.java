@@ -86,9 +86,7 @@ public class DatabaseReadProduct {
                     if(useCase.equals(ProdUseCase.DISPLAY_SEARCH)) {
                         UpdateItemFragment.noSuchProduct();
                     }
-                    if(useCase.equals(ProdUseCase.DISPLAY_PRODUCT)) {
-                        BuildKitActivity.noSuchProduct();
-                    }
+
                 } else {
                     outProd = snapshot.getValue(Product.class);
 
