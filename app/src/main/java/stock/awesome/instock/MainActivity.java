@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     idNameList.add(prod.getName());
                     // map the name/id to id
                     idNameMap.put(prod.getName(), prod.getId());
+                    idNameMap.put(prod.getId(), prod.getId());
                 }
             }
 
