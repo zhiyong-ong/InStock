@@ -1,6 +1,5 @@
 package stock.awesome.instock;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,7 +36,7 @@ public class EditKitActivity extends AppCompatActivity {
     final Context context = this;
     String kitNameStr;
     KitAdapter mAdapter;
-    static Activity activity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +49,6 @@ public class EditKitActivity extends AppCompatActivity {
         TextView kitName = (TextView) findViewById(R.id.kit_name_view);
         kitName.setText(kitNameStr);
         idNameMap = Globals.idNameMap;
-        activity = this;
-
 
         mAdapter = new KitAdapter(this, Globals.kit, R.layout.item_view_edit_kit);
         listView.setAdapter(mAdapter);
@@ -207,8 +204,8 @@ public class EditKitActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void noSuchProduct() {
-        Toast.makeText(activity, "No such product exists", Toast.LENGTH_SHORT).show();
+    public void noSuchProduct() {
+        Toast.makeText(this, "No such product exists", Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -25,8 +25,9 @@ import stock.awesome.instock.fragments.UpdateItemFragment;
 public class DatabaseReadProduct {
 
     private static final Firebase database = DatabaseLauncher.database;
-    private static Product outProd = new Product();
     private static final String READ_FAILED = "Product read failed";
+    public static final int THRESHOLD = 0;
+    private static Product outProd = new Product();
 
     public enum ProdUseCase {
         BUILD_KIT, DISPLAY_SEARCH, DISPLAY_PRODUCT, UPDATE_PRODUCT, UPDATE_QUANTITIES, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG
@@ -86,9 +87,7 @@ public class DatabaseReadProduct {
                     if(useCase.equals(ProdUseCase.DISPLAY_SEARCH)) {
                         UpdateItemFragment.noSuchProduct();
                     }
-                    if(useCase.equals(ProdUseCase.DISPLAY_PRODUCT)) {
-                        BuildKitActivity.noSuchProduct();
-                    }
+
                 } else {
                     outProd = snapshot.getValue(Product.class);
 
@@ -174,7 +173,7 @@ public class DatabaseReadProduct {
                         DatabaseWriteProduct.write(outProd);
 
                         // Threshold for sending email
-                        if (newQty < 100) {
+                        if (newQty < THRESHOLD) {
                             lowQtyProds.add(outProd);
                         }
                     }
