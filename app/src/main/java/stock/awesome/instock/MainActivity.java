@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Firebase.setAndroidContext(this);
-        DatabaseLauncher.launch();
         ref = DatabaseLauncher.database.child("products");
 
         getFirebaseDataArray();
