@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:layout_height="match_parent"
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main" tools:context=".MainActivity">
@@ -38,7 +37,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_height="2dp"
                 android:background="@color/lightBlueGrey"
-                android:layout_below="@+id/stockersText"/>
+                android:layout_below="@+id/stockersText"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
 
             <Button
                 android:layout_width="fill_parent"
@@ -73,7 +74,9 @@
                 android:layout_height="2dp"
                 android:background="@color/lightBlueGrey"
                 android:layout_marginTop="20dp"
-                android:layout_below="@+id/buildKitButton"/>
+                android:layout_below="@+id/buildKitButton"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
 
 
 
@@ -96,7 +99,9 @@
                 android:layout_height="2dp"
                 android:background="@color/lightBlueGrey"
                 android:layout_marginTop="10dp"
-                android:layout_below="@+id/pickersText"/>
+                android:layout_below="@+id/pickersText"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
             <Button
                 android:layout_width="fill_parent"
                 android:textSize="22dip"
@@ -117,7 +122,9 @@
                 android:layout_height="2dp"
                 android:background="@color/lightBlueGrey"
                 android:layout_marginTop="20dp"
-                android:layout_below="@+id/ExistingKitButton"/>
+                android:layout_below="@+id/ExistingKitButton"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -137,7 +144,9 @@
                 android:layout_height="2dp"
                 android:background="@color/lightBlueGrey"
                 android:layout_marginTop="10dp"
-                android:layout_below="@+id/addKitItemButton"/>
+                android:layout_below="@+id/addKitItemButton"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="70dp"
@@ -158,7 +167,9 @@
                 android:background="@color/lightBlueGrey"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:layout_below="@+id/viewItemButton"/>
+                android:layout_below="@+id/viewItemButton"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
 
 
         </LinearLayout>
