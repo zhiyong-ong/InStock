@@ -52,9 +52,10 @@ public class InventoryContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_QUANTITY = "quantity";
         public static final String COLUMN_LOCATION = "location";
-        public static final String COLUMN_DESC = "description";
         // Stored as a string of the format yyyy-MM-dd
         public static final String COLUMN_EXPIRY = "expiry";
+        // Optional
+        public static final String COLUMN_DESC = "description";
         // Allow the user to declare custom item properties
         public static final String COLUMN_ITEM_CUSTOM_1 = "item_custom1";
         public static final String COLUMN_ITEM_CUSTOM_2 = "item_custom2";
@@ -81,12 +82,10 @@ public class InventoryContract {
 
         public static final String TABLE_NAME = "collections";
 
-        // Primary key
+        // Primary key (kit name)
         public static final String COLUMN_COLLEC_ID = "collec_id";
 
-        // Quantity of the item in this collection
-        public static final String COLUMN_COLLEC_QUANTITY = "collec_quantity";
-        // Allow the user to declare custom collection properties
+        // Allow the user to declare custom collection-wide properties
         public static final String COLUMN_COLLEC_CUSTOM_1 = "collec_custom1";
         public static final String COLUMN_COLLEC_CUSTOM_2 = "collec_custom2";
         public static final String COLUMN_COLLEC_CUSTOM_3 = "collec_custom3";
@@ -107,7 +106,7 @@ public class InventoryContract {
 
     // Junction table to define many-to-many r/s between items and collections.
     // Each collection contains many items, and each item can be in many collections.
-    public static final class CollectionItem implements BaseColumns{
+    public static final class CollectionItemJunction implements BaseColumns{
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_COLLECTION_ITEMS).build();
 
@@ -118,13 +117,13 @@ public class InventoryContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" +
                         PATH_COLLECTION_ITEMS;
 
-        public static final String TABLE_NAME = "collection_items";
+        public static final String TABLE_NAME = "collection_item_junction";
 
         // Primary key is composite of two below
         public static final String COLUMN_COLLEC_ID = CollectionEntry.COLUMN_COLLEC_ID;
         public static final String COLUMN_ITEM_ID = ItemEntry.COLUMN_ITEM_ID;
 
         // Quanity of items in collection
-        public static final String COLUMN_ITEM_QUANTITY = "item_quantity_in_collec";
+        public static final String COLUMN_ITEM_QUANTITY_IN_COLLEC = "item_quantity_in_collec";
     }
 }
