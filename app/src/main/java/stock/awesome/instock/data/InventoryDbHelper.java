@@ -17,7 +17,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 1;
 
-    static final String DATABASE_NAME = "weather.db";
+    static final String DATABASE_NAME = "inventory.db";
 
     public InventoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -61,8 +61,10 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
                 " FOREIGN KEY (" + CollectionItemJunction.COLUMN_ITEM_ID + ") REFERENCES " +
                 ItemEntry.TABLE_NAME + " (" + ItemEntry.COLUMN_ITEM_ID + "), " +
 
-                CollectionItemJunction.COLUMN_ITEM_QUANTITY_IN_COLLEC + " INTEGER NOT NULL " +
-                " );";
+                CollectionItemJunction.COLUMN_ITEM_QUANTITY_IN_COLLEC + " INTEGER NOT NULL, " +
+
+                " PRIMARY KEY (" + CollectionEntry.COLUMN_COLLEC_ID + ", " +
+                ItemEntry.COLUMN_ITEM_ID + ") );";
 
         sqLiteDatabase.execSQL(SQL_CREATE_ITEM_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_COLLECTION_TABLE);
@@ -75,11 +77,12 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
         // to simply to discard the data and start over.
         // Note that this only fires if you change the version number for your database.
         // It does NOT depend on the version number for your application.
-        // If you want to update the schema without wiping data, commenting out the next 2 lines
+        // If you want to update the schema without wiping data, commenting out the next 3 lines
         // should be your top priority before modifying this method.
 
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ItemEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CollectionEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CollectionItemJunction.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }
