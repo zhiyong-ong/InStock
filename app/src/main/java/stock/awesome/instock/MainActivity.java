@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static Firebase ref;
     private static ArrayList<String> idNameList;
+    private static ArrayList<Product> productList;
     private static HashMap<String, String> idNameMap;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,20 +52,30 @@ public class MainActivity extends AppCompatActivity {
 
     private void getFirebaseDataArray() {
         idNameList = new ArrayList<>();
+        productList = new ArrayList<>();
         idNameMap = new HashMap<>();
+
         Query queryRef = ref.orderByKey(); //.startAt(startingChar).endAt(startingChar + "\uf8ff");
 
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                String prodId;
+                String prodName;
+
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Product prod = child.getValue(Product.class);
+                    prodId = prod.getId();
+                    prodName = prod.getName();
 //                    Log.e("prod details", prod.getId() + " " + prod.getName());
-                    idNameList.add(prod.getId());
-                    idNameList.add(prod.getName());
+                    idNameList.add(prodId);
+                    idNameList.add(prodName);
+
+                    productList.add(new Product(prodId, prodName, null, null, 0, null));
+
                     // map the name/id to id
-                    idNameMap.put(prod.getName(), prod.getId());
-                    idNameMap.put(prod.getId(), prod.getId());
+                    idNameMap.put(prodName, prodId);
+                    idNameMap.put(prodId, prodId);
                 }
             }
 
@@ -74,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Shallow copy of list
         Globals.idNameList = idNameList;
         Globals.idNameMap = idNameMap;
     }
