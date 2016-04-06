@@ -27,7 +27,7 @@ import java.util.LinkedHashMap;
 
 import stock.awesome.instock.misc_classes.Globals;
 import stock.awesome.instock.misc_classes.Kit;
-import stock.awesome.instock.misc_classes.KitAdapter;
+import stock.awesome.instock.adapters.KitAdapter;
 import stock.awesome.instock.misc_classes.ProductInKit;
 
 

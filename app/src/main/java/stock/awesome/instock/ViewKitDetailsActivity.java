@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 import stock.awesome.instock.misc_classes.GMailSender;
 import stock.awesome.instock.misc_classes.Globals;
-import stock.awesome.instock.misc_classes.KitAdapter;
+import stock.awesome.instock.adapters.KitAdapter;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.ProductInKit;
 

@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 import stock.awesome.instock.misc_classes.Kit;
-import stock.awesome.instock.misc_classes.KitAdapter;
+import stock.awesome.instock.adapters.KitAdapter;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.ProductInKit;
 import stock.awesome.instock.misc_classes.StringCalendar;
