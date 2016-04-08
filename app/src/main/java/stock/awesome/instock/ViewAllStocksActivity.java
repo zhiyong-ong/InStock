@@ -45,6 +45,8 @@ public class ViewAllStocksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_all_stocks);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //set up the back button here
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ListView itemView = (ListView) findViewById(R.id.viewAllListView);
 //        //set up connection with the firebase database.

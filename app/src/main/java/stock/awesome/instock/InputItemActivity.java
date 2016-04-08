@@ -45,6 +45,10 @@ public class InputItemActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //set up the back button here
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         database = DatabaseLauncher.database.child("products");
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Create the adapter that will return a fragment for each of the three

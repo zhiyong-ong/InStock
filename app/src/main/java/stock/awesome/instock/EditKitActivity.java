@@ -44,6 +44,10 @@ public class EditKitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_kit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //set up the back button here
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         kitNameStr = Globals.kit.getKitName();
         ListView listView = (ListView) findViewById(R.id.list_view_edit_kit);
         TextView kitName = (TextView) findViewById(R.id.kit_name_view);

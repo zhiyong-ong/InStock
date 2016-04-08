@@ -30,7 +30,7 @@
             android:name=".BuildKitActivity"
             android:label="@string/title_activity_build_kit"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
@@ -39,7 +39,7 @@
             android:name=".ViewAllStocksActivity"
             android:label="@string/title_activity_view_all_stocks"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
@@ -48,7 +48,7 @@
             android:name=".ViewAllKitsActivity"
             android:label="@string/title_activity_view_all_kits"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
@@ -57,7 +57,7 @@
             android:name=".InputItemActivity"
             android:label="@string/title_activity_input_item"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
@@ -66,19 +66,19 @@
             android:name=".ViewKitDetailsActivity"
             android:label="@string/title_activity_view_kit_details"
             android:parentActivityName=".ViewAllKitsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ViewAllKitsActivity" />
         </activity>
         <activity
             android:name=".EditKitActivity"
-            android:label="@string/title_activity_edit_kit"
+            android:label= "Edit Kit"
             android:parentActivityName=".ViewAllKitsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="stock.awesome.instock.ViewAllKitsActivity" />
+                android:value="EditKitActivity" />
         </activity>
     </application>
 
