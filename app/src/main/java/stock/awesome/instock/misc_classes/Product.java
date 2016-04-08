@@ -2,9 +2,11 @@ package stock.awesome.instock.misc_classes;
 
 import java.util.GregorianCalendar;
 
+
 public class Product {
 
-    private String id = null, name = null, desc = null, location = null;
+    private String id;
+    private String name = null, desc = null, location = null;
     private int quantity = -1;
     private GregorianCalendar expiry = null;
 

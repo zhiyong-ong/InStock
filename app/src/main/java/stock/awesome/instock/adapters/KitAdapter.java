@@ -1,4 +1,4 @@
-package stock.awesome.instock.misc_classes;
+package stock.awesome.instock.adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import stock.awesome.instock.R;
+import stock.awesome.instock.misc_classes.Kit;
+import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.ProductInKit;
 
 
 // populates kit items in a listview.

@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 import stock.awesome.instock.misc_classes.GMailSender;
 import stock.awesome.instock.misc_classes.Globals;
-import stock.awesome.instock.misc_classes.KitAdapter;
+import stock.awesome.instock.adapters.KitAdapter;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.ProductInKit;
 
@@ -182,7 +182,8 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         protected Void doInBackground(ArrayList<Product>... params) {
             String subject = "Low stock alert at warehouse";
 
-            String prefix = "Inventory levels for the following items have fallen below the threshold of 100: \n";
+            String prefix = "Inventory levels for the following items have fallen below the " +
+                    "threshold of " + DatabaseReadProduct.THRESHOLD + ": \n";
             String suffix = "\n InStock";
 
             StringBuilder body = new StringBuilder();

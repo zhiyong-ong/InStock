@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 import stock.awesome.instock.misc_classes.Kit;
-import stock.awesome.instock.misc_classes.KitAdapter;
+import stock.awesome.instock.adapters.KitAdapter;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.ProductInKit;
 import stock.awesome.instock.misc_classes.StringCalendar;
@@ -229,7 +229,6 @@ public class DatabaseReadKit {
         protected Void doInBackground(Void... params) {
             Intent intent = new Intent(fromContext, toClass);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            Log.e("Check async task: ", "YOLO!");
             fromContext.startActivity(intent);
 
             return null;
