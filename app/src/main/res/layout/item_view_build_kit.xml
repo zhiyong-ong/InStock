@@ -38,7 +38,8 @@
         android:text="QTY: "
         android:textColor="@color/lightGrey"
         android:layout_below="@+id/nameView"
-        android:layout_centerHorizontal="true">
+
+        android:layout_marginLeft="200dp">
     </TextView>
 
     <TextView
@@ -75,7 +76,6 @@
         android:layout_toRightOf="@+id/nameView"
         android:textSize="18dp"
         android:paddingLeft="5dp"
-        android:maxLength="18"
         android:textStyle="bold"
         android:textColor="@color/darkGrey"
         android:ellipsize="end"
@@ -98,14 +98,16 @@
         android:layout_height="wrap_content"
         android:text="LOC"
         android:layout_below="@id/nameView"
-        android:layout_toRightOf="@id/locView"
         android:textSize="18dp"
-        android:maxLength="18"
+        android:maxLength="15"
         android:paddingLeft="5dp"
         android:textStyle="bold"
         android:textColor="@color/darkGrey"
         android:ellipsize="end"
-        android:maxLines="1">
+        android:maxLines="1"
+        android:layout_toLeftOf="@+id/qtyView"
+        android:layout_toEndOf="@+id/locView"
+        android:layout_toRightOf="@+id/locView">
     </TextView>
 
 </RelativeLayout>

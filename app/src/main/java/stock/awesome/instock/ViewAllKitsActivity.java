@@ -34,6 +34,9 @@ public class ViewAllKitsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //set up the back button here
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Firebase kitRef = DatabaseLauncher.database.child("kits");
 
         ListView kitView = (ListView) findViewById(R.id.list_view_all_kits);

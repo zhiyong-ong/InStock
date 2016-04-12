@@ -51,6 +51,11 @@ public class BuildKitActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //set up the back button here
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeButtonEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         // Store the list of products ids and names that was filled in MainActivity
         Intent intent = getIntent();
         idNameList = Globals.idNameList;
@@ -323,6 +328,7 @@ public class BuildKitActivity extends AppCompatActivity {
             }
         }, 2000);
     }
+
 
 }
 

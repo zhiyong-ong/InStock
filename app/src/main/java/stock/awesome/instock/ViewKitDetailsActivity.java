@@ -40,6 +40,9 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //set up the back button here
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         ListView listView = (ListView) findViewById(R.id.list_view_kit_details);
         TextView kitName = (TextView) findViewById(R.id.kit_name_view);
         kitName.setText(Globals.kit.getKitName());
