@@ -15,7 +15,7 @@ import stock.awesome.instock.R;
 // Not really an adapter. It makes a textview autocomplete items from the Globals idNameList.
 public class Autocompletify {
 
-    private static AutoCompleteTextView makeAutcomplete(Context context, View view, int textView) {
+    public static AutoCompleteTextView makeAutocomplete(Context context, View view, int textView) {
         String[] idNameArr = Globals.idNameList.toArray(new String[Globals.idNameList.size()]);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
@@ -29,7 +29,7 @@ public class Autocompletify {
         return idNameText;
     }
 
-    private static String getIdFromView(AutoCompleteTextView textView) {
+    public static String getStringFromView(AutoCompleteTextView textView) {
         String productID = textView.getText().toString();
         productID = Globals.idNameMap.get(productID);
 
