@@ -14,6 +14,7 @@ import java.util.List;
 
 import stock.awesome.instock.R;
 
+
 // From https://gist.github.com/fjfish/3024308
 public class SearchAdapter extends BaseAdapter implements Filterable {
 
