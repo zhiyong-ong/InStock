@@ -60,6 +60,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 barcodeInput.requestFocus();
+                Log.e("barcode input", "focused");
             }
         });
         barcodeInput.addTextChangedListener(new TextWatcher() {

@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -40,11 +41,13 @@ public class KitAdapter extends BaseAdapter {
         mKitMap  = data.getKitMap();
         mKeys = mKitMap.keySet().toArray(new String[mKitMap.size()]);
         this.layout = layout;
+
+        productPositions = new HashMap<>();
         for (int i=0; i<mKeys.length; i++) {
             status.add(false);
+            Log.e("mKeys", mKeys[i] + " " + i);
             // map each product to its position in the listview
             productPositions.put(mKeys[i], i);
-            Log.e(mKeys[i], Integer.toString(i));
         }
     }
 
