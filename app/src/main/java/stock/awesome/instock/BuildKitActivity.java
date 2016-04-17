@@ -25,6 +25,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import stock.awesome.instock.adapters.Autocompletify;
 import stock.awesome.instock.misc_classes.BuildKitAdapter;
 import stock.awesome.instock.misc_classes.Globals;
 import stock.awesome.instock.misc_classes.Kit;
@@ -178,14 +179,9 @@ public class BuildKitActivity extends AppCompatActivity {
         // Search for ids and names with suggestions
         // Give the AutoCompleteTextView the list of product ids and names that was received in onCreate
         Log.e("idNameArr", idNameList.toString());
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_dropdown_item_1line, idNameArr);
 
-        final AutoCompleteTextView idNameText = (AutoCompleteTextView)
-                dialogView.findViewById(R.id.id_name_autocomplete_text_view);
-        // start auto-completing from 1st char
-        idNameText.setThreshold(1);
-        idNameText.setAdapter(adapter);
+        final AutoCompleteTextView idNameTextView = Autocompletify.makeAutocomplete(this, dialogView,
+                R.id.id_name_autocomplete_text_view);
 
         final EditText quantityText = (EditText) dialogView.findViewById(R.id.addQuantity);
 
@@ -193,20 +189,18 @@ public class BuildKitActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //Log.v(LOG_TAG, "-------------------TESTING on click: " + productID + "\t" + productID.getText().toString());
                 //Error handling
-                if (idNameText.getText().toString().trim().length() == 0) {
+                if (idNameTextView.getText().toString().trim().length() == 0) {
                     Toast.makeText(context, "You did not enter an ID", Toast.LENGTH_SHORT).show();
                 } else if (quantityText.getText().toString().trim().length() == 0) {
                     Toast.makeText(context, "You did not enter a quantity", Toast.LENGTH_SHORT).show();
                 } else {
-                    String productID = idNameText.getText().toString();
-                    productID = idNameMap.get(productID);
+                    String productID = Autocompletify.getStringFromView(idNameTextView);
                     // if the id/name entered does not exist in the list
                     if (productID == null) {
                         noSuchProduct();
                     }
                     else {
                         Log.e("ID selected", productID);
-
                         quantity = Integer.parseInt(quantityText.getText().toString());
                         //add to the list.
                         //communicate with the database here

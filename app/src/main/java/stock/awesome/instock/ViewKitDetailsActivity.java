@@ -8,12 +8,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +53,41 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         final KitAdapter mAdapter = new KitAdapter(this, Globals.kit, R.layout.item_view_kit_details);
         listView.setAdapter(mAdapter);
 
+        final HashMap<String, ProductInKit> kitHashMap = Globals.kit.getKitMap();
+
+        final EditText barcodeInput = (EditText) findViewById(R.id.barcode_input_picking_kits);
+        barcodeInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                barcodeInput.requestFocus();
+                Log.e("barcode input", "focused");
+            }
+        });
+        barcodeInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                String barcodeId = s.toString();
+                Log.e("barcode id", barcodeId);
+
+                // if ID scanned is in the kit, check the item in the listview
+                if (kitHashMap.containsKey(barcodeId)) {
+                    int pos = mAdapter.productPositions.get(barcodeId);
+                    Log.e("position", Integer.toString(pos));
+                    mAdapter.status.set(pos, true);
+                    mAdapter.checkBox.setChecked(mAdapter.status.get(pos));
+                }
+
+                // clear text
+                barcodeInput.setText("");
+            }
+        });
+
         emailer = new SendEmailTask();
 
         Button doneButton = (Button) findViewById(R.id.kit_details_done_button);
@@ -61,6 +99,8 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
                 LayoutInflater inflater = LayoutInflater.from(context);
                 final View dialogView = inflater.inflate(R.layout.popup_confirm_kit_done, null);
 
+                // When the submit button on the dialog is pressed, subtract the quantities of the
+                // checked items in the list.
                 dialogBuilder.setView(dialogView);
                 dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
