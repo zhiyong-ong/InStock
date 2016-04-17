@@ -28,10 +28,12 @@ public class KitAdapter extends BaseAdapter {
     public LinkedHashMap<String, ProductInKit> mKitMap = new LinkedHashMap<>();
     public String[] mKeys;
     public static HashMap<String, Product> mProductMap;
+    public HashMap<String, Integer> productPositions;
     // whether item in list is checked, ordered by position
     public ArrayList<Boolean> status = new ArrayList<>();
+    public CheckBox checkBox;
     private Context mContext;
-    int layout = 0;
+    private int layout = 0;
 
     public KitAdapter(Context context, Kit data, int layout){
         mContext = context;
@@ -40,13 +42,18 @@ public class KitAdapter extends BaseAdapter {
         this.layout = layout;
         for (int i=0; i<mKeys.length; i++) {
             status.add(false);
+            // map each product to its position in the listview
+            productPositions.put(mKeys[i], i);
+            Log.e(mKeys[i], Integer.toString(i));
         }
     }
+
     public void reconstruct(Kit kitName) {
         mKitMap  = kitName.getKitMap();
         mKeys = mKitMap.keySet().toArray(new String[mKitMap.size()]);
         for (int i=0; i<mKeys.length; i++) {
             status.add(false);
+            productPositions.put(mKeys[i], i);
         }
     }
 
@@ -91,7 +98,7 @@ public class KitAdapter extends BaseAdapter {
         prodName.setText(mProductMap.get(id).getName());
         prodLocation.setText(mProductMap.get(id).getLocation());
 
-        CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.product_in_kit_checkbox);
+        checkBox = (CheckBox) convertView.findViewById(R.id.product_in_kit_checkbox);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override

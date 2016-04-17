@@ -65,13 +65,21 @@ public class MainActivity extends AppCompatActivity {
                     Product prod = child.getValue(Product.class);
                     prodId = prod.getId();
                     prodName = prod.getName();
-//                    Log.e("prod details", prod.getId() + " " + prod.getName());
-                    idNameList.add(prodId);
-                    idNameList.add(prodName);
 
-                    // map the name/id to id
-                    idNameMap.put(prodName, prodId);
-                    idNameMap.put(prodId, prodId);
+                    // Prevents duplicates that might arise through read errors
+                    if (!idNameMap.containsKey(prodId)) {
+                        idNameList.add(prodId);
+                        // map id to id
+                        idNameMap.put(prodId, prodId);
+
+                        // only add name to map if there was a corresponding id read
+                        if (!idNameMap.containsKey(prodName)) {
+                            idNameList.add(prodName);
+                            // map name to id
+                            idNameMap.put(prodName, prodId);
+                        }
+                    }
+
                 }
             }
 
@@ -95,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BuildKitActivity.class);
         startActivity(intent);
     }
+
     public void sendExistingKitIntent(View view) {
         Intent intent = new Intent(this, ViewAllKitsActivity.class);
         startActivity(intent);

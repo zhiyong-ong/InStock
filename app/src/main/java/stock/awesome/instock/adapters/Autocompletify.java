@@ -18,10 +18,10 @@ public class Autocompletify {
     public static AutoCompleteTextView makeAutocomplete(Context context, View view, int textView) {
         String[] idNameArr = Globals.idNameList.toArray(new String[Globals.idNameList.size()]);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        ArrayAdapter<String> adapter = new ArrayAdapter<>
                 (context, android.R.layout.simple_dropdown_item_1line, idNameArr);
 
-        final AutoCompleteTextView idNameText = (AutoCompleteTextView) view.findViewById(textView);
+        final AutoCompleteTextView idNameText = (AutoCompleteTextView) view.findViewById (textView);
         // start auto-completing from 1st char
         idNameText.setThreshold(1);
         idNameText.setAdapter(adapter);
