@@ -45,7 +45,6 @@ public class KitAdapter extends BaseAdapter {
         productPositions = new HashMap<>();
         for (int i=0; i<mKeys.length; i++) {
             status.add(false);
-            Log.e("mKeys", mKeys[i] + " " + i);
             // map each product to its position in the listview
             productPositions.put(mKeys[i], i);
         }
