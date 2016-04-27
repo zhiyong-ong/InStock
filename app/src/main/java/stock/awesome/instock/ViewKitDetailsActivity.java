@@ -8,12 +8,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +34,9 @@ import stock.awesome.instock.misc_classes.ProductInKit;
 public class ViewKitDetailsActivity extends AppCompatActivity {
 
     private static SendEmailTask emailer;
-    final Context context = this;
+    private final Context context = this;
+    private EditText barcodeInput;
+    private KitAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +48,14 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         //set up the back button here
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        barcodeInput = (EditText) findViewById(R.id.barcode_input_picking_kits);
+        barcodeInput.setFocusableInTouchMode(true);
+
         ListView listView = (ListView) findViewById(R.id.list_view_kit_details);
         TextView kitName = (TextView) findViewById(R.id.kit_name_view);
         kitName.setText(Globals.kit.getKitName());
 
-        final KitAdapter mAdapter = new KitAdapter(this, Globals.kit, R.layout.item_view_kit_details);
+        mAdapter = new KitAdapter(this, Globals.kit, R.layout.item_view_kit_details);
         listView.setAdapter(mAdapter);
 
         emailer = new SendEmailTask();
@@ -61,6 +69,8 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
                 LayoutInflater inflater = LayoutInflater.from(context);
                 final View dialogView = inflater.inflate(R.layout.popup_confirm_kit_done, null);
 
+                // When the submit button on the dialog is pressed, subtract the quantities of the
+                // checked items in the list.
                 dialogBuilder.setView(dialogView);
                 dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -111,7 +121,52 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("barcode input", "onResume");
+        final HashMap<String, ProductInKit> kitHashMap = Globals.kit.getKitMap();
+
+        barcodeInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                barcodeInput.setFocusableInTouchMode(true);
+                barcodeInput.requestFocus();
+                Log.e("barcode input", "focused");
+            }
+        });
+
+        final StringBuilder scannedBuilder = new StringBuilder();
+        barcodeInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                Log.e("barcode input", "onTextChanged");
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                scannedBuilder.append(s.toString());
+                String barcodeId = scannedBuilder.toString();
+                Log.e("barcode input", "id is " + barcodeId);
+
+                // if ID scanned is in the kit, check the item in the listview
+                if (kitHashMap.containsKey(barcodeId)) {
+                    int pos = mAdapter.productPositions.get(barcodeId);
+                    Log.e("barcode input", "position is " + Integer.toString(pos));
+                    mAdapter.status.set(pos, true);
+                    mAdapter.checkBox.setChecked(mAdapter.status.get(pos));
+
+                    // clear text
+                    if (!barcodeInput.getText().toString().equals("")) {
+                        barcodeInput.setText("");
+                    }
+                }
+            }
+        });
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ import java.util.Locale;
 import stock.awesome.instock.DatabaseLauncher;
 import stock.awesome.instock.DatabaseReadProduct;
 import stock.awesome.instock.DatabaseWriteProduct;
+import stock.awesome.instock.adapters.Autocompletify;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
 import stock.awesome.instock.R;
@@ -97,13 +99,15 @@ public class UpdateItemFragment extends Fragment {
         aView = inflater.inflate(R.layout.fragment_update_item, container, false);
         activity = (Activity)aView.getContext();
 
+        final AutoCompleteTextView productIDText = Autocompletify.makeAutocomplete(activity,
+                aView, R.id.productSearchEdit);
 
         Button searchButton = (Button) aView.findViewById(R.id.searchButton);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                final EditText productIDText = (EditText) aView.findViewById(R.id.productSearchEdit);
-                final String productID = productIDText.getText().toString();
+                String productID = Autocompletify.getStringFromView(productIDText);
+                Log.e("prod id", productID);
 
                 if (productID.trim().length() == 0) {
                     Toast.makeText(getActivity(), "No Product ID entered", Toast.LENGTH_SHORT).show();
