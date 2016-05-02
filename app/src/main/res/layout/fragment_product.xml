@@ -1,0 +1,101 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="stock.awesome.instock.fragments.ProductFragment"
+    android:id="@+id/productFragment"
+    android:paddingTop="10dp">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_main"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/addItem"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="10dp"
+            android:clickable="true"
+            android:onClick="sendNewItemIntent">
+            <ImageView
+                android:id="@+id/imageAdd"
+                android:layout_width ="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_cloud_upload_black_24dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="Add a New Item"
+                android:textStyle="bold"
+                android:textColor="@color/darkGrey"
+                android:layout_toRightOf="@id/imageAdd"
+                android:layout_centerVertical="true"
+                android:paddingLeft="25dp"
+                android:paddingRight="10dp"
+                android:id="@+id/EditKit" />
+            <ImageView
+                android:layout_width ="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_add_circle_white_24dp"/>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/line0"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="1dp"
+            android:background="@color/lightGray2"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+        <RelativeLayout
+            android:id="@+id/updateItem"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true">
+            <ImageView
+                android:id="@+id/imageUpdate"
+                android:layout_width ="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_system_update_alt_black_24dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/darkGrey"
+                android:layout_toRightOf="@id/imageUpdate"
+                android:layout_centerVertical="true"
+                android:text="Update Item"
+                android:paddingLeft="25dp"
+                android:paddingRight="10dp"
+                android:id="@+id/textView" />
+
+            <ImageView
+                android:layout_width ="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_add_circle_white_24dp"/>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="1dp"
+            android:background="@color/lightGray2"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+    </LinearLayout>
+</LinearLayout>
