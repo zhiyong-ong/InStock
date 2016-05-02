@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -254,44 +253,49 @@ public class BuildKitActivity extends AppCompatActivity {
             dialogBuilder.setView(dialogView);
             dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
+                    final String kitNameString = kitNameText.getText().toString();
+                    if (kitNameString.trim().matches("")) {
+                        Toast.makeText(context, "No Kit Name entered.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        final String kitName = kitNameText.getEditableText().toString();
+                        Toast.makeText(context, "Kit Name: " + kitName, Toast.LENGTH_LONG).show();
 
-                    final String kitName = kitNameText.getEditableText().toString();
-                    Toast.makeText(context, "Kit Name: " + kitName, Toast.LENGTH_LONG).show();
+                        //show the dialog to confirm to save kit
+                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+                        LayoutInflater inflater = LayoutInflater.from(context);
+                        final View dialogView = inflater.inflate(R.layout.save_kit, null);
 
-                    //show the dialog to confirm to save kit
-                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-                    LayoutInflater inflater = LayoutInflater.from(context);
-                    final View dialogView = inflater.inflate(R.layout.save_kit, null);
+                        dialogBuilder.setView(dialogView);
+                        dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                //save kit to database here!
+                                Kit newKit = new Kit(kitName);
+                                for (Product cur : newProduct) {
+                                    newKit.addProduct(cur, cur.getQuantity());
+                                }
+                                DatabaseWriteKit.write(newKit);
 
-                    dialogBuilder.setView(dialogView);
-                    dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            //save kit to database here!
-                            Kit newKit = new Kit(kitName);
-                            for(Product cur : newProduct) {
-                                newKit.addProduct(cur, cur.getQuantity());
+                                newProduct.clear();
+                                listAdapter.notifyDataSetChanged();
+                                Toast.makeText(context, "Kit " + kitName + " saved", Toast.LENGTH_SHORT).show();
+                                //go back to the main activity
+                                //Intent intent = new Intent(BuildKitActivity.this, MainActivity.class);
+                                // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                // startActivity(intent);
                             }
-                            DatabaseWriteKit.write(newKit);
+                        });
+                        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
 
-                            newProduct.clear();
-                            listAdapter.notifyDataSetChanged();
-                            Toast.makeText(context, "Kit " + kitName + " saved", Toast.LENGTH_SHORT).show();
-                            //go back to the main activity
-//                            Intent intent = new Intent(BuildKitActivity.this, MainActivity.class);
-//                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                            startActivity(intent);
-                        }
-                    });
-                    dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
+                            }
+                        });
+                        AlertDialog b = dialogBuilder.create();
 
-                        }
-                    });
-                    AlertDialog b = dialogBuilder.create();
-
-                    b.show();
+                        b.show();
+                    }
                 }
             });
+
 
             dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
