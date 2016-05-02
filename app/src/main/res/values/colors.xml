@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#7e160b</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="maroon">#AB483D</color>
-    <color name="tabMaroon">#BA6A61</color>
+    <color name="colorPrimary">#850505</color>
+    <color name="colorPrimaryDark">#580a01</color>
+    <color name="colorAccent">#000000</color>
+    <color name="maroon">#852b21</color>
+    <color name="tabMaroon">#c63c2c</color>
     <color name="darkGrey">#3c3939</color>
     <color name="lightGrey">#636363</color>
     <color name="lightBlueGrey">#B0BEC5</color>
     <color name="darkBlueGrey">#37474F</color>
+    <color name="lightGray2">#ababaf</color>
 </resources>
