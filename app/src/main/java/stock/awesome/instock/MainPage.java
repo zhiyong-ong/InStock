@@ -91,7 +91,7 @@ public class MainPage extends AppCompatActivity {
     }
 
     public void sendEditKitIntent(View view) {
-        Intent intent = new Intent(this, EditKitActivity.class);
+        Intent intent = new Intent(this, ViewEditKitActivity.class);
         startActivity(intent);
     }
 

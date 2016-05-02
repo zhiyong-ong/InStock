@@ -51,6 +51,7 @@ public class InsertItemActivity extends AppCompatActivity {
         //set up the back button here
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         myCalendar = Calendar.getInstance();
         expiryDate = (EditText) findViewById(R.id.expiryEdit);
 
@@ -77,54 +78,54 @@ public class InsertItemActivity extends AppCompatActivity {
         });
 
         Button submitButton = (Button) findViewById(R.id.submitButton);
+        if(submitButton != null) {
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    inputId = (EditText) findViewById(R.id.productEdit);
+                    inputName = (EditText) findViewById(R.id.nameEdit);
+                    inputDesc = (EditText) findViewById(R.id.descriptionEdit);
+                    inputQty = (EditText) findViewById(R.id.quantityEdit);
+                    inputLocation = (EditText) findViewById(R.id.locationEdit);
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                inputId = (EditText) findViewById(R.id.productEdit);
-                inputName = (EditText) findViewById(R.id.nameEdit);
-                inputDesc = (EditText) findViewById(R.id.descriptionEdit);
-                inputQty = (EditText) findViewById(R.id.quantityEdit);
-                inputLocation = (EditText) findViewById(R.id.locationEdit);
+                    if (inputId.getText().toString().trim().length() == 0) {
+                        Toast.makeText(context, "No ID entered", Toast.LENGTH_SHORT).show();
+                    } else if (inputName.getText().toString().trim().length() == 0) {
+                        Toast.makeText(context, "No product name entered", Toast.LENGTH_SHORT).show();
+                    } else if (inputQty.getText().toString().trim().length() == 0) {
+                        Toast.makeText(context, "No quantity entered", Toast.LENGTH_SHORT).show();
+                    } else if (inputLocation.getText().toString().trim().length() == 0) {
+                        Toast.makeText(context, "No location entered", Toast.LENGTH_SHORT).show();
+                    } else if (expiryDate.getText().toString().trim().length() == 0) {
+                        Toast.makeText(context, "No expiry date entered", Toast.LENGTH_SHORT).show();
+                    } else {
 
-                if (inputId.getText().toString().trim().length() == 0) {
-                    Toast.makeText(context, "No ID entered", Toast.LENGTH_SHORT).show();
-                } else if (inputName.getText().toString().trim().length() == 0) {
-                    Toast.makeText(context, "No product name entered", Toast.LENGTH_SHORT).show();
-                } else if (inputQty.getText().toString().trim().length() == 0) {
-                    Toast.makeText(context, "No quantity entered", Toast.LENGTH_SHORT).show();
-                } else if (inputLocation.getText().toString().trim().length() == 0) {
-                    Toast.makeText(context, "No location entered", Toast.LENGTH_SHORT).show();
-                } else if (expiryDate.getText().toString().trim().length() == 0) {
-                    Toast.makeText(context, "No expiry date entered", Toast.LENGTH_SHORT).show();
-                } else {
+                        //update the product with all the relevant details
+                        Product inputProd = new Product();
+                        String expiry = expiryDate.getEditableText().toString();
+                        inputProd.setId(inputId.getText().toString());
+                        inputProd.setName(inputName.getText().toString());
+                        inputProd.setDesc(inputDesc.getText().toString());
+                        inputProd.setQuantity(Integer.valueOf(inputQty.getText().toString()));
+                        inputProd.setLocation(inputLocation.getText().toString());
+                        inputProd.setExpiry(StringCalendar.toCalendarProper(expiry));
 
-                    //update the product with all the relevant details
-                    Product inputProd = new Product();
-                    String expiry = expiryDate.getEditableText().toString();
-                    inputProd.setId(inputId.getText().toString());
-                    inputProd.setName(inputName.getText().toString());
-                    inputProd.setDesc(inputDesc.getText().toString());
-                    inputProd.setQuantity(Integer.valueOf(inputQty.getText().toString()));
-                    inputProd.setLocation(inputLocation.getText().toString());
-                    inputProd.setExpiry(StringCalendar.toCalendarProper(expiry));
+                        DatabaseWriteProduct.write(inputProd);
 
-                    DatabaseWriteProduct.write(inputProd);
+                        //clear the edit text
+                        inputId.getText().clear();
+                        inputName.getText().clear();
+                        inputDesc.getText().clear();
+                        inputQty.getText().clear();
+                        inputLocation.getText().clear();
+                        expiryDate.getText().clear();
 
-                    //clear the edit text
-                    inputId.getText().clear();
-                    inputName.getText().clear();
-                    inputDesc.getText().clear();
-                    inputQty.getText().clear();
-                    inputLocation.getText().clear();
-                    expiryDate.getText().clear();
-
-                    Log.d("Submit successful", inputProd.getName() + " " + inputProd.getQuantity() + " "
-                            + StringCalendar.toString(inputProd.getExpiry()));
-                    Toast.makeText(context, "   New Item Added   ", Toast.LENGTH_SHORT).show();
+                        Log.d("Submit successful", inputProd.getName() + " " + inputProd.getQuantity() + " "
+                                + StringCalendar.toString(inputProd.getExpiry()));
+                        Toast.makeText(context, "   New Item Added   ", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-
+            });
+        }
     }
 
     @Override

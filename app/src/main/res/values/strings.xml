@@ -24,10 +24,12 @@
         <item>Edit</item>
         <item>Delete</item>
     </string-array>
-    <string name="title_activity_edit_kit">EditKit</string>
+    <string name="title_activity_edit_kit">Edit Kit</string>
     <string name="title_activity_search_products">SearchProductsActivity</string>
 
     <string name="search_for_id_name_no_colon">Search for an ID/name</string>
     <string name="quantity_no_colon">Quantity</string>
     <string name="title_activity_main_page">InStock</string>
+    <string name="title_activity_insert_item2">Insert Item</string>
+    <string name="title_activity_view_edit_kit">Edit Kits</string>
 </resources>
