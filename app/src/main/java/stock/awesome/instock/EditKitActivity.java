@@ -75,50 +75,24 @@ public class EditKitActivity extends AppCompatActivity {
             }
         });
         Button doneButton = (Button) findViewById(R.id.kit_details_done_button);
-        doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (doneButton != null) {
+            doneButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-                LayoutInflater inflater = LayoutInflater.from(context);
-                final View dialogView = inflater.inflate(R.layout.popup_confirm_edited_kit, null);
 
-                dialogBuilder.setView(dialogView);
-                dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // copy hash map from adapter
-                        LinkedHashMap<String, ProductInKit> checkedItems = mAdapter.mKitMap;
-
-                        // if item is unchecked, remove from map
-                        for (int i = 0; i < mAdapter.status.size(); i++) {
-                            if (!mAdapter.status.get(i)) {
-                                checkedItems.remove(mAdapter.mKeys[i]);
-                            }
-                        }
-
-                        Kit toDelete = new Kit(Globals.kit.getKitName());
-                        toDelete.setKitMap(checkedItems);
-
-                        DatabaseWriteKit.removeProductsFromKit(toDelete);
-                        Toast.makeText(context, "Kit " + Globals.kit.getKitName() + " Edited", Toast.LENGTH_SHORT).show();
-                        //go back to the main activity
-                        Intent intent = new Intent(EditKitActivity.this, ViewAllKitsActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
-                });
-                dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                    }
-                });
-                AlertDialog b = dialogBuilder.create();
-
-                b.show();
-
-            }
-        });
+                    Toast.makeText(context, "Kit " + Globals.kit.getKitName() + " Edited", Toast.LENGTH_SHORT).show();
+                    //go back to the main activity
+                    Intent intent = new Intent(EditKitActivity.this, ViewEditKitActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            });
+        }
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -203,6 +177,41 @@ public class EditKitActivity extends AppCompatActivity {
                 }
             });
             AlertDialog b = dialogBuilder.create();
+            b.show();
+        }
+
+        if(id == R.id.deleteFromKit) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            final View dialogView = inflater.inflate(R.layout.popup_confirm_edited_kit, null);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    // copy hash map from adapter
+                    LinkedHashMap<String, ProductInKit> checkedItems = mAdapter.mKitMap;
+
+                    // if item is unchecked, remove from map
+                    for (int i = 0; i < mAdapter.status.size(); i++) {
+                        if (!mAdapter.status.get(i)) {
+                            checkedItems.remove(mAdapter.mKeys[i]);
+                        }
+                    }
+
+                    Kit toDelete = new Kit(Globals.kit.getKitName());
+                    toDelete.setKitMap(checkedItems);
+
+                    DatabaseWriteKit.removeProductsFromKit(toDelete);
+                    Toast.makeText(context, "Items Deleted", Toast.LENGTH_SHORT).show();
+                }
+            });
+            dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                }
+            });
+            AlertDialog b = dialogBuilder.create();
+
             b.show();
         }
         return super.onOptionsItemSelected(item);

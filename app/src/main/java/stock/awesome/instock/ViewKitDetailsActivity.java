@@ -61,9 +61,10 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         emailer = new SendEmailTask();
 
         Button doneButton = (Button) findViewById(R.id.kit_details_done_button);
-        doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if(doneButton != null) {
+            doneButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
                 LayoutInflater inflater = LayoutInflater.from(context);
@@ -95,7 +96,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
                             ProductInKit value = entry.getValue();
                             Product correspondingProd = KitAdapter.mProductMap.get(key);
 
-                            Product product = new Product(value.getId(), -1*value.getQuantity());
+                            Product product = new Product(value.getId(), -1 * value.getQuantity());
                             product.setExpiry(correspondingProd.getExpiry());
 
                             toUpdate.add(product);
@@ -105,7 +106,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 
                         Toast.makeText(context, "Kit " + Globals.kit.getKitName() + " picked", Toast.LENGTH_SHORT).show();
                         //go back to the main activity
-                        Intent intent = new Intent(ViewKitDetailsActivity.this, MainActivity.class);
+                        Intent intent = new Intent(ViewKitDetailsActivity.this, MainPage.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
@@ -119,8 +120,9 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 
                 b.show();
 
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override
