@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -45,7 +46,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //set up the back button here
+        // set up the back button here
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         barcodeInput = (EditText) findViewById(R.id.barcode_input_picking_kits);
@@ -125,6 +126,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -158,18 +160,59 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
                 // if ID scanned is in the kit, check the item in the listview
                 if (kitHashMap.containsKey(barcodeId)) {
                     int pos = mAdapter.productPositions.get(barcodeId);
-                    Log.e("barcode input", "position is " + Integer.toString(pos));
                     mAdapter.status.set(pos, true);
                     mAdapter.checkBox.setChecked(mAdapter.status.get(pos));
+                    Log.e("barcode input", "position is " + Integer.toString(pos));
 
-                    // clear text
+                    // clear text and string builder
                     if (!barcodeInput.getText().toString().equals("")) {
                         barcodeInput.setText("");
+                        scannedBuilder.delete(0, scannedBuilder.length() - 1);
                     }
                 }
             }
         });
     }
+
+    ///////////////
+    // alt code for addTextChangedListener
+    //////////////
+//    final StringBuilder scannedBuilder = new StringBuilder();
+//        final Handler handler = new Handler();
+//        barcodeInput.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+////                Log.e("barcode input", "onTextChanged");
+//            }
+//            @Override
+//            public void afterTextChanged(final Editable s) {
+//                // Wait 1.5 seconds before running code in run()
+//                handler.postDelayed(new Runnable() {
+//                    public void run() {
+//                        String barcodeId = s.toString();
+//                        Log.e("barcode input", "id is " + barcodeId);
+//
+//                        // if ID scanned is in the kit, check the item in the listview
+//                        if (kitHashMap.containsKey(barcodeId)) {
+//                            int pos = mAdapter.productPositions.get(barcodeId);
+//                            Log.e("barcode input", "position is " + Integer.toString(pos));
+//                            mAdapter.status.set(pos, true);
+//                            mAdapter.checkBox.setChecked(mAdapter.status.get(pos));
+//                        }
+//                    }
+//                }, 1500);
+//
+//                // clear text
+//                if (!barcodeInput.getText().toString().equals("")) {
+//                    barcodeInput.setText("");
+//                }
+//            }
+//        });
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
