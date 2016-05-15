@@ -20,7 +20,7 @@ import stock.awesome.instock.fragments.InsertItemFragment;
 import stock.awesome.instock.fragments.UpdateItemFragment;
 
 public class InputItemActivity extends AppCompatActivity {
-
+    //CAN BE DELETED ALREADY
     DatabaseWriteProduct writer = new DatabaseWriteProduct();
 
     Firebase database;

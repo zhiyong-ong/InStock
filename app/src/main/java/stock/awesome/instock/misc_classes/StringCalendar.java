@@ -18,7 +18,12 @@ public class StringCalendar {
 
     public static String toProperDateString(GregorianCalendar calendar) {
         displayFmt.setCalendar(calendar);
-        return displayFmt.format(calendar.getTime());
+        if(calendar == null) {
+            return "";
+        }
+        else {
+            return displayFmt.format(calendar.getTime());
+        }
     }
 
     public static String toString(GregorianCalendar calendar) {
@@ -39,14 +44,19 @@ public class StringCalendar {
     }
 
     public static GregorianCalendar toCalendarProper(String calendarStr) {
-        try {
-            Date date = displayFmt.parse(calendarStr);
-            gregCal.setTime(date);
-
-        } catch (ParseException e) {
-            Log.e("str to cal failed", e.getMessage());
+        if(calendarStr == "") {
+            return null;
         }
-        return gregCal;
+        else {
+            try {
+                Date date = displayFmt.parse(calendarStr);
+                gregCal.setTime(date);
+
+            } catch (ParseException e) {
+                Log.e("str to cal failed", e.getMessage());
+            }
+            return gregCal;
+        }
     }
 
 }

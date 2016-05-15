@@ -12,11 +12,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,9 +23,9 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import stock.awesome.instock.adapters.KitAdapter;
 import stock.awesome.instock.misc_classes.Globals;
 import stock.awesome.instock.misc_classes.Kit;
-import stock.awesome.instock.adapters.KitAdapter;
 import stock.awesome.instock.misc_classes.ProductInKit;
 
 
@@ -35,8 +33,8 @@ public class EditKitActivity extends AppCompatActivity {
     private static HashMap<String, String> idNameMap;
     final Context context = this;
     String kitNameStr;
+    Kit curKit;
     KitAdapter mAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,31 +47,16 @@ public class EditKitActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         kitNameStr = Globals.kit.getKitName();
+        curKit = Globals.kit;
+
         ListView listView = (ListView) findViewById(R.id.list_view_edit_kit);
         TextView kitName = (TextView) findViewById(R.id.kit_name_view);
         kitName.setText(kitNameStr);
         idNameMap = Globals.idNameMap;
 
-        mAdapter = new KitAdapter(this, Globals.kit, R.layout.item_view_edit_kit);
+        mAdapter = new KitAdapter(this, curKit, R.layout.item_view_edit_kit);
         listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CheckBox checkBox = (CheckBox) view
-                        .findViewById(R.id.product_in_kit_checkbox);
-//                Category category = (Category) imageView.getTag();
-//
-//                if (category.getChecked() == false) {
-//                    imageView.setImageResource(R.drawable.set_check);
-//                    listOfItemsToDelete.add(category.getId());
-//                    category.setChecked(true);
-//                } else {
-//                    imageView.setImageResource(R.drawable.set_basecircle);
-//                    listOfItemsToDelete.remove((Integer) category.getId());
-//                    category.setChecked(false);
-//                }
-            }
-        });
+
         Button doneButton = (Button) findViewById(R.id.kit_details_done_button);
         if (doneButton != null) {
             doneButton.setOnClickListener(new View.OnClickListener() {
@@ -164,8 +147,6 @@ public class EditKitActivity extends AppCompatActivity {
                             //communicate with the database here
                             //DatabaseReadProduct.read(productID, DatabaseReadProduct.ProdUseCase.DISPLAY_PRODUCT);
                             DatabaseWriteKit.addProductsToKit(kitNameStr, productID, quantity);
-                            DatabaseReadKit.read(kitNameStr, DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
-                                    EditKitActivity.this, EditKitActivity.class);
                             mAdapter.notifyDataSetChanged();
                         }
                     }
@@ -194,6 +175,7 @@ public class EditKitActivity extends AppCompatActivity {
                     // if item is unchecked, remove from map
                     for (int i = 0; i < mAdapter.status.size(); i++) {
                         if (!mAdapter.status.get(i)) {
+                            //left the items to be deleted from the kit
                             checkedItems.remove(mAdapter.mKeys[i]);
                         }
                     }
@@ -202,7 +184,8 @@ public class EditKitActivity extends AppCompatActivity {
                     toDelete.setKitMap(checkedItems);
 
                     DatabaseWriteKit.removeProductsFromKit(toDelete);
-                    Toast.makeText(context, "Items Deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Item(s) Deleted", Toast.LENGTH_SHORT).show();
+
                 }
             });
             dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -220,5 +203,9 @@ public class EditKitActivity extends AppCompatActivity {
     public void noSuchProduct() {
         Toast.makeText(this, "No such product exists", Toast.LENGTH_SHORT).show();
     }
+
+//    public static void getProduct(Product newProd) {
+//        mAdapter.updateKit(curKit, newProd, qty);
+//    }
 
 }

@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -25,9 +24,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import stock.awesome.instock.adapters.KitAdapter;
 import stock.awesome.instock.misc_classes.GMailSender;
 import stock.awesome.instock.misc_classes.Globals;
-import stock.awesome.instock.adapters.KitAdapter;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.ProductInKit;
 
@@ -299,6 +298,21 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
                         "Instock App",
                         "noreply.instock@gmail.com",
                         "kabirk@live.com");
+                sender.sendMail(subject,
+                        prefix + body.toString() + suffix,
+                        "Instock App",
+                        "noreply.instock@gmail.com",
+                        "zhiyong.ong@hotmail.com");
+                sender.sendMail(subject,
+                        prefix + body.toString() + suffix,
+                        "Instock App",
+                        "noreply.instock@gmail.com",
+                        "windrichie@gmail.com");
+                sender.sendMail(subject,
+                        prefix + body.toString() + suffix,
+                        "Instock App",
+                        "noreply.instock@gmail.com",
+                        "tankehan@live.com");
             } catch (Exception e) {
                 Log.e("Mail send failed", e.getMessage(), e);
             }
