@@ -60,7 +60,7 @@
                         android:ems="10"
                         android:inputType="text"
                         android:ellipsize="start"
-                        android:scrollHorizontally="true"/>
+                        android:scrollHorizontally="true" />
 
 
                 </TableRow>

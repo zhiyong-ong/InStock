@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
 import stock.awesome.instock.fragments.UpdateItemFragment;
@@ -128,6 +129,31 @@ public class DatabaseReadProduct {
                             emptyProd.setName("set_as_null");
 
                             DatabaseWriteProduct.write(emptyProd);
+
+                            // Remove product from all kits that contain them
+                            database.child("kits").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot allKitsSnapshot) {
+                                    // For every kit
+                                    for (DataSnapshot kitSnapshot : allKitsSnapshot.getChildren()) {
+                                        Kit kit = kitSnapshot.getValue(Kit.class);
+
+                                        // For every product in the kit
+                                        for (String prodId: kit.getKitMap().keySet()) {
+                                            if (prodId.equals(id)) {
+                                                DatabaseWriteKit.removeProductsFromKit(kit.getKitName(), prodId);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+                                    Log.e(READ_FAILED, firebaseError.getMessage());
+                                }
+                            });
+
+
                             break;
 
                         // log product's characteristics

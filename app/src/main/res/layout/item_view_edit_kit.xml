@@ -8,8 +8,10 @@
     android:orientation="horizontal"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp">
+    android:paddingLeft="10dp"
+    android:paddingRight="5dp"
+    android:clickable="true"
+    android:id="@+id/product_layout">
 
     <CheckBox
         android:id="@+id/product_in_kit_checkbox"

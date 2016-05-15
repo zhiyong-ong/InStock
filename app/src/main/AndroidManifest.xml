@@ -49,11 +49,11 @@
         <activity
             android:name=".ViewAllStocksActivity"
             android:label="@string/title_activity_view_all_stocks"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".MainPage"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainActivity" />
+                android:value="MainPage" />
         </activity>
         <activity
             android:name=".ViewAllKitsActivity"
@@ -67,11 +67,11 @@
         <activity
             android:name=".InputItemActivity"
             android:label="@string/title_activity_input_item"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".MainPage"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainActivity" />
+                android:value="MainPage" />
         </activity>
         <activity
             android:name=".ViewKitDetailsActivity"
@@ -93,7 +93,7 @@
         </activity>
         <activity
             android:name=".SearchActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainPage">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
