@@ -1,6 +1,8 @@
 package stock.awesome.instock;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +18,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -24,8 +30,12 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import stock.awesome.instock.adapters.PagerAdapter;
 import stock.awesome.instock.fragments.KitFragment;
@@ -33,6 +43,7 @@ import stock.awesome.instock.fragments.ProductFragment;
 import stock.awesome.instock.fragments.SearchFragment;
 import stock.awesome.instock.misc_classes.Globals;
 import stock.awesome.instock.misc_classes.Product;
+import stock.awesome.instock.misc_classes.StringCalendar;
 
 public class MainPage extends AppCompatActivity {
 
@@ -53,7 +64,10 @@ public class MainPage extends AppCompatActivity {
     private static Firebase ref;
     private static ArrayList<String> idNameList;
     private static HashMap<String, String> idNameMap;
-
+    static EditText expiryText = null;
+    static Calendar myCalendar;
+    Context context = this;
+    static Context activity;
     private MaterialSearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +80,7 @@ public class MainPage extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.viewpagerMain);
         setupViewPager(mViewPager);
-
+        activity = this;
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         mViewPager.setCurrentItem(1);
@@ -76,11 +90,13 @@ public class MainPage extends AppCompatActivity {
         testSuite();
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        searchView.setSuggestions(getResources().getStringArray(R.array.query_suggestions));
+        String[] idNameArr = Globals.idNameList.toArray(new String[Globals.idNameList.size()]);
+
+        searchView.setSuggestions(idNameArr);
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //Do some magic
+                DatabaseReadProduct.read(query, DatabaseReadProduct.ProdUseCase.DISPLAY_SEARCH_RESULT);
                 return false;
             }
 
@@ -103,6 +119,132 @@ public class MainPage extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static void getSearchItem(final Product product) {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+        LayoutInflater inflater = LayoutInflater.from(activity);
+        final View dialogView = inflater.inflate(R.layout.popup_item_edit, null);
+
+        final TextView productIDText = (TextView) dialogView.findViewById(R.id.productView);
+        final EditText quantityText = (EditText) dialogView.findViewById(R.id.quantityEdit);
+        final EditText nameText = (EditText) dialogView.findViewById(R.id.nameEdit);
+        final EditText locationText = (EditText) dialogView.findViewById(R.id.locationEdit);
+        final EditText descText = (EditText) dialogView.findViewById(R.id.descriptionEdit);
+        expiryText = (EditText) dialogView.findViewById(R.id.expiryEdit);
+        //TODO: center the new qty
+        Log.e("PRODUCT", "------------------" + product.getId() + "\t" + product.getQuantity());
+
+        //set all the text to the current product
+        productIDText.setText(product.getId());
+        quantityText.setText(Integer.toString(product.getQuantity()));
+        nameText.setText(product.getName());
+        locationText.setText(product.getLocation());
+        expiryText.setText(StringCalendar.toProperDateString(product.getExpiry()));
+        descText.setText(product.getDesc());
+
+        //pop up for datepicker dialog box
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        myCalendar = Calendar.getInstance();
+        try {
+            myCalendar.setTime(df.parse(StringCalendar.toProperDateString(product.getExpiry())));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+        expiryText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(activity, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        final DatePickerDialog.OnDateSetListener DATE = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+        };
+        expiryText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(activity, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                String productID = productIDText.getText().toString();
+                int quantity = Integer.parseInt(quantityText.getEditableText().toString());
+                String name = nameText.getEditableText().toString();
+                String location = locationText.getEditableText().toString();
+                String expiry = expiryText.getEditableText().toString();
+                String desc = descText.getEditableText().toString();
+
+                Product updateProd = new Product(productID, name, desc, location, quantity,
+                        StringCalendar.toCalendarProper(expiry));
+
+                //TODO: check for change in listView after editing. Not sure why it doesn't change as of now
+                Log.e("Some thing", updateProd.getId() + "\t" + Integer.toString(updateProd.getQuantity()) +
+                        "\t" + StringCalendar.toProperDateString(updateProd.getExpiry()));
+
+                DatabaseWriteProduct.updateProduct(updateProd);
+                //newProduct.set(position, new Product(productID, quantity));
+                Toast.makeText(activity, "ID: " + productID + ", QTY: " + quantity, Toast.LENGTH_LONG).show();
+            }
+        });
+        dialogBuilder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //show the dialog to confirm to delete item
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+                LayoutInflater inflater = LayoutInflater.from(activity);
+                final View dialogView = inflater.inflate(R.layout.popup_delete_item, null);
+
+                final TextView deleteProductID = (TextView) dialogView.findViewById(R.id.deleteIDView);
+                deleteProductID.setText(product.getId());
+
+                dialogBuilder.setView(dialogView);
+                dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        DatabaseWriteProduct.deleteProduct(product.getId());
+                        Toast.makeText(activity, "Item " + product.getId() + " deleted", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+                AlertDialog b = dialogBuilder.create();
+
+                b.show();
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -248,6 +390,15 @@ public class MainPage extends AppCompatActivity {
         // Shallow copy of list
         Globals.idNameList = idNameList;
         Globals.idNameMap = idNameMap;
+    }
+
+    //method for datepicker
+    private static void updateLabel() {
+
+        String myFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        expiryText.setText(sdf.format(myCalendar.getTime()));
     }
     private void testSuite() {
         // TESTING

@@ -11,7 +11,6 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -43,13 +42,24 @@ public class KitAdapter extends BaseAdapter {
         this.layout = layout;
 
         productPositions = new HashMap<>();
-        for (int i=0; i<mKeys.length; i++) {
+        for (int i = 0; i < mKeys.length; i++) {
             status.add(false);
             // map each product to its position in the listview
             productPositions.put(mKeys[i], i);
         }
     }
-
+    public void updateKit(Kit newKit, Product newProd, int qty) {
+        mKitMap = newKit.getKitMap();
+        mKeys = mKitMap.keySet().toArray(new String[mKitMap.size()]);
+        for (int i = 0; i < mKeys.length; i++) {
+            status.add(false);
+            // map each product to its position in the listview
+            productPositions.put(mKeys[i], i);
+        }
+        newProd.setQuantity(qty);
+        mProductMap.put(newProd.getName(), newProd);
+        notifyDataSetChanged();
+    }
     public void reconstruct(Kit kitName) {
         mKitMap  = kitName.getKitMap();
         mKeys = mKitMap.keySet().toArray(new String[mKitMap.size()]);
@@ -79,6 +89,7 @@ public class KitAdapter extends BaseAdapter {
         return arg0;
     }
 
+
     // LAGS UI THREAD BECAUSE IT IS ONLY CALLED AFTER THE PRODUCT DETAILS ARE RETURNED FROM DATABASE
     @Override
     public View getView(final int pos, View convertView, ViewGroup parent) {
@@ -106,7 +117,6 @@ public class KitAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-
                 if (isChecked) {
                     status.set(pos, true);
                 } else {

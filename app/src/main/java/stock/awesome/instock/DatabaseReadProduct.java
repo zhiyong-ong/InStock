@@ -31,7 +31,7 @@ public class DatabaseReadProduct {
     private static Product outProd = new Product();
 
     public enum ProdUseCase {
-        BUILD_KIT, DISPLAY_SEARCH, DISPLAY_PRODUCT, UPDATE_PRODUCT, UPDATE_QUANTITIES, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG
+        BUILD_KIT, DISPLAY_SEARCH, DISPLAY_PRODUCT, UPDATE_PRODUCT, UPDATE_QUANTITIES, UPDATE_QUANTITY_EXPIRY, DELETE_PRODUCT, DEBUG, DISPLAY_SEARCH_RESULT
     }
 
 
@@ -42,7 +42,7 @@ public class DatabaseReadProduct {
         }
         if ( !(useCase.equals(ProdUseCase.DEBUG) || useCase.equals(ProdUseCase.DELETE_PRODUCT)
                 || useCase.equals(ProdUseCase.BUILD_KIT) || useCase.equals(ProdUseCase.DISPLAY_PRODUCT)
-                || useCase.equals(ProdUseCase.DISPLAY_SEARCH)) ) {
+                || useCase.equals(ProdUseCase.DISPLAY_SEARCH) | useCase.equals(ProdUseCase.DISPLAY_SEARCH_RESULT)) ) {
             throw new IllegalArgumentException ("useCase must be DEBUG, DELETE_PRODUCT, DISPLAY_SEARCH, DISPLAY_PRODUCT or BUILD_KIT");
         }
 
@@ -102,8 +102,12 @@ public class DatabaseReadProduct {
                             break;
 
                         case BUILD_KIT:
-//                            BuildKitActivity.displayProduct(result);
+//                          BuildKitActivity.displayProduct(result);
                             break;
+
+                        case DISPLAY_SEARCH_RESULT:
+                            MainPage mp = new MainPage();
+                            mp.getSearchItem(outProd);
 
                         // if use case is to update quantity and expiry only,
                         // set outProd's qty to qty and write new qty, expiry to database

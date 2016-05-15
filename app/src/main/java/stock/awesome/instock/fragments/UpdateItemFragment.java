@@ -43,6 +43,7 @@ import stock.awesome.instock.R;
  * create an instance of this fragment.
  */
 public class UpdateItemFragment extends Fragment {
+    //CAN BE DELETED ALREADY
 
     View aView;
     Context context = getActivity();

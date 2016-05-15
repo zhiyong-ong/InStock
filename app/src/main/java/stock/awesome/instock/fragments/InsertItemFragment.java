@@ -32,6 +32,7 @@ import stock.awesome.instock.misc_classes.StringCalendar;
  * create an instance of this fragment.
  */
 public class InsertItemFragment extends Fragment {
+    //CAN BE DELETED ALREADY
 
     Calendar myCalendar;
     static EditText expiryDate;
