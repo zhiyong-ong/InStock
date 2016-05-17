@@ -33,7 +33,6 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -41,7 +40,6 @@ import java.util.Locale;
 import stock.awesome.instock.adapters.PagerAdapter;
 import stock.awesome.instock.fragments.KitFragment;
 import stock.awesome.instock.fragments.ProductFragment;
-import stock.awesome.instock.fragments.SearchFragment;
 import stock.awesome.instock.misc_classes.Globals;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
@@ -83,17 +81,13 @@ public class MainPage extends AppCompatActivity {
         activity = this;
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(0);
         ref = DatabaseLauncher.database.child("products");
 
         getFirebaseDataArray();
         testSuite();
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
-
-        //Log.e("SUGGESTIONS: ", "Array: " + Arrays.toString(idNameArr));
-        Log.e("SUGGESTIONS: ", "Array list: " + idNameList.toString());
-
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -114,7 +108,7 @@ public class MainPage extends AppCompatActivity {
             public void onSearchViewShown() {
                 String[] idNameArr = new String[idNameList.size()];
                 idNameArr = idNameList.toArray(idNameArr);
-                Log.e("SUGGESTIONS: ", "Array: " + Arrays.toString(idNameArr));
+
                 searchView.setSuggestions(idNameArr);
             }
 
@@ -281,6 +275,10 @@ public class MainPage extends AppCompatActivity {
             case R.id.search_main:
                 searchView.showSearch();
                 return true;
+            case R.id.refresh_main:
+                getFirebaseDataArray();
+                Toast.makeText(this, "Database refreshed", Toast.LENGTH_SHORT).show();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -303,7 +301,6 @@ public class MainPage extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new SearchFragment(), "Search");
         adapter.addFragment(new KitFragment(), "Kits");
         adapter.addFragment(new ProductFragment(), "Items");
         viewPager.setAdapter(adapter);
@@ -364,7 +361,7 @@ public class MainPage extends AppCompatActivity {
         super.onResume();
         getFirebaseDataArray();
     }
-    private void getFirebaseDataArray() {
+    public static void getFirebaseDataArray() {
         idNameList = new ArrayList<>();
         idNameMap = new HashMap<>();
 
@@ -387,12 +384,15 @@ public class MainPage extends AppCompatActivity {
                         // map id to id
                         idNameMap.put(prodId, prodId);
 
+                        //don't really need here? UNLESS names are all unique
+                        /*
                         // only add name to map if there was a corresponding id read
                         if (!idNameMap.containsKey(prodName)) {
                             idNameList.add(prodName);
                             // map name to id
                             idNameMap.put(prodName, prodId);
                         }
+                        */
                     }
 
                 }
@@ -409,16 +409,7 @@ public class MainPage extends AppCompatActivity {
         Globals.idNameMap = idNameMap;
     }
 
-    //method for datepicker
-    /*
-    private static void updateLabel() {
 
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-        expiryText.setText(sdf.format(myCalendar.getTime()));
-    }
-    */
     private void testSuite() {
         // TESTING
 //        Product testProd = new Product("zzz", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));

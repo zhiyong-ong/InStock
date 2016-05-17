@@ -62,4 +62,9 @@
         <!-- Hint for edit text -->
         <item name="android:hint">Search ...</item>
     </style>
+
+    <style name="TabStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">18dp</item>
+        <item name="android:typeface">serif</item>
+    </style>
 </resources>

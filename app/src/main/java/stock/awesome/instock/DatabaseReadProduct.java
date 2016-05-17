@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import stock.awesome.instock.misc_classes.Kit;
 import stock.awesome.instock.misc_classes.Product;
 import stock.awesome.instock.misc_classes.StringCalendar;
-import stock.awesome.instock.fragments.UpdateItemFragment;
 
 /**
  * read(final String id, final ProdUseCase useCase, final Product updatedProd, final int qtyChange)

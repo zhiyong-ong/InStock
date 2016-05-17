@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -32,8 +34,7 @@ public class UpdateItemActivity extends AppCompatActivity {
 
     static Context activity;
     Firebase database;
-    static Calendar myCalendar;
-    static EditText expiryText = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,13 +73,15 @@ public class UpdateItemActivity extends AppCompatActivity {
     public static void SearchItem(final Product product) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = LayoutInflater.from(activity);
-        final View dialogView = inflater.inflate(R.layout.search_box, null);
+        final View dialogView = inflater.inflate(R.layout.popup_update_item, null);
 
         final TextView productIDText = (TextView) dialogView.findViewById(R.id.productView);
         final TextView quantityText = (TextView) dialogView.findViewById(R.id.qtyView);
-        expiryText = (EditText) dialogView.findViewById(R.id.expiryView);
         final TextView nameText = (TextView) dialogView.findViewById(R.id.nameView);
         final EditText newQty = (EditText) dialogView.findViewById(R.id.newUpdateQty);
+        final EditText expiryText = (EditText) dialogView.findViewById(R.id.expiryEdit);
+        final Calendar myCalendar = Calendar.getInstance();
+
         //TODO: center the new qty
         Log.e("PRODUCT", "------------------" + product.getId() + "\t" + product.getQuantity());
 
@@ -88,7 +91,7 @@ public class UpdateItemActivity extends AppCompatActivity {
         expiryText.setText(StringCalendar.toProperDateString(product.getExpiry()));
 
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        myCalendar = Calendar.getInstance();
+
         try {
             myCalendar.setTime(df.parse(StringCalendar.toProperDateString(product.getExpiry())));
         } catch (ParseException e) {
@@ -102,7 +105,10 @@ public class UpdateItemActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
+                String myFormat = "dd/MM/yyyy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                expiryText.setText(sdf.format(myCalendar.getTime()));
             }
 
         };
@@ -120,9 +126,15 @@ public class UpdateItemActivity extends AppCompatActivity {
                 String productID = product.getId();
                 int quantity = Integer.parseInt(newQty.getEditableText().toString());
                 String expiry = expiryText.getEditableText().toString();
-                Product qtyExpProduct = new Product(productID, quantity, StringCalendar.toCalendarProper(expiry));
-                Log.e("PRODUCT", "--------------------- qty: " + newQty.getText().toString());
-                DatabaseWriteProduct.updateQuantityExpiry(qtyExpProduct);
+                if(product.getQuantity() + quantity < 0) {
+                    Toast.makeText(activity, "Invalid quantity entered", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Product qtyExpProduct = new Product(productID, quantity, StringCalendar.toCalendarProper(expiry));
+                    Log.e("PRODUCT", "--------------------- qty: " + newQty.getText().toString());
+                    DatabaseWriteProduct.updateQuantityExpiry(qtyExpProduct);
+                    Toast.makeText(activity, "Item Updated", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -134,12 +146,37 @@ public class UpdateItemActivity extends AppCompatActivity {
         AlertDialog b = dialogBuilder.create();
         b.show();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_details, menu);
 
-    private static void updateLabel() {
+        return true;
+    }
 
-        String myFormat = "dd/MM/yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-        expiryText.setText(sdf.format(myCalendar.getTime()));
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.info) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            final View dialogView = inflater.inflate(R.layout.info, null);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //do nothing, go back.
+                }
+            });
+            AlertDialog b = dialogBuilder.create();
+            b.show();
+        }
+        if(id == R.id.refresh_main) {
+            MainPage.getFirebaseDataArray();
+            Toast.makeText(this, "Database refreshed", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

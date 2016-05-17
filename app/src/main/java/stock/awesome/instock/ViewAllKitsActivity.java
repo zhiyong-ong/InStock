@@ -131,7 +131,7 @@ public class ViewAllKitsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_details, menu);
 
         return true;
     }
@@ -154,6 +154,10 @@ public class ViewAllKitsActivity extends AppCompatActivity {
             });
             AlertDialog b = dialogBuilder.create();
             b.show();
+        }
+        if(id == R.id.refresh_main) {
+            MainPage.getFirebaseDataArray();
+            Toast.makeText(this, "Database refreshed", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }

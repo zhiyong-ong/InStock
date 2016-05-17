@@ -99,7 +99,8 @@
                         android:hint="   +/-   "
                         android:gravity="center"
                         android:ellipsize="start"
-                        android:imeOptions="actionDone"/>
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"/>
                 </TableRow>
 
                 <TableRow

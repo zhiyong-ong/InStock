@@ -48,26 +48,8 @@
                 android:value="MainPage" />
         </activity>
         <activity
-            android:name=".ViewAllStocksActivity"
-            android:label="@string/title_activity_view_all_stocks"
-            android:parentActivityName=".MainPage"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainPage" />
-        </activity>
-        <activity
             android:name=".ViewAllKitsActivity"
             android:label="@string/title_activity_view_all_kits"
-            android:parentActivityName=".MainPage"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainPage" />
-        </activity>
-        <activity
-            android:name=".InputItemActivity"
-            android:label="@string/title_activity_input_item"
             android:parentActivityName=".MainPage"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

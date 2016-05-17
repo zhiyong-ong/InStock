@@ -152,6 +152,7 @@ public class InsertItemActivity extends AppCompatActivity {
             AlertDialog b = dialogBuilder.create();
             b.show();
         }
+
         return super.onOptionsItemSelected(item);
     }
 
