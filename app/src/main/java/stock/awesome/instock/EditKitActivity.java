@@ -11,8 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -125,13 +127,24 @@ public class EditKitActivity extends AppCompatActivity {
 //                    imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
 //                }
 //            });
-            idNameText.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+//            idNameText.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+//                @Override
+//                public void onDismiss() {
+//                    InputMethodManager in = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    in.hideSoftInputFromWindow(idNameText.getApplicationWindowToken(), 0);
+//                }
+//            });
+            idNameText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
                 @Override
-                public void onDismiss() {
-                    InputMethodManager in = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    in.hideSoftInputFromWindow(idNameText.getApplicationWindowToken(), 0);
+                public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                    InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(arg1.getApplicationWindowToken(), 0);
+
                 }
+
             });
+
             dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     //Log.v(LOG_TAG, "-------------------TESTING on click: " + productID + "\t" + productID.getText().toString());
