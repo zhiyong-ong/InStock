@@ -40,4 +40,5 @@
     <string name="title_activity_main_page">InStock</string>
     <string name="title_activity_insert_item2">Insert Item</string>
     <string name="title_activity_view_edit_kit">Edit Kits</string>
+    <string name="title_activity_main3">MainActivity3</string>
 </resources>

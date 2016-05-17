@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:scaleType="center"
-        android:background="#ab483d"
+        android:background="@color/colorPrimaryDark"
         android:text="EDIT QUANTITY"
         android:gravity="center"
         android:textSize="23dp"

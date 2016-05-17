@@ -63,7 +63,8 @@
             android:paddingRight="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true">
+            android:clickable="true"
+            android:onClick="sendUpdateItemIntent">
             <ImageView
                 android:id="@+id/imageUpdate"
                 android:layout_width ="35dp"

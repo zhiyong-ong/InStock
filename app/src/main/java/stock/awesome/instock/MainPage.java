@@ -33,6 +33,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -89,9 +90,11 @@ public class MainPage extends AppCompatActivity {
         testSuite();
 
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
-        String[] idNameArr = Globals.idNameList.toArray(new String[Globals.idNameList.size()]);
 
-        searchView.setSuggestions(idNameArr);
+        //Log.e("SUGGESTIONS: ", "Array: " + Arrays.toString(idNameArr));
+        Log.e("SUGGESTIONS: ", "Array list: " + idNameList.toString());
+
+
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -109,7 +112,10 @@ public class MainPage extends AppCompatActivity {
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
-                //Do some magic
+                String[] idNameArr = new String[idNameList.size()];
+                idNameArr = idNameList.toArray(idNameArr);
+                Log.e("SUGGESTIONS: ", "Array: " + Arrays.toString(idNameArr));
+                searchView.setSuggestions(idNameArr);
             }
 
             @Override
@@ -322,6 +328,12 @@ public class MainPage extends AppCompatActivity {
         Intent intent = new Intent(this, InsertItemActivity.class);
         startActivity(intent);
     }
+
+    public void sendUpdateItemIntent(View view) {
+        Intent intent = new Intent(this, UpdateItemActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

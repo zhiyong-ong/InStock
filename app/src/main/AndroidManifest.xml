@@ -20,9 +20,7 @@
         <activity
             android:name=".MainPage"
             android:label="@string/title_activity_main_page"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
-
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -95,17 +93,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="EditKitActivity" />
         </activity>
-        <activity
-            android:name=".SearchActivity"
-            android:parentActivityName=".MainPage">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
 
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
         <activity
             android:name=".ViewEditKitActivity"
             android:label="@string/title_activity_view_edit_kit"
@@ -114,6 +102,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainPage" />
+        </activity>
+        <activity
+            android:name=".UpdateItemActivity"
+            android:label="@string/title_activity_update_item"
+            android:parentActivityName=".MainPage"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="stock.awesome.instock.MainPage" />
         </activity>
     </application>
 

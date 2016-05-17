@@ -7,7 +7,7 @@
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="60dp"
-        android:background="#ab483d" >
+        android:background="@color/colorPrimaryDark" >
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

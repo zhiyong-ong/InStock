@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:scaleType="center"
-        android:background="#ab483d"
+        android:background="@color/colorPrimaryDark"
         android:text="UPDATE ITEM"
         android:gravity="center"
         android:textSize="23dp"
@@ -93,13 +93,13 @@
                         android:maxLines="1"
                         android:layout_weight="1"/>
 
-
                     <EditText
                         android:id="@+id/newUpdateQty"
                         style="@style/TableText"
                         android:hint="   +/-   "
                         android:gravity="center"
-                        android:ellipsize="start" />
+                        android:ellipsize="start"
+                        android:imeOptions="actionDone"/>
                 </TableRow>
 
                 <TableRow
