@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -181,7 +182,13 @@ public class BuildKitActivity extends AppCompatActivity {
 
         final AutoCompleteTextView idNameTextView = Autocompletify.makeAutocomplete(this, dialogView,
                 R.id.id_name_autocomplete_text_view);
-
+        idNameTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        });
         final EditText quantityText = (EditText) dialogView.findViewById(R.id.addQuantity);
 
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
@@ -193,7 +200,7 @@ public class BuildKitActivity extends AppCompatActivity {
                 } else if (quantityText.getText().toString().trim().length() == 0) {
                     Toast.makeText(context, "You did not enter a quantity", Toast.LENGTH_SHORT).show();
                 } else {
-                    String productID = Autocompletify.getStringFromView(idNameTextView);
+                    String productID = idNameTextView.getText().toString().trim();
                     // if the id/name entered does not exist in the list
                     if (productID == null) {
                         noSuchProduct();

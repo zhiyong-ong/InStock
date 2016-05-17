@@ -93,6 +93,8 @@ public class InsertItemActivity extends AppCompatActivity {
                         Toast.makeText(context, "No product name entered", Toast.LENGTH_SHORT).show();
                     } else if (inputQty.getText().toString().trim().length() == 0) {
                         Toast.makeText(context, "No quantity entered", Toast.LENGTH_SHORT).show();
+                    } else if (Integer.parseInt(inputQty.getText().toString().trim()) < 0) {
+                        Toast.makeText(context, "Invalid quantity value", Toast.LENGTH_SHORT).show();
                     } else if (inputLocation.getText().toString().trim().length() == 0) {
                         Toast.makeText(context, "No location entered", Toast.LENGTH_SHORT).show();
                     } else if (expiryDate.getText().toString().trim().length() == 0) {

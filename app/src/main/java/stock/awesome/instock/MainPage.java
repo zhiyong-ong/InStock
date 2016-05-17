@@ -64,8 +64,7 @@ public class MainPage extends AppCompatActivity {
     private static Firebase ref;
     private static ArrayList<String> idNameList;
     private static HashMap<String, String> idNameMap;
-    static EditText expiryText = null;
-    static Calendar myCalendar;
+
     Context context = this;
     static Context activity;
     private MaterialSearchView searchView;
@@ -132,7 +131,9 @@ public class MainPage extends AppCompatActivity {
         final EditText nameText = (EditText) dialogView.findViewById(R.id.nameEdit);
         final EditText locationText = (EditText) dialogView.findViewById(R.id.locationEdit);
         final EditText descText = (EditText) dialogView.findViewById(R.id.descriptionEdit);
-        expiryText = (EditText) dialogView.findViewById(R.id.expiryEdit);
+        final EditText expiryText = (EditText) dialogView.findViewById(R.id.expiryEdit);
+        final Calendar myCalendar = Calendar.getInstance();
+
         //TODO: center the new qty
         Log.e("PRODUCT", "------------------" + product.getId() + "\t" + product.getQuantity());
 
@@ -142,11 +143,11 @@ public class MainPage extends AppCompatActivity {
         nameText.setText(product.getName());
         locationText.setText(product.getLocation());
         expiryText.setText(StringCalendar.toProperDateString(product.getExpiry()));
+        Log.e("EXPIRY", "Expiry 1st: " + expiryText.getEditableText().toString());
         descText.setText(product.getDesc());
 
         //pop up for datepicker dialog box
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        myCalendar = Calendar.getInstance();
         try {
             myCalendar.setTime(df.parse(StringCalendar.toProperDateString(product.getExpiry())));
         } catch (ParseException e) {
@@ -160,7 +161,10 @@ public class MainPage extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
+                String myFormat = "dd/MM/yyyy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                expiryText.setText(sdf.format(myCalendar.getTime()));
             }
 
         };
@@ -174,47 +178,42 @@ public class MainPage extends AppCompatActivity {
             }
         });
 
-        final DatePickerDialog.OnDateSetListener DATE = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
-            }
-        };
-        expiryText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                new DatePickerDialog(activity, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-        dialogBuilder.setView(dialogView);
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
-                String productID = productIDText.getText().toString();
-                int quantity = Integer.parseInt(quantityText.getEditableText().toString());
-                String name = nameText.getEditableText().toString();
-                String location = locationText.getEditableText().toString();
+                String productID = productIDText.getText().toString().trim();
+                String quantityTxt = quantityText.getEditableText().toString().trim();
+                String name = nameText.getEditableText().toString().trim();
+                String location = locationText.getEditableText().toString().trim();
                 String expiry = expiryText.getEditableText().toString();
-                String desc = descText.getEditableText().toString();
+                String desc = descText.getEditableText().toString().trim();
+                Log.e("EXPIRY", "dialog " + expiry);
 
-                Product updateProd = new Product(productID, name, desc, location, quantity,
-                        StringCalendar.toCalendarProper(expiry));
+                //ERROR checks
+                if (productID.length() == 0) {
+                    Toast.makeText(activity, "No ID entered", Toast.LENGTH_SHORT).show();
+                } else if (name.length() == 0) {
+                    Toast.makeText(activity, "No product name entered", Toast.LENGTH_SHORT).show();
+                } else if (quantityTxt.length() == 0) {
+                    Toast.makeText(activity, "No quantity entered", Toast.LENGTH_SHORT).show();
+                } else if (Integer.parseInt(quantityTxt) < 0) {
+                    Toast.makeText(activity, "Invalid quantity value. Must be larger than or equals to 0.", Toast.LENGTH_SHORT).show();
+                } else if (location.length() == 0) {
+                    Toast.makeText(activity, "No location entered", Toast.LENGTH_SHORT).show();
+                } else if (expiry.length() == 0) {
+                    Toast.makeText(activity, "No expiry date entered", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e("EXPIRY", "REACHED HERE!!");
+                    int quantity = Integer.parseInt(quantityText.getEditableText().toString().trim());
+                    Product updateProd = new Product(productID, name, desc, location, quantity,
+                            StringCalendar.toCalendarProper(expiry));
 
-                //TODO: check for change in listView after editing. Not sure why it doesn't change as of now
-                Log.e("Some thing", updateProd.getId() + "\t" + Integer.toString(updateProd.getQuantity()) +
-                        "\t" + StringCalendar.toProperDateString(updateProd.getExpiry()));
+                    Log.e("Some thing", updateProd.getId() + "\t" + Integer.toString(updateProd.getQuantity()) +
+                            "\t" + StringCalendar.toProperDateString(updateProd.getExpiry()));
 
-                DatabaseWriteProduct.updateProduct(updateProd);
-                //newProduct.set(position, new Product(productID, quantity));
-                Toast.makeText(activity, "ID: " + productID + ", QTY: " + quantity, Toast.LENGTH_LONG).show();
+                    DatabaseWriteProduct.updateProduct(updateProd);
+                    Toast.makeText(activity, "ID: " + productID + " updated", Toast.LENGTH_LONG).show();
+                }
             }
         });
         dialogBuilder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
@@ -243,8 +242,14 @@ public class MainPage extends AppCompatActivity {
                 b.show();
             }
         });
+
+        dialogBuilder.setView(dialogView);
         AlertDialog b = dialogBuilder.create();
         b.show();
+    }
+
+    public static void noSuchProduct() {
+        Toast.makeText(activity, "No such product exists.", Toast.LENGTH_SHORT).show();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -393,6 +398,7 @@ public class MainPage extends AppCompatActivity {
     }
 
     //method for datepicker
+    /*
     private static void updateLabel() {
 
         String myFormat = "dd/MM/yyyy";
@@ -400,6 +406,7 @@ public class MainPage extends AppCompatActivity {
 
         expiryText.setText(sdf.format(myCalendar.getTime()));
     }
+    */
     private void testSuite() {
         // TESTING
 //        Product testProd = new Product("zzz", "name", "desc", "location", 5, new GregorianCalendar(2018, 11, 18));

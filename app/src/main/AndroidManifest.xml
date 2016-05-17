@@ -20,7 +20,9 @@
         <activity
             android:name=".MainPage"
             android:label="@string/title_activity_main_page"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,7 +43,8 @@
             android:name=".BuildKitActivity"
             android:label="@string/title_activity_build_kit"
             android:parentActivityName=".MainPage"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainPage" />
@@ -86,7 +89,8 @@
             android:name=".EditKitActivity"
             android:label="Edit Kit"
             android:parentActivityName=".ViewAllKitsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="EditKitActivity" />

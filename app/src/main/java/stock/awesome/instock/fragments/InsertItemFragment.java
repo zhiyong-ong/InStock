@@ -114,16 +114,20 @@ public class InsertItemFragment extends Fragment {
                 inputQty = (EditText) aView.findViewById(R.id.quantityEdit);
                 inputLocation = (EditText) aView.findViewById(R.id.locationEdit);
 
+                Context context = getActivity();
+
                 if (inputId.getText().toString().trim().length() == 0) {
-                    Toast.makeText(getActivity(), "No ID entered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "No ID entered", Toast.LENGTH_SHORT).show();
                 } else if (inputName.getText().toString().trim().length() == 0) {
-                    Toast.makeText(getActivity(), "No product name entered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "No product name entered", Toast.LENGTH_SHORT).show();
                 } else if (inputQty.getText().toString().trim().length() == 0) {
-                    Toast.makeText(getActivity(), "No quantity entered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "No quantity entered", Toast.LENGTH_SHORT).show();
+                } else if (Integer.parseInt(inputQty.getText().toString().trim()) < 0) {
+                    Toast.makeText(context, "Invalid quantity value", Toast.LENGTH_SHORT).show();
                 } else if (inputLocation.getText().toString().trim().length() == 0) {
-                    Toast.makeText(getActivity(), "No location entered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "No location entered", Toast.LENGTH_SHORT).show();
                 } else if (expiryDate.getText().toString().trim().length() == 0) {
-                    Toast.makeText(getActivity(), "No expiry date entered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "No expiry date entered", Toast.LENGTH_SHORT).show();
                 } else {
 
                     //update the product with all the relevant details
