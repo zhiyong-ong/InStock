@@ -107,7 +107,7 @@ public class UpdateItemFragment extends Fragment {
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                String productID = Autocompletify.getStringFromView(productIDText);
+                String productID = productIDText.getText().toString().trim();
                 Log.e("prod id", productID);
 
                 if (productID.trim().length() == 0) {

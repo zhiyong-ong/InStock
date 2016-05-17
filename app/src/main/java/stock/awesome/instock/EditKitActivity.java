@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +23,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import stock.awesome.instock.adapters.Autocompletify;
 import stock.awesome.instock.adapters.KitAdapter;
 import stock.awesome.instock.misc_classes.Globals;
 import stock.awesome.instock.misc_classes.Kit;
@@ -115,17 +116,22 @@ public class EditKitActivity extends AppCompatActivity {
 
             dialogBuilder.setView(dialogView);
 
-            final EditText productIDText = (EditText) dialogView.findViewById(R.id.id_name_autocomplete_text_view);
             final EditText quantityText = (EditText) dialogView.findViewById(R.id.addQuantity);
-            String[] idNameArr = Globals.idNameList.toArray(new String[Globals.idNameList.size()]);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                    (this, android.R.layout.simple_dropdown_item_1line, idNameArr);
-
-            final AutoCompleteTextView idNameText = (AutoCompleteTextView)
-                    dialogView.findViewById(R.id.id_name_autocomplete_text_view);
-            // start auto-completing from 1st char
-            idNameText.setThreshold(1);
-            idNameText.setAdapter(adapter);
+            final AutoCompleteTextView idNameText = Autocompletify.makeAutocomplete(this, dialogView, R.id.id_name_autocomplete_text_view);
+//            idNameText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
+//                }
+//            });
+            idNameText.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    InputMethodManager in = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(idNameText.getApplicationWindowToken(), 0);
+                }
+            });
             dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     //Log.v(LOG_TAG, "-------------------TESTING on click: " + productID + "\t" + productID.getText().toString());
@@ -135,7 +141,7 @@ public class EditKitActivity extends AppCompatActivity {
                     } else if (quantityText.getText().toString().trim().length() == 0) {
                         Toast.makeText(context, "You did not enter a quantity", Toast.LENGTH_SHORT).show();
                     } else {
-                        String productID = idNameText.getText().toString();
+                        String productID = idNameText.getText().toString().trim();
                         productID = idNameMap.get(productID);
                         // if the id/name entered does not exist in the list
                         if (productID == null) {

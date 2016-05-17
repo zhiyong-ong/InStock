@@ -2,6 +2,7 @@ package stock.awesome.instock.misc_classes;
 
 import android.util.Log;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,13 +16,19 @@ public class StringCalendar {
     private static SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
     private static GregorianCalendar gregCal = new GregorianCalendar();
     private static SimpleDateFormat displayFmt = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+    private static Boolean flag = false;
 
     public static String toProperDateString(GregorianCalendar calendar) {
-        displayFmt.setCalendar(calendar);
+
         if(calendar == null) {
+            Log.e("EXPIRY", "calendar null");
+            flag = true;
             return "";
         }
         else {
+            Log.e("EXPIRY", "calendar not null");
+            displayFmt.setCalendar(calendar);
+            flag = false;
             return displayFmt.format(calendar.getTime());
         }
     }
@@ -44,11 +51,23 @@ public class StringCalendar {
     }
 
     public static GregorianCalendar toCalendarProper(String calendarStr) {
-        if(calendarStr == "") {
-            return null;
+        Log.e("DATE", "FLAG: " + flag);
+        if(flag) {
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = null;
+            try {
+                date = df.parse(calendarStr);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Log.e("DATE", "DATE string is: " + calendarStr);
+            Log.e("DATE", "DATE is: " + date.toString());
+            gregCal.setTime(date);
+            return gregCal;
         }
         else {
             try {
+
                 Date date = displayFmt.parse(calendarStr);
                 gregCal.setTime(date);
 
