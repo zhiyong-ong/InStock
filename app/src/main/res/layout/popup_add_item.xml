@@ -26,7 +26,8 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:hint="@string/search_for_id_name_no_colon"
-        android:imeOptions="actionDone"/>
+        android:imeOptions="actionDone"
+        android:dropDownHeight="200dp"/>
 
     <EditText
         android:id="@+id/addQuantity"
