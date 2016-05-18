@@ -79,7 +79,7 @@ public class UpdateItemActivity extends AppCompatActivity {
         final TextView quantityText = (TextView) dialogView.findViewById(R.id.qtyView);
         final TextView nameText = (TextView) dialogView.findViewById(R.id.nameView);
         final EditText newQty = (EditText) dialogView.findViewById(R.id.newUpdateQty);
-        final EditText expiryText = (EditText) dialogView.findViewById(R.id.expiryEdit);
+        final EditText expiryText = (EditText) dialogView.findViewById(R.id.expiryView);
         final Calendar myCalendar = Calendar.getInstance();
 
         //TODO: center the new qty
