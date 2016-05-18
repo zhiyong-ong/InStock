@@ -51,7 +51,8 @@
             android:name=".ViewAllKitsActivity"
             android:label="@string/title_activity_view_all_kits"
             android:parentActivityName=".MainPage"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainPage" />
@@ -60,7 +61,8 @@
             android:name=".ViewKitDetailsActivity"
             android:label="@string/title_activity_view_kit_details"
             android:parentActivityName=".ViewAllKitsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ViewAllKitsActivity" />
@@ -80,7 +82,8 @@
             android:name=".ViewEditKitActivity"
             android:label="@string/title_activity_view_edit_kit"
             android:parentActivityName=".MainPage"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainPage" />
@@ -89,7 +92,8 @@
             android:name=".UpdateItemActivity"
             android:label="@string/title_activity_update_item"
             android:parentActivityName=".MainPage"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="stock.awesome.instock.MainPage" />

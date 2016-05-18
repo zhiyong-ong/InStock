@@ -26,7 +26,7 @@ public class DatabaseReadProduct {
 
     private static final Firebase database = DatabaseLauncher.database;
     private static final String READ_FAILED = "Product read failed";
-    public static final int THRESHOLD = 0;
+    public static final int THRESHOLD = 5;
     private static Product outProd = new Product();
 
     public enum ProdUseCase {
