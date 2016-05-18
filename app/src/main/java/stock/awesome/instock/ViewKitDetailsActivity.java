@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -135,31 +136,12 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
             }
         });
 
-        barcodeInput.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode == KeyEvent.KEYCODE_ENTER) {
-                    Log.e("barcode input", "text is: " + barcodeInput.getText());
-                    String barcodeID = barcodeInput.getText().toString();
-                    if (kitHashMap.containsKey(barcodeID)) {
-                        int pos = mAdapter.productPositions.get(barcodeID);
-                        mAdapter.setChecked(true, pos);
-                        Log.e("barcode input", "position is " + Integer.toString(pos));
-                    }
-                    barcodeInput.getText().clear();
-                }
-                Log.e("barcode input", "General text is: " + barcodeInput.getText());
-                return true;
-            }
-        });
-//        barcodeInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//        barcodeInput.setOnKeyListener(new View.OnKeyListener() {
 //            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if((actionId == EditorInfo.IME_ACTION_SEARCH) || actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_NEXT
-//                        || actionId == EditorInfo.IME_ACTION_DONE
-//                        || ((event.getAction() == KeyEvent.ACTION_DOWN) && (actionId == KeyEvent.KEYCODE_ENTER))) {
-//                    Log.e("barcode input", "text is: " + v.getText());
-//                    String barcodeID = v.getText().toString();
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if(keyCode == KeyEvent.KEYCODE_ENTER) {
+//                    Log.e("barcode input", "text is: " + barcodeInput.getText());
+//                    String barcodeID = barcodeInput.getText().toString();
 //                    if (kitHashMap.containsKey(barcodeID)) {
 //                        int pos = mAdapter.productPositions.get(barcodeID);
 //                        mAdapter.setChecked(true, pos);
@@ -167,11 +149,30 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
 //                    }
 //                    barcodeInput.getText().clear();
 //                }
-//                barcodeInput.getText().clear();
-//                Log.e("barcode input", "General text is: " + v.getText());
+//                Log.e("barcode input", "General text is: " + barcodeInput.getText());
 //                return true;
 //            }
 //        });
+        barcodeInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if((actionId == EditorInfo.IME_ACTION_SEARCH) || actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_NEXT
+                        || actionId == EditorInfo.IME_ACTION_DONE || actionId == KeyEvent.KEYCODE_ENTER
+                        || ((event.getAction() == KeyEvent.ACTION_DOWN) && (actionId == KeyEvent.KEYCODE_ENTER))) {
+                    Log.e("barcode input", "text is: " + v.getText());
+                    String barcodeID = v.getText().toString();
+                    if (kitHashMap.containsKey(barcodeID)) {
+                        int pos = mAdapter.productPositions.get(barcodeID);
+                        mAdapter.setChecked(true, pos);
+                        Log.e("barcode input", "position is " + Integer.toString(pos));
+                    }
+                    barcodeInput.getText().clear();
+                }
+                barcodeInput.getText().clear();
+                Log.e("barcode input", "General text is: " + v.getText());
+                return true;
+            }
+        });
 
         View view = this.getCurrentFocus();
         if (view != null) {
