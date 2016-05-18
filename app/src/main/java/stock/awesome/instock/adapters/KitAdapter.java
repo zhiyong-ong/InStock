@@ -11,8 +11,10 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import stock.awesome.instock.R;
 import stock.awesome.instock.misc_classes.Kit;
@@ -34,12 +36,14 @@ public class KitAdapter extends BaseAdapter {
     public CheckBox checkBox;
     private Context mContext;
     private int layout = 0;
+    private List<Boolean> checkBoxState;
 
     public KitAdapter(Context context, Kit data, int layout){
         mContext = context;
         mKitMap  = data.getKitMap();
         mKeys = mKitMap.keySet().toArray(new String[mKitMap.size()]);
         this.layout = layout;
+        checkBoxState = new ArrayList<>(Collections.nCopies(mKeys.length, false));
 
         productPositions = new HashMap<>();
         for (int i = 0; i < mKeys.length; i++) {
@@ -111,6 +115,7 @@ public class KitAdapter extends BaseAdapter {
         prodName.setText(mProductMap.get(id).getName());
         prodLocation.setText(mProductMap.get(id).getLocation());
 
+        //to set status in kitAdapter, representing the status of the checkbox
         checkBox = (CheckBox) convertView.findViewById(R.id.product_in_kit_checkbox);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -128,6 +133,11 @@ public class KitAdapter extends BaseAdapter {
         checkBox.setChecked(status.get(pos));
 
         return convertView;
+    }
+
+    public void setChecked(Boolean state, int position) {
+        checkBoxState.set(position, state);
+        checkBox.setChecked(checkBoxState.get(position));
     }
 
 }

@@ -8,13 +8,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -123,13 +123,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
                 }
             });
         }
-    }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e("barcode input", "onResume");
         final HashMap<String, ProductInKit> kitHashMap = Globals.kit.getKitMap();
 
         barcodeInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -141,37 +135,71 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
             }
         });
 
-        final StringBuilder scannedBuilder = new StringBuilder();
-        barcodeInput.addTextChangedListener(new TextWatcher() {
+        barcodeInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                Log.e("barcode input", "onTextChanged");
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                scannedBuilder.append(s.toString());
-                String barcodeId = scannedBuilder.toString();
-                Log.e("barcode input", "id is " + barcodeId);
-
-                // if ID scanned is in the kit, check the item in the listview
-                if (kitHashMap.containsKey(barcodeId)) {
-                    int pos = mAdapter.productPositions.get(barcodeId);
-                    mAdapter.status.set(pos, true);
-                    mAdapter.checkBox.setChecked(mAdapter.status.get(pos));
-                    Log.e("barcode input", "position is " + Integer.toString(pos));
-
-                    // clear text and string builder
-                    if (!barcodeInput.getText().toString().equals("")) {
-                        barcodeInput.setText("");
-                        scannedBuilder.delete(0, scannedBuilder.length() - 1);
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if((actionId == EditorInfo.IME_ACTION_SEARCH)) {
+                    String barcodeID = v.getText().toString();
+                    if (kitHashMap.containsKey(barcodeID)) {
+                        int pos = mAdapter.productPositions.get(barcodeID);
+                        mAdapter.setChecked(true, pos);
+                        Log.e("barcode input", "position is " + Integer.toString(pos));
                     }
+                    barcodeInput.getText().clear();
                 }
+                return true;
             }
         });
+
     }
+
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        Log.e("barcode input", "onResume");
+//        final HashMap<String, ProductInKit> kitHashMap = Globals.kit.getKitMap();
+//
+//        barcodeInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                barcodeInput.setFocusableInTouchMode(true);
+//                barcodeInput.requestFocus();
+//                Log.e("barcode input", "focused");
+//            }
+//        });
+//
+//        final StringBuilder scannedBuilder = new StringBuilder();
+//        barcodeInput.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+////                Log.e("barcode input", "onTextChanged");
+//            }
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                scannedBuilder.append(s.toString());
+//                String barcodeId = scannedBuilder.toString();
+//                Log.e("barcode input", "id is " + barcodeId);
+//
+//                // if ID scanned is in the kit, check the item in the listview
+//                if (kitHashMap.containsKey(barcodeId)) {
+//                    int pos = mAdapter.productPositions.get(barcodeId);
+//                    mAdapter.status.set(pos, true);
+//                    mAdapter.checkBox.setChecked(mAdapter.status.get(pos));
+//                    Log.e("barcode input", "position is " + Integer.toString(pos));
+//
+//                    // clear text and string builder
+//                    if (!barcodeInput.getText().toString().equals("")) {
+//                        barcodeInput.setText("");
+//                        scannedBuilder.delete(0, scannedBuilder.length() - 1);
+//                    }
+//                }
+//            }
+//        });
+//    }
 
     ///////////////
     // alt code for addTextChangedListener
@@ -240,32 +268,31 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
             AlertDialog b = dialogBuilder.create();
             b.show();
         }
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.deleteKit) {
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-            LayoutInflater inflater = LayoutInflater.from(this);
-            final View dialogView = inflater.inflate(R.layout.popup_delete_kit, null);
-            final TextView kitName = (TextView) dialogView.findViewById(R.id.deleteIDView);
-            kitName.setText(Globals.kit.getKitName());
-
-            dialogBuilder.setView(dialogView);
-            dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    DatabaseWriteKit.deleteKit(kitName.getText().toString());
-                    Toast.makeText(context, "Deleted Kit: " + kitName.getText().toString(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ViewKitDetailsActivity.this, ViewAllKitsActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
-            });
-            dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    //do nothing, go back.
-                }
-            });
-            AlertDialog b = dialogBuilder.create();
-            b.show();
-        }
+//        if (id == R.id.deleteKit) {
+//            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+//            LayoutInflater inflater = LayoutInflater.from(this);
+//            final View dialogView = inflater.inflate(R.layout.popup_delete_kit, null);
+//            final TextView kitName = (TextView) dialogView.findViewById(R.id.deleteIDView);
+//            kitName.setText(Globals.kit.getKitName());
+//
+//            dialogBuilder.setView(dialogView);
+//            dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int whichButton) {
+//                    DatabaseWriteKit.deleteKit(kitName.getText().toString());
+//                    Toast.makeText(context, "Deleted Kit: " + kitName.getText().toString(), Toast.LENGTH_SHORT).show();
+//                    Intent intent = new Intent(ViewKitDetailsActivity.this, ViewAllKitsActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(intent);
+//                }
+//            });
+//            dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int whichButton) {
+//                    //do nothing, go back.
+//                }
+//            });
+//            AlertDialog b = dialogBuilder.create();
+//            b.show();
+//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -288,7 +315,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
             StringBuilder body = new StringBuilder();
 
             for (Product product : params[0]) {
-                body.append(product.getId()).append(": ").append(product.getQuantity()).append(" units left.").append("\n");
+                body.append(product.getId()).append(" (").append(product.getName()).append(") ").append(": ").append(product.getQuantity()).append(" units left.").append("\n");
             }
 
             try {

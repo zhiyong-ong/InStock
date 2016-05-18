@@ -97,10 +97,12 @@ public class InsertItemActivity extends AppCompatActivity {
                         Toast.makeText(context, "Invalid quantity value", Toast.LENGTH_SHORT).show();
                     } else if (inputLocation.getText().toString().trim().length() == 0) {
                         Toast.makeText(context, "No location entered", Toast.LENGTH_SHORT).show();
-                    } else if (expiryDate.getText().toString().trim().length() == 0) {
-                        Toast.makeText(context, "No expiry date entered", Toast.LENGTH_SHORT).show();
-                    } else {
 
+                        //Maybe not necessary to have expiry dates. Some items won't have it.
+//                    } else if (expiryDate.getText().toString().trim().length() == 0) {
+//                        Toast.makeText(context, "No expiry date entered", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e("EXPIRY", "asdfdsafExpiry date: " + expiryDate.getText().toString());
                         //update the product with all the relevant details
                         Product inputProd = new Product();
                         String expiry = expiryDate.getEditableText().toString();
@@ -110,6 +112,7 @@ public class InsertItemActivity extends AppCompatActivity {
                         inputProd.setQuantity(Integer.valueOf(inputQty.getText().toString()));
                         inputProd.setLocation(inputLocation.getText().toString());
                         inputProd.setExpiry(StringCalendar.toCalendarProper(expiry));
+                        Log.e("EXPIRY", "cal: " + StringCalendar.toCalendarProper(expiry));
 
                         DatabaseWriteProduct.write(inputProd);
 
