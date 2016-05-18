@@ -124,17 +124,22 @@ public class UpdateItemActivity extends AppCompatActivity {
         dialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String productID = product.getId();
-                int quantity = Integer.parseInt(newQty.getEditableText().toString());
                 String expiry = expiryText.getEditableText().toString();
-                if(product.getQuantity() + quantity < 0) {
-                    Toast.makeText(activity, "Invalid quantity entered", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Product qtyExpProduct = new Product(productID, quantity, StringCalendar.toCalendarProper(expiry));
-                    Log.e("PRODUCT", "--------------------- qty: " + newQty.getText().toString());
+                if(newQty.getEditableText().toString().trim().length() == 0) {
+                    Product qtyExpProduct = new Product(productID, 0, StringCalendar.toCalendarProper(expiry));
                     DatabaseWriteProduct.updateQuantityExpiry(qtyExpProduct);
-                    Toast.makeText(activity, "Item Updated", Toast.LENGTH_SHORT).show();
                 }
+
+                else {
+                    int quantity = Integer.parseInt(newQty.getEditableText().toString());
+                    if (product.getQuantity() + quantity < 0) {
+                        Toast.makeText(activity, "Invalid quantity entered", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Product qtyExpProduct = new Product(productID, quantity, StringCalendar.toCalendarProper(expiry));
+                        DatabaseWriteProduct.updateQuantityExpiry(qtyExpProduct);
+                    }
+                }
+                Toast.makeText(activity, "Item Updated", Toast.LENGTH_SHORT).show();
             }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -34,8 +34,12 @@ public class StringCalendar {
     }
 
     public static String toString(GregorianCalendar calendar) {
-        fmt.setCalendar(calendar);
-        return fmt.format(calendar.getTime());
+        if (calendar == null) {
+            return "";
+        } else {
+            fmt.setCalendar(calendar);
+            return fmt.format(calendar.getTime());
+        }
     }
 
     public static GregorianCalendar toCalendar(String calendarStr) {
@@ -52,29 +56,33 @@ public class StringCalendar {
 
     public static GregorianCalendar toCalendarProper(String calendarStr) {
         Log.e("DATE", "FLAG: " + flag);
-        if(flag) {
-            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = null;
-            try {
-                date = df.parse(calendarStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Log.e("DATE", "DATE string is: " + calendarStr);
-            Log.e("DATE", "DATE is: " + date.toString());
-            gregCal.setTime(date);
-            return gregCal;
+        if(calendarStr.equals("")) {
+            return null;
         }
         else {
-            try {
-
-                Date date = displayFmt.parse(calendarStr);
+            if (flag) {
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                Date date = null;
+                try {
+                    date = df.parse(calendarStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Log.e("DATE", "DATE string is: " + calendarStr);
+                Log.e("DATE", "DATE is: " + date.toString());
                 gregCal.setTime(date);
+                return gregCal;
+            } else {
+                try {
 
-            } catch (ParseException e) {
-                Log.e("str to cal failed", e.getMessage());
+                    Date date = displayFmt.parse(calendarStr);
+                    gregCal.setTime(date);
+
+                } catch (ParseException e) {
+                    Log.e("str to cal failed", e.getMessage());
+                }
+                return gregCal;
             }
-            return gregCal;
         }
     }
 
