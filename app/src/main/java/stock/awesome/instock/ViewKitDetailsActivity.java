@@ -157,13 +157,12 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if((actionId == EditorInfo.IME_ACTION_SEARCH) || actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_NEXT
-                        || actionId == EditorInfo.IME_ACTION_DONE || actionId == KeyEvent.KEYCODE_ENTER || actionId == 0
-                        || ((event.getAction() == KeyEvent.ACTION_DOWN) && (actionId == KeyEvent.KEYCODE_ENTER))) {
+                        || actionId == EditorInfo.IME_ACTION_DONE || actionId == KeyEvent.KEYCODE_ENTER || actionId == 0) {
                     Log.e("barcode input", "text is: " + v.getText());
                     String barcodeID = v.getText().toString();
                     if (kitHashMap.containsKey(barcodeID)) {
                         int pos = mAdapter.productPositions.get(barcodeID);
-                        mAdapter.setChecked(true, pos);
+                        mAdapter.setChecked(pos);
                         Log.e("barcode input", "position is " + Integer.toString(pos));
                     }
                     barcodeInput.getText().clear();
