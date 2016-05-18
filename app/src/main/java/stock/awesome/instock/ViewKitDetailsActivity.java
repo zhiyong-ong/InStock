@@ -157,7 +157,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if((actionId == EditorInfo.IME_ACTION_SEARCH) || actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_NEXT
-                        || actionId == EditorInfo.IME_ACTION_DONE || actionId == KeyEvent.KEYCODE_ENTER
+                        || actionId == EditorInfo.IME_ACTION_DONE || actionId == KeyEvent.KEYCODE_ENTER || actionId == 0
                         || ((event.getAction() == KeyEvent.ACTION_DOWN) && (actionId == KeyEvent.KEYCODE_ENTER))) {
                     Log.e("barcode input", "text is: " + v.getText());
                     String barcodeID = v.getText().toString();
@@ -168,8 +168,8 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
                     }
                     barcodeInput.getText().clear();
                 }
-                barcodeInput.getText().clear();
                 Log.e("barcode input", "General text is: " + v.getText());
+
                 return true;
             }
         });
