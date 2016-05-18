@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,67 +65,67 @@ public class ViewAllKitsActivity extends AppCompatActivity {
         //popup edit / delete / view kit
         //registerForContextMenu(kitView);
     }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if (v.getId()==R.id.list_view_all_kits) {
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-            menu.setHeaderTitle(mAdapter.getItem(info.position).getKitName());
-            String[] menuItems = getResources().getStringArray(R.array.menu);
-            for (int i = 0; i<menuItems.length; i++) {
-                menu.add(Menu.NONE, i, i, menuItems[i]);
-            }
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-        int menuItemIndex = item.getItemId();
-        String[] menuItems = getResources().getStringArray(R.array.menu);
-        final String menuItemName = menuItems[menuItemIndex];
-        final String listItemName = mAdapter.getItem(info.position).getKitName();
-
-        if(menuItemName.equals("Delete")) {
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-            LayoutInflater inflater = LayoutInflater.from(this);
-            final View dialogView = inflater.inflate(R.layout.popup_delete_kit, null);
-            final TextView kitName = (TextView) dialogView.findViewById(R.id.deleteIDView);
-            kitName.setText(listItemName);
-
-            dialogBuilder.setView(dialogView);
-            dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    DatabaseWriteKit.deleteKit(listItemName);
-                    Toast.makeText(context, "Deleted Kit: " + listItemName, Toast.LENGTH_SHORT).show();
-                    mAdapter.notifyDataSetChanged();
-                }
-            });
-            dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    //do nothing, go back.
-                }
-            });
-            AlertDialog b = dialogBuilder.create();
-            b.show();
-        }
-        else if(menuItemName.equals("Edit")) {
-            Kit entry = mAdapter.getItem(info.position);
-            Globals.kit = (entry);
-            // this method starts an intent that starts ViewKitDetailsActivity
-            DatabaseReadKit.read(entry.getKitName(), DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
-                    ViewAllKitsActivity.this, EditKitActivity.class);
-        }
-        else if(menuItemName.equals("View")) {
-            Kit entry = mAdapter.getItem(info.position);
-            Globals.kit = (entry);
-
-            // this method starts an intent that starts ViewKitDetailsActivity
-            DatabaseReadKit.read(entry.getKitName(), DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
-                    ViewAllKitsActivity.this, ViewKitDetailsActivity.class);
-        }
-        return true;
-    }
+//
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        if (v.getId()==R.id.list_view_all_kits) {
+//            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+//            menu.setHeaderTitle(mAdapter.getItem(info.position).getKitName());
+//            String[] menuItems = getResources().getStringArray(R.array.menu);
+//            for (int i = 0; i<menuItems.length; i++) {
+//                menu.add(Menu.NONE, i, i, menuItems[i]);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+//        int menuItemIndex = item.getItemId();
+//        String[] menuItems = getResources().getStringArray(R.array.menu);
+//        final String menuItemName = menuItems[menuItemIndex];
+//        final String listItemName = mAdapter.getItem(info.position).getKitName();
+//
+//        if(menuItemName.equals("Delete")) {
+//            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+//            LayoutInflater inflater = LayoutInflater.from(this);
+//            final View dialogView = inflater.inflate(R.layout.popup_delete_kit, null);
+//            final TextView kitName = (TextView) dialogView.findViewById(R.id.deleteIDView);
+//            kitName.setText(listItemName);
+//
+//            dialogBuilder.setView(dialogView);
+//            dialogBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int whichButton) {
+//                    DatabaseWriteKit.deleteKit(listItemName);
+//                    Toast.makeText(context, "Deleted Kit: " + listItemName, Toast.LENGTH_SHORT).show();
+//                    mAdapter.notifyDataSetChanged();
+//                }
+//            });
+//            dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int whichButton) {
+//                    //do nothing, go back.
+//                }
+//            });
+//            AlertDialog b = dialogBuilder.create();
+//            b.show();
+//        }
+//        else if(menuItemName.equals("Edit")) {
+//            Kit entry = mAdapter.getItem(info.position);
+//            Globals.kit = (entry);
+//            // this method starts an intent that starts ViewKitDetailsActivity
+//            DatabaseReadKit.read(entry.getKitName(), DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
+//                    ViewAllKitsActivity.this, EditKitActivity.class);
+//        }
+//        else if(menuItemName.equals("View")) {
+//            Kit entry = mAdapter.getItem(info.position);
+//            Globals.kit = (entry);
+//
+//            // this method starts an intent that starts ViewKitDetailsActivity
+//            DatabaseReadKit.read(entry.getKitName(), DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
+//                    ViewAllKitsActivity.this, ViewKitDetailsActivity.class);
+//        }
+//        return true;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
