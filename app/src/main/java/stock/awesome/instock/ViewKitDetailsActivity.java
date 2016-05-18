@@ -139,6 +139,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if((actionId == EditorInfo.IME_ACTION_SEARCH)) {
+                    Log.e("barcode input", "text is: " + v.getText());
                     String barcodeID = v.getText().toString();
                     if (kitHashMap.containsKey(barcodeID)) {
                         int pos = mAdapter.productPositions.get(barcodeID);
@@ -147,6 +148,7 @@ public class ViewKitDetailsActivity extends AppCompatActivity {
                     }
                     barcodeInput.getText().clear();
                 }
+                Log.e("barcode input", "General text is: " + v.getText());
                 return true;
             }
         });

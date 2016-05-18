@@ -68,7 +68,7 @@ public class ViewEditKitActivity extends AppCompatActivity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        if (v.getId()==R.id.list_view_all_kits) {
+        if (v.getId()==R.id.list_view_edit_a_kit) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
             menu.setHeaderTitle(mAdapter.getItem(info.position).getKitName());
             String[] menuItems = getResources().getStringArray(R.array.menu);
@@ -116,14 +116,7 @@ public class ViewEditKitActivity extends AppCompatActivity {
             DatabaseReadKit.read(entry.getKitName(), DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
                     ViewEditKitActivity.this, EditKitActivity.class);
         }
-        else if(menuItemName.equals("View")) {
-            Kit entry = mAdapter.getItem(info.position);
-            Globals.kit = (entry);
 
-            // this method starts an intent that starts ViewKitDetailsActivity
-            DatabaseReadKit.read(entry.getKitName(), DatabaseReadKit.KitUseCase.GET_PRODUCT_DETAILS,
-                    ViewEditKitActivity.this, ViewKitDetailsActivity.class);
-        }
         return true;
     }
 

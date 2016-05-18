@@ -64,7 +64,7 @@ public class ViewAllKitsActivity extends AppCompatActivity {
         });
 
         //popup edit / delete / view kit
-        registerForContextMenu(kitView);
+        //registerForContextMenu(kitView);
     }
 
     @Override

@@ -20,17 +20,10 @@
     <string name="product_quantity">Quantity: </string>
 
     <string-array name="menu">
-        <item>View</item>
         <item>Edit</item>
         <item>Delete</item>
     </string-array>
-    <string-array name="query_suggestions">
-        <item>Android</item>
-        <item>iOS</item>
-        <item>SCALA</item>
-        <item>Ruby</item>
-        <item>JavaScript</item>
-    </string-array>
+
 
     <string name="title_activity_edit_kit">Edit Kit</string>
     <string name="title_activity_search_products">SearchProductsActivity</string>
